@@ -13,6 +13,7 @@ import cPickle
 from PIL import Image
 from datetime import datetime
 import collections
+import copy
 from collections import Counter
 import sklearn
 from sklearn.cross_validation import cross_val_score
@@ -20,8 +21,8 @@ from sklearn.datasets import make_blobs
 from sklearn.ensemble import RandomForestClassifier
 # sys.path.insert(0,'/mnt/scratch/third-party-packages/libopencv_3.1.0/lib/python')
 import cv2
-
 sys.path.append( os.path.normpath( os.path.join('/home/panquwang/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
+import labels
 from labels     import trainId2label,id2label
 # matplotlib.use('Qt4Agg')
 
@@ -60,7 +61,8 @@ def random_forest_classifier(all_feature_data):
     return fit_clf
 
 def get_palette():
-    trainId2colors = {label.trainId: label.color for label in cityscapes_labels.labels}
+    # get palette
+    trainId2colors = {label.trainId: label.color for label in labels.labels}
     palette = [0] * 256 * 3
     for trainId in trainId2colors:
         colors = trainId2colors[trainId]
@@ -68,18 +70,30 @@ def get_palette():
             colors = (0, 0, 0)
         for i in range(3):
             palette[trainId * 3 + i] = colors[i]
-
     return palette
 
 def convert_label_to_trainid(current_layer_value):
     # convert label
     unique_values_in_array = np.unique(current_layer_value)
     unique_values_in_array = np.sort(unique_values_in_array)
-    unique_values_in_array = unique_values_in_array[::-1]
     for unique_value in unique_values_in_array:
         converted_value = id2label[unique_value].trainId
         current_layer_value[current_layer_value == unique_value] = converted_value
     return  current_layer_value
+
+def convert_trainid_to_label(label):
+    unique_values_in_final_array = np.unique(label)
+    unique_values_in_final_array = np.sort(unique_values_in_final_array)
+    unique_values_in_final_array = unique_values_in_final_array[::-1]
+    for unique_value in unique_values_in_final_array:
+        if unique_value < 19:
+            converted_value = trainId2label[unique_value].id
+        else:
+            converted_value = 255
+        label[label == unique_value] = converted_value
+    label[label == 255] = 0
+    return label
+
 
 def get_quality(superpixel_label,current_all_layer_values, index_superpixel):
     quality=False
@@ -90,7 +104,7 @@ def get_quality(superpixel_label,current_all_layer_values, index_superpixel):
     if len(predict_label)<=20:
         return False,0,[]
 
-    # if gt_label does not agree with each other uniformly in this area. (Set agreement threshold to 0.5 by default)
+    # if prediction label does not agree with each other uniformly in this area. (Set agreement threshold to 0.5 by default)
     agreement_threshold=0.5
     predict_label_count=Counter(predict_label).most_common()
     predict_label_consistency_rate=float(predict_label_count[0][1])/len(predict_label)
@@ -102,7 +116,7 @@ def get_quality(superpixel_label,current_all_layer_values, index_superpixel):
     return True,predict_label_consistency_rate,predict_label_count
 
 
-def get_feature_single_superpixel(superpixel_label,current_all_layer_values,index_superpixel,gt_label_consistency_rate,gt_label_count):
+def get_feature_single_superpixel(superpixel_label,current_all_layer_values,index_superpixel,label_consistency_rate,gt_label_count):
     binary_mask=(superpixel_label == index_superpixel).astype(np.uint8)
 
     # plt.imshow(binary_mask)
@@ -111,7 +125,7 @@ def get_feature_single_superpixel(superpixel_label,current_all_layer_values,inde
     feature=[]
 
     # feature dimension 0: label_consistency_rate
-    feature.extend([gt_label_consistency_rate])
+    feature.extend([label_consistency_rate])
 
     # feature dimension 1: area
     contours, hierarchy = cv2.findContours(binary_mask, 0, 2)
@@ -194,55 +208,91 @@ def get_feature_single_superpixel(superpixel_label,current_all_layer_values,inde
 
     return feature
 
-def predict(superpixel_data,gt_files,folder_files,classifier):
-    # iterate through all images
+def predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location):
+
+    img_width=2048
+    img_height=1024
     feature_set=[]
     label_set=[]
-    num_features=0
+
+    # iterate through all images
     for index in range(len(superpixel_data)):
-        print str(index) + ' ' + superpixel_data[index].split('/')[-1]
+        file_name = superpixel_data[index].split('/')[-1]
+        print str(index) + ' ' + file_name
         current_superpixel_data = cPickle.load(open(superpixel_data[index], "rb"))
         current_gt = cv2.imread(gt_files[index], 0)
+        original_image = cv2.imread(original_image_files[index])
 
         # gather prediction maps, form multi-layer maps
-        current_all_layer_values = np.zeros((1024, 2048, len(folder_files)))
+        current_all_layer_values = np.zeros((img_height, img_width, len(folder_files)))
         for key, value in folder.iteritems():
             current_layer_value = cv2.imread(folder_files[key][index], 0)
             current_all_layer_values[:, :, key - 1]=convert_label_to_trainid(current_layer_value)
 
+
         # iterate through superpixel data of current image
-        superpixel_label = current_superpixel_data[1]
+        superpixel_label = current_superpixel_data[2]
         num_superpixels = np.max(superpixel_label) + 1
+        final_map=np.ones((img_height, img_width))*(255)
         for index_superpixel in range(num_superpixels):
             # decide the quality of current superpixel. Note: this is actually a test phase, so there should not be a GT!
             quality,gt_label_consistency_rate,gt_label_count = get_quality(superpixel_label,current_all_layer_values, index_superpixel)
 
             if not quality:
                 # why bother to predict those regions? set to ignore label.
-                superpixel_label[superpixel_label==index_superpixel]=255
+                # final_map[superpixel_label==index_superpixel]=255
                 continue
 
             # TODO: MODIFY FOR TEST IMAGES/SUPERPIXELS
             # extract a 40 dimensional feature for current super pixel
             feature=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,gt_label_count)
             predicted_label = classifier.predict(feature)
+            final_map[superpixel_label == index_superpixel] = predicted_label
 
-    return feature_set, label_set
+        # save score
+        final_map_saved=copy.deepcopy(final_map)
+        score=convert_trainid_to_label(final_map)
+        cv2.imwrite(os.path.join(result_location,'score',file_name),score)
+
+        # save visualization
+        # original image
+        concat_img = Image.new('RGB', (img_width * 3, img_height))
+        concat_img.paste(Image.fromarray(original_image[:, :, [2, 1, 0]]).convert('RGB'), (0, 0))
+        # ground truth
+        gt_img = Image.open(gt_files[index])
+        concat_img.paste(gt_img, (img_width, 0))
+        # prediction
+        final_map_saved = final_map_saved.astype(np.uint8)
+        result_img = Image.fromarray(final_map_saved).convert('P')
+        palette = get_palette()
+        result_img.putpalette(palette)
+        # concat_img.paste(result_img, (2048*2,0))
+        concat_img.paste(result_img.convert('RGB'), (img_width * 2, 0))
+        concat_img.save(os.path.join(result_location, 'visualization', file_name))
 
 
 
 if __name__ == '__main__':
+    original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/val/'
+    original_image_files=glob.glob(os.path.join(original_image_folder,"*","*.png"))
+    original_image_files.sort()
+
     gt_folder = '/home/panquwang/Dataset/CityScapes/gtFine/val/'
     gt_files=glob.glob(os.path.join(gt_folder,"*","*gtFine_labelTrainIds.png"))
     gt_files.sort()
 
-    superpixel_result_folder='/mnt/scratch/panqu/SLIC/merged_results/2016_08_24_11:21:59/data/'
+    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_val/data/'
     superpixel_data=glob.glob(os.path.join(superpixel_result_folder,'*.dat'))
     superpixel_data.sort()
 
     training_feature_location='/mnt/scratch/panqu/SLIC/'
-    all_feature_data = cPickle.load(open(os.path.join(training_feature_location,'features.dat'), "rb"))
+    all_feature_data = cPickle.load(open(os.path.join(training_feature_location,'features_train.dat'), "rb"))
 
+    result_location='/mnt/scratch/panqu/SLIC/prediction_result/'
+    if not os.path.exists(result_location):
+        os.makedirs(result_location)
+        os.makedirs(os.path.join(result_location,'score'))
+        os.makedirs(os.path.join(result_location,'visualization'))
 
     # test lower bound
     test_lower_bound(all_feature_data)
@@ -261,14 +311,13 @@ if __name__ == '__main__':
     # bus, train
     folder[3]='/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/val/val-epoch-33-CRF/score/'
     folder_files={}
-    previous_key=0
     for key,value in folder.iteritems():
         folder_files[key]=glob.glob(os.path.join(value,'*.png'))
         folder_files[key].sort()
 
     print "start to predict..."
 
-    feature_set,label_set=predict(superpixel_data,gt_files,folder_files,classifier)
+    predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location)
 
 
 

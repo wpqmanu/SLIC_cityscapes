@@ -48,13 +48,14 @@ def get_quality(superpixel_label,current_all_layer_values, current_gt, index_sup
     quality=False
     # ground-truth of current superpixel
     gt_label = current_gt[superpixel_label == index_superpixel]
+    predict_label = superpixel_label[superpixel_label == index_superpixel]
 
     # superpixel too small
     if len(gt_label)<=20:
         return False,0,[]
 
     # superpixel contains lots of ignore region except road
-    if len(gt_label)<100000 and (float(np.sum(gt_label==255))/len(gt_label))>0.5:
+    if len(gt_label)<100000 and (float(np.sum(gt_label==255))/len(gt_label))>0.75:
         return False,0,[]
 
     gt_label=gt_label[gt_label!=255]
@@ -68,11 +69,19 @@ def get_quality(superpixel_label,current_all_layer_values, current_gt, index_sup
     if gt_label_consistency_rate<agreement_threshold:
         return False,gt_label_consistency_rate,gt_label_count
 
+    agreement_threshold = 0.5
+    predict_label_count = Counter(predict_label).most_common()
+    predict_label_consistency_rate = float(predict_label_count[0][1]) / len(predict_label)
+
+    if predict_label_consistency_rate < agreement_threshold:
+        return False, predict_label_consistency_rate, predict_label_count
+
+
     # otherwise pass the quality test
-    return True,gt_label_consistency_rate,gt_label_count
+    return True,predict_label_consistency_rate,gt_label_count
 
 
-def get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,gt_label_consistency_rate,gt_label_count):
+def get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,label_consistency_rate,gt_label_count):
     label=gt_label_count[0][0]
     binary_mask=(superpixel_label == index_superpixel).astype(np.uint8)
     gt_label = current_gt[superpixel_label == index_superpixel]
@@ -82,8 +91,8 @@ def get_feature_single_superpixel(superpixel_label,current_all_layer_values,curr
 
     feature=[]
 
-    # #feature dimension 0: label_consistency_rate
-    # feature.extend([gt_label_consistency_rate])
+    #feature dimension 0: label_consistency_rate
+    feature.extend([label_consistency_rate])
 
     # feature dimension 1: area
     contours, hierarchy = cv2.findContours(binary_mask, 0, 2)

@@ -27,9 +27,9 @@ import fnmatch
 import os
 from pyspark import SparkContext, SparkConf
 
-num_cores=80
+num_cores=50
 conf = SparkConf()
-conf.setAppName("pedframe").setMaster("spark://192.168.1.132:7077")
+conf.setAppName("semantic_segmentation").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")
 conf.set("spark.cores.max", num_cores)
 sc = SparkContext(conf=conf)

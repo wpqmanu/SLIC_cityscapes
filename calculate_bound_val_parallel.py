@@ -87,7 +87,7 @@ def calculate_pixelwise_upper_bound(gt_files,folder_files):
         cv2.imwrite(os.path.join(result_location,file_name),near_perfect_map)
 
 
-def calculate_superpixelwise_upper_bound(original_image_files,gt_files,gt_files_color,folder_files,superpixel_data):
+def parallel_processing(index, original_image_files,gt_files,gt_files_color,folder_files,superpixel_data):
     result_location='/mnt/scratch/panqu/SLIC/bounds/superpixelwse_upper_bound_results/'
     if not os.path.exists(result_location):
         os.makedirs(result_location)
@@ -96,70 +96,69 @@ def calculate_superpixelwise_upper_bound(original_image_files,gt_files,gt_files_
 
     # calculation of upper bound
     # iterate through all images
-    for index in range(len(gt_files)):
-        print index
-        file_name=gt_files[index].split('/')[-1]
-        original_image=cv2.imread(original_image_files[index])
+    print index
+    file_name=gt_files[index].split('/')[-1]
+    original_image=cv2.imread(original_image_files[index])
 
 
-        # gather prediction maps, form multi-layer maps
-        current_all_layer_values = np.zeros((1024, 2048, len(folder_files)))
-        for key, value in folder.iteritems():
-            current_layer_value = cv2.imread(folder_files[key][index], 0)
-            current_all_layer_values[:, :, key - 1]=convert_label_to_trainid(current_layer_value)
+    # gather prediction maps, form multi-layer maps
+    current_all_layer_values = np.zeros((1024, 2048, len(folder_files)))
+    for key, value in folder.iteritems():
+        current_layer_value = cv2.imread(folder_files[key][index], 0)
+        current_all_layer_values[:, :, key - 1]=convert_label_to_trainid(current_layer_value)
 
-        # gather superpixel data and ground truth
-        current_superpixel_data = cPickle.load(open(superpixel_data[index], "rb"))
-        current_gt=cv2.imread(gt_files[index],0)
+    # gather superpixel data and ground truth
+    current_superpixel_data = cPickle.load(open(superpixel_data[index], "rb"))
+    current_gt=cv2.imread(gt_files[index],0)
 
-        superpixel_label = current_superpixel_data[2]
+    superpixel_label = current_superpixel_data[2]
 
-        superpixel_set=np.unique(superpixel_label)
-        num_superpixels = len(superpixel_set)
+    superpixel_set=np.unique(superpixel_label)
+    num_superpixels = len(superpixel_set)
 
-        # iterate through all superpixels
-        near_perfect_map=np.ones((1024,2048))*255
-        for index_superpixel in superpixel_set:
-            gt_label=current_gt[superpixel_label == index_superpixel]
-            gt_label=gt_label[gt_label!=255]
-            gt_label_count=Counter(gt_label).most_common()
-            # gt_label_consistency_rate = float(gt_label_count[0][1]) / len(gt_label)
-            if len(gt_label_count)>0:
-                gt_label_candidates=[a[0] for a in gt_label_count]
-                gt_label_selected=gt_label_count[0][0]
-            else: # the current superpixel region only has ignore label
-                continue
+    # iterate through all superpixels
+    near_perfect_map=np.ones((1024,2048))*255
+    for index_superpixel in superpixel_set:
+        gt_label=current_gt[superpixel_label == index_superpixel]
+        gt_label=gt_label[gt_label!=255]
+        gt_label_count=Counter(gt_label).most_common()
+        # gt_label_consistency_rate = float(gt_label_count[0][1]) / len(gt_label)
+        if len(gt_label_count)>0:
+            gt_label_candidates=[a[0] for a in gt_label_count]
+            gt_label_selected=gt_label_count[0][0]
+        else: # the current superpixel region only has ignore label
+            continue
 
-            for layer_index in range(current_all_layer_values.shape[2]):
-                current_layer_current_superpixel_label = current_all_layer_values[:,:,layer_index][superpixel_label == index_superpixel]
-                current_layer_label_count = Counter(current_layer_current_superpixel_label).most_common()
-                current_layer_labels=[a[0] for a in current_layer_label_count]
-                current_layer_consistency_rate = float(current_layer_label_count[0][1]) / len(current_layer_current_superpixel_label)
-                # if by any chance we encounter gt_label, we assign gt_label to current superpixel
-                if gt_label_selected in current_layer_labels:
-                    near_perfect_map[superpixel_label == index_superpixel]=gt_label_selected
-                    break
+        for layer_index in range(current_all_layer_values.shape[2]):
+            current_layer_current_superpixel_label = current_all_layer_values[:,:,layer_index][superpixel_label == index_superpixel]
+            current_layer_label_count = Counter(current_layer_current_superpixel_label).most_common()
+            current_layer_labels=[a[0] for a in current_layer_label_count]
+            current_layer_consistency_rate = float(current_layer_label_count[0][1]) / len(current_layer_current_superpixel_label)
+            # if by any chance we encounter gt_label, we assign gt_label to current superpixel
+            if gt_label_selected in current_layer_labels:
+                near_perfect_map[superpixel_label == index_superpixel]=gt_label_selected
+                break
 
-        # save score
-        near_perfect_map_saved=copy.deepcopy(near_perfect_map)
-        score=convert_trainid_to_label(near_perfect_map)
-        cv2.imwrite(os.path.join(result_location,'score',file_name),score)
+    # save score
+    near_perfect_map_saved=copy.deepcopy(near_perfect_map)
+    score=convert_trainid_to_label(near_perfect_map)
+    cv2.imwrite(os.path.join(result_location,'score',file_name),score)
 
-        # save visualization
-        # original image
-        concat_img = Image.new('RGB', (2048*3, 1024))
-        concat_img.paste(Image.fromarray(original_image[:, :, [2, 1, 0]]).convert('RGB'), (0, 0))
-        # ground truth
-        gt_img = Image.open(gt_files_color[index])
-        concat_img.paste(gt_img, (2048, 0))
-        # prediction
-        near_perfect_map_saved=near_perfect_map_saved.astype(np.uint8)
-        result_img = Image.fromarray(near_perfect_map_saved).convert('P')
-        palette=get_palette()
-        result_img.putpalette(palette)
-        # concat_img.paste(result_img, (2048*2,0))
-        concat_img.paste(result_img.convert('RGB'), (2048*2,0))
-        concat_img.save(os.path.join(result_location, 'visualization', file_name))
+    # save visualization
+    # original image
+    concat_img = Image.new('RGB', (2048*3, 1024))
+    concat_img.paste(Image.fromarray(original_image[:, :, [2, 1, 0]]).convert('RGB'), (0, 0))
+    # ground truth
+    gt_img = Image.open(gt_files_color[index])
+    concat_img.paste(gt_img, (2048, 0))
+    # prediction
+    near_perfect_map_saved=near_perfect_map_saved.astype(np.uint8)
+    result_img = Image.fromarray(near_perfect_map_saved).convert('P')
+    palette=get_palette()
+    result_img.putpalette(palette)
+    # concat_img.paste(result_img, (2048*2,0))
+    concat_img.paste(result_img.convert('RGB'), (2048*2,0))
+    concat_img.save(os.path.join(result_location, 'visualization', file_name))
 #
 # def calculate_superpixelwise_lower_bound(gt_files,folder_files):
 
@@ -197,7 +196,14 @@ if __name__ == '__main__':
     # get label map for pixelwise upper bound. Uncomment if not necessary
     # calculate_pixelwise_upper_bound(gt_files,folder_files)
 
-    # get "upper" bound for superpixel implementation.Uncomment if not necessary
-    calculate_superpixelwise_upper_bound(original_image_files,gt_files,gt_files_color,folder_files,superpixel_files)
 
-    # calculate_superpixelwise_lower_bound(gt_files,folder_files)
+    # get "upper" bound for superpixel implementation.Uncomment if not necessary
+    num_cores = multiprocessing.cpu_count()
+    range_i=range(0,500)
+    Parallel(n_jobs=num_cores)(delayed(parallel_processing)(i,original_image_files,gt_files,gt_files_color,folder_files,superpixel_files) for i in range_i)
+
+
+
+    # get "upper" bound for superpixel implementation.Uncomment if not necessary
+    # calculate_superpixelwise_upper_bound(index,original_image_files,gt_files,gt_files_color,folder_files,superpixel_files)
+    #
