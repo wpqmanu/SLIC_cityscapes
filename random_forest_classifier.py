@@ -273,43 +273,45 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
 
 
 if __name__ == '__main__':
-    original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/val/'
+    dataset='val'
+
+    original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
     original_image_files=glob.glob(os.path.join(original_image_folder,"*","*.png"))
     original_image_files.sort()
 
-    gt_folder = '/home/panquwang/Dataset/CityScapes/gtFine/val/'
+    gt_folder = '/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'/'
     gt_files=glob.glob(os.path.join(gt_folder,"*","*gtFine_labelTrainIds.png"))
     gt_files.sort()
 
-    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_val/data/'
+    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'/data/'
     superpixel_data=glob.glob(os.path.join(superpixel_result_folder,'*.dat'))
     superpixel_data.sort()
 
     training_feature_location='/mnt/scratch/panqu/SLIC/'
-    all_feature_data = cPickle.load(open(os.path.join(training_feature_location,'features_train.dat'), "rb"))
+    all_feature_data = cPickle.load(open(os.path.join(training_feature_location,'features_val_40.dat'), "rb"))
 
-    result_location='/mnt/scratch/panqu/SLIC/prediction_result/'
+    result_location=os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/', datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
     if not os.path.exists(result_location):
         os.makedirs(result_location)
         os.makedirs(os.path.join(result_location,'score'))
         os.makedirs(os.path.join(result_location,'visualization'))
 
-    # test lower bound
-    test_lower_bound(all_feature_data)
+    # # test lower bound
+    # test_lower_bound(all_feature_data)
 
     # random forest classifier
     classifier=random_forest_classifier(all_feature_data)
 
 
     # prediction for validation set
-    # base feature map
     folder={}
     # base
-    folder[1]='/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/val/val-epoch-35-CRF/score/'
+    folder[1]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/',dataset, dataset+'-epoch-35-CRF', 'score')
     # truck, wall
-    folder[2]='/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/val/val-epoch-39-CRF-050/score/'
+    folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'-epoch-39-CRF-050', 'score')
     # bus, train
-    folder[3]='/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/val/val-epoch-33-CRF/score/'
+    folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
+
     folder_files={}
     for key,value in folder.iteritems():
         folder_files[key]=glob.glob(os.path.join(value,'*.png'))

@@ -194,6 +194,13 @@ def extract_features(superpixel_data,gt_files,folder_files):
         # iterate through superpixel data of current image
         superpixel_label = current_superpixel_data[2]
         num_superpixels = int(np.max(superpixel_label)) + 1
+
+        # statistics
+        stat=[]
+        for index_superpixel in range(num_superpixels):
+            stat.append(len(superpixel_label[superpixel_label==index_superpixel]))
+        stat.sort()
+
         for index_superpixel in range(num_superpixels):
             # decide the quality of current superpixel
             quality,gt_label_consistency_rate,gt_label_count = get_quality(superpixel_label,current_all_layer_values, current_gt, index_superpixel)
@@ -242,7 +249,7 @@ if __name__ == '__main__':
     feature_set,label_set=extract_features(superpixel_data,gt_files,folder_files)
 
     saved_location='/mnt/scratch/panqu/SLIC/features/'
-    cPickle.dump((feature_set, label_set), open(os.path.join(saved_location, 'features_'+dataset+'.dat'), "w+"))
+    cPickle.dump((feature_set, label_set), open(os.path.join(saved_location, 'features_'+dataset+'_40.dat'), "w+"))
 
 
 

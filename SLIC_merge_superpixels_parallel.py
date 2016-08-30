@@ -126,7 +126,7 @@ def parallel_processing(index,superpixel_data,superpixel_images,original_files,g
 
 
 if __name__ == '__main__':
-    dataset='val'
+    dataset='train'
     superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_'+dataset+'/'
     original_files_folder='/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
     gt_folder='/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'/'
@@ -152,7 +152,7 @@ if __name__ == '__main__':
 
 
     num_cores = multiprocessing.cpu_count()
-    range_i=range(400,500)
+    range_i=range(0,500)
 
     Parallel(n_jobs=num_cores)(delayed(parallel_processing)(i,superpixel_data,superpixel_images,original_files,gt_files,place_to_save) for i in range_i)
 
