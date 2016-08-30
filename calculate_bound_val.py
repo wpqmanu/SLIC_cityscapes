@@ -185,7 +185,7 @@ if __name__ == '__main__':
         folder_files[key].sort()
 
 
-    superpixel_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_val/data/'
+    superpixel_folder='/mnt/scratch/panqu/SLIC/merged_results/2016_08_29_16:37:32/data/'
     superpixel_files=glob.glob(os.path.join(superpixel_folder,'*.dat'))
     superpixel_files.sort()
 

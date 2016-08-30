@@ -33,6 +33,8 @@ import copy
 from PIL import Image
 
 
+
+
 def find_unique_labels(current_superpixel_data):
     # find unique vectors (number of dimensions equals number of layers)
     current_superpixel_data_channel_info_all = np.array([x[2:] for x in current_superpixel_data[0]])
@@ -67,7 +69,7 @@ def palette(new_superpixel_label):
 if __name__ == '__main__':
     # superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_val/'
     # superpixel_result_folder='/mnt/scratch/panqu/SLIC/2016_08_24_00:19:23/'
-    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_val/2016_08_29_14:47:37/'
+    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_val/2016_08_29_15:56:31/'
 
     original_files_folder='/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/val/'
     gt_folder='/home/panquwang/Dataset/CityScapes/gtFine/val/'

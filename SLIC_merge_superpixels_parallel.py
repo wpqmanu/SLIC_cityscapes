@@ -55,7 +55,6 @@ def assign_updated_labels(num_superpixels,current_superpixel_data,unique_labels)
         current_superpixel_data_channel_info = current_superpixel_data[0][superpixel_index][2:].tolist()
         index_in_list = unique_labels.index(current_superpixel_data_channel_info)
         # replace labels
-        #
         return_map[current_superpixel_data[1] == superpixel_index] = index_in_list
     return return_map
 
