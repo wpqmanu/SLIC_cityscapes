@@ -48,14 +48,14 @@ def random_forest_classifier(all_feature_data):
 
     # data=sklearn.preprocessing.normalize(data,axis=0)
 
-    clf = RandomForestClassifier(n_estimators=20)
+    clf = RandomForestClassifier(n_estimators=50,verbose=True,n_jobs=-1)
     fit_clf=clf.fit(data,label)
 
     result=fit_clf.predict(data)
     accuracy=float(np.sum(result==label))/len(label)
     print "Training accuracy is " + str(accuracy)
 
-    scores = cross_val_score(clf, data, label, cv=5)
+    scores = cross_val_score(clf, data, label, cv=10)
     print "Cross validation score is "+ str(scores.mean())
 
     return fit_clf
@@ -274,6 +274,7 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
 
 
 if __name__ == '__main__':
+
     dataset='val'
 
     original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
@@ -288,8 +289,17 @@ if __name__ == '__main__':
     superpixel_data=glob.glob(os.path.join(superpixel_result_folder,'*.dat'))
     superpixel_data.sort()
 
+
     training_feature_location='/mnt/scratch/panqu/SLIC/'
-    all_feature_data = cPickle.load(open(os.path.join(training_feature_location,'features','features_val_40.dat'), "rb"))
+    # feature1 = '/mnt/scratch/panqu/SLIC/features/features_train_40_1.dat'
+    # feature2 = '/mnt/scratch/panqu/SLIC/features/features_train_40_2.dat'
+    # feature3 = '/mnt/scratch/panqu/SLIC/features/features_train_40_3.dat'
+    # feature1_data = cPickle.load(open(feature1, "rb"))
+    # feature2_data = cPickle.load(open(feature2, "rb"))
+    # feature3_data = cPickle.load(open(feature3, "rb"))
+    # all_features_data = (feature1_data[0]+feature2_data[0]+feature3_data[0],feature1_data[1]+feature2_data[1]+feature3_data[1])
+    # cPickle.dump(all_features_data, open(os.path.join('/mnt/scratch/panqu/SLIC/features/', 'features_train_40.dat'), "w+"))
+    all_feature_data = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_40.dat'), "rb"))
 
     result_location=os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/', datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
     if not os.path.exists(result_location):
