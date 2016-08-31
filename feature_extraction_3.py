@@ -180,7 +180,7 @@ def extract_features(superpixel_data,gt_files,folder_files):
     feature_set=[]
     label_set=[]
     num_features=0
-    for index in range(len(superpixel_data)):
+    for index in range(2000,len(superpixel_data)):
         print str(index) + ' ' + superpixel_data[index].split('/')[-1]
         current_superpixel_data = cPickle.load(open(superpixel_data[index], "rb"))
         current_gt = cv2.imread(gt_files[index], 0)
@@ -249,7 +249,7 @@ if __name__ == '__main__':
     feature_set,label_set=extract_features(superpixel_data,gt_files,folder_files)
 
     saved_location='/mnt/scratch/panqu/SLIC/features/'
-    cPickle.dump((feature_set, label_set), open(os.path.join(saved_location, 'features_'+dataset+'_40.dat'), "w+"))
+    cPickle.dump((feature_set, label_set), open(os.path.join(saved_location, 'features_'+dataset+'_40_3.dat'), "w+"))
 
 
 

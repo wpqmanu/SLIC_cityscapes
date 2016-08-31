@@ -48,7 +48,7 @@ def random_forest_classifier(all_feature_data):
 
     # data=sklearn.preprocessing.normalize(data,axis=0)
 
-    clf = RandomForestClassifier(n_estimators=50, max_depth=None,min_samples_split=2,verbose=1)
+    clf = RandomForestClassifier(n_estimators=20)
     fit_clf=clf.fit(data,label)
 
     result=fit_clf.predict(data)
@@ -212,12 +212,10 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
 
     img_width=2048
     img_height=1024
-    feature_set=[]
-    label_set=[]
 
     # iterate through all images
     for index in range(len(superpixel_data)):
-        file_name = superpixel_data[index].split('/')[-1]
+        file_name = superpixel_data[index].split('/')[-1][:-4]+'.png'
         print str(index) + ' ' + file_name
         current_superpixel_data = cPickle.load(open(superpixel_data[index], "rb"))
         current_gt = cv2.imread(gt_files[index], 0)
@@ -234,7 +232,7 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
         superpixel_label = current_superpixel_data[2]
         num_superpixels = np.max(superpixel_label) + 1
         final_map=np.ones((img_height, img_width))*(255)
-        for index_superpixel in range(num_superpixels):
+        for index_superpixel in range(int(num_superpixels)):
             # decide the quality of current superpixel. Note: this is actually a test phase, so there should not be a GT!
             quality,gt_label_consistency_rate,gt_label_count = get_quality(superpixel_label,current_all_layer_values, index_superpixel)
 
@@ -246,8 +244,11 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
             # TODO: MODIFY FOR TEST IMAGES/SUPERPIXELS
             # extract a 40 dimensional feature for current super pixel
             feature=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,gt_label_count)
-            predicted_label = classifier.predict(feature)
-            final_map[superpixel_label == index_superpixel] = predicted_label
+            label_candidates=[int(feature[i]) for i in [38,40,42]]
+            predicted_label_probs = classifier.predict_proba(feature)
+            label_candidates_probs=[predicted_label_probs[0][i] for i in label_candidates]
+            label_selected=label_candidates[np.argmax(label_candidates_probs)]
+            final_map[superpixel_label == index_superpixel] = label_selected
 
         # save score
         final_map_saved=copy.deepcopy(final_map)
@@ -280,7 +281,7 @@ if __name__ == '__main__':
     original_image_files.sort()
 
     gt_folder = '/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'/'
-    gt_files=glob.glob(os.path.join(gt_folder,"*","*gtFine_labelTrainIds.png"))
+    gt_files=glob.glob(os.path.join(gt_folder,"*","*gtFine_color.png"))
     gt_files.sort()
 
     superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'/data/'
@@ -288,7 +289,7 @@ if __name__ == '__main__':
     superpixel_data.sort()
 
     training_feature_location='/mnt/scratch/panqu/SLIC/'
-    all_feature_data = cPickle.load(open(os.path.join(training_feature_location,'features_val_40.dat'), "rb"))
+    all_feature_data = cPickle.load(open(os.path.join(training_feature_location,'features','features_val_40.dat'), "rb"))
 
     result_location=os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/', datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
     if not os.path.exists(result_location):
