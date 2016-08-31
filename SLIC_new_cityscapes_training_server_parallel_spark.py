@@ -27,7 +27,7 @@ import fnmatch
 import os
 from pyspark import SparkContext, SparkConf
 
-num_cores=50
+num_cores=75
 conf = SparkConf()
 conf.setAppName("semantic_segmentation").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")
@@ -349,6 +349,7 @@ def spark_processing(i):
 
     processing(i, total_files, folder_files, img_height, img_width, img_channels, result_dir,step)
 
+    return 1
 
 
 
