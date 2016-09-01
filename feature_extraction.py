@@ -81,13 +81,9 @@ def get_quality(superpixel_label,current_all_layer_values, current_gt, index_sup
     return True,predict_label_consistency_rate,gt_label_count
 
 
-def get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,label_consistency_rate,gt_label_count):
+def get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,label_consistency_rate,gt_label_count):
     label=gt_label_count[0][0]
     binary_mask=(superpixel_label == index_superpixel).astype(np.uint8)
-    gt_label = current_gt[superpixel_label == index_superpixel]
-
-    # plt.imshow(binary_mask)
-    # plt.show()
 
     feature=[]
 

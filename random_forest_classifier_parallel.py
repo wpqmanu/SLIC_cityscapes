@@ -24,6 +24,7 @@ import cv2
 sys.path.append( os.path.normpath( os.path.join('/home/panquwang/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
 import labels
 from labels     import trainId2label,id2label
+from feature_extraction import get_feature_single_superpixel
 # matplotlib.use('Qt4Agg')
 sys.path.append( os.path.normpath( os.path.join('/home/panquwang/.local/lib/python2.7/') ) )
 from joblib import Parallel, delayed
@@ -101,98 +102,6 @@ def get_quality(superpixel_label,current_all_layer_values, index_superpixel):
     # otherwise pass the quality test
     return True,predict_label_consistency_rate,predict_label_count
 
-def get_feature_single_superpixel(superpixel_label,current_all_layer_values,index_superpixel,label_consistency_rate,gt_label_count):
-    binary_mask=(superpixel_label == index_superpixel).astype(np.uint8)
-
-    # plt.imshow(binary_mask)
-    # plt.show()
-
-    feature=[]
-
-    # feature dimension 0: label_consistency_rate
-    feature.extend([label_consistency_rate])
-
-    # feature dimension 1: area
-    contours, hierarchy = cv2.findContours(binary_mask, 0, 2)
-    contours_with_holes, hierarchy_with_holes = cv2.findContours(binary_mask, 1, 2)
-    cnt = contours[0]
-    area = cv2.contourArea(cnt)
-    feature.extend([area])
-
-    # feature dimension 2: perimeter
-    perimeter = cv2.arcLength(cnt, True)
-    feature.extend([perimeter])
-
-    # feature dimension 3,4: centroid
-    M = cv2.moments(cnt)
-    cx = int(M['m10'] / (M['m00']+1e-5))
-    cy = int(M['m01'] / (M['m00']+1e-5))
-    feature.extend([cx,cy])
-
-    # feature dimension 5: convexity
-    convexity=int(cv2.isContourConvex(cnt))
-    feature.extend([convexity])
-
-    # feature dimension 6,7,8,9,10: minAreaRectangle centerx, centery, width, height, angle of rotation
-    rect = cv2.minAreaRect(cnt)
-    feature.extend([rect[0][0],rect[0][1],rect[1][0],rect[1][1],rect[2]])
-
-    # feature dimension  11,12,13: minEnclosingCircle centerx, centery, radius
-    (x, y), radius = cv2.minEnclosingCircle(cnt)
-    feature.extend([int(x),int(y),radius])
-
-    # feature dimension 14: aspect ratio
-    x_rect,y_rect,w,h=cv2.boundingRect(cnt)
-    aspect_ratio=float(w)/h
-    feature.extend([aspect_ratio])
-
-    # feature dimension 15: extent
-    rect_area = w * h
-    extent = float(area) / (rect_area+1e-5)
-    feature.extend([extent])
-
-    # feature dimension 16, 17: convex hull area and solidity
-    hull = cv2.convexHull(cnt)
-    hull_area = cv2.contourArea(hull)
-    solidity = float(area) / (hull_area+1e-5)
-    feature.extend([hull_area,solidity])
-
-    # feature dimension 18: equivalent diameter
-    equi_diameter = np.sqrt(4 * area / np.pi)
-    feature.extend([equi_diameter])
-
-    # feature dimension 19, 20, 21: major axis length, minor axis length, orientation
-    if cnt.shape[0]<=5:
-        feature.extend([0, 0, 0])
-    else:
-        (x_ecclipse, y_ecclipse), (MA, ma), angle = cv2.fitEllipse(cnt)
-        feature.extend([MA, ma, angle])
-
-    # feature dimension 22: Euler number
-    Euler_number=len(contours)-len(contours_with_holes)
-    feature.extend([Euler_number])
-
-    # feature dimension 23, 24, 25, 26, 27, 28, 29, 30: extreme points
-    leftmost = tuple(cnt[cnt[:, :, 0].argmin()][0])
-    rightmost = tuple(cnt[cnt[:, :, 0].argmax()][0])
-    topmost = tuple(cnt[cnt[:, :, 1].argmin()][0])
-    bottommost = tuple(cnt[cnt[:, :, 1].argmax()][0])
-    feature.extend([leftmost[0], bottommost[1], rightmost[0], rightmost[1], topmost[0], topmost[1], bottommost[0], bottommost[1]])
-
-    # feature dimension 31, 32, 33, 34, 35, 36, 37: Hu moments
-    Hu_moments=cv2.HuMoments(M).flatten()
-    feature.extend(Hu_moments)
-
-    # feature dimension 38, 39, 40, 41, 42, 43: prediction of our models and consistency
-    for layer_index in range(current_all_layer_values.shape[2]):
-        current_layer_current_superpixel_label = current_all_layer_values[:,:,layer_index][superpixel_label == index_superpixel]
-        current_layer_label_count = Counter(current_layer_current_superpixel_label).most_common()
-        current_layer_consistency_rate = float(current_layer_label_count[0][1]) / len(current_layer_current_superpixel_label)
-        feature.extend([current_layer_label_count[0][0],current_layer_consistency_rate])
-
-
-    return feature
-
 def test_lower_bound(all_feature_data,superpixel_data,gt_files,folder_files,original_image_files,result_location,is_test_lower_bound):
     data=np.asarray(all_feature_data[0])
     label=np.asarray(all_feature_data[1])
@@ -221,8 +130,7 @@ def parallel_processing(index,superpixel_data,gt_files,folder_files,classifier,o
     img_width=2048
     img_height=1024
 
-    # iterate through all images
-    file_name = superpixel_data[index].split('/')[-1][:-4]+'.png'
+    file_name = superpixel_data[index].split('/')[-1][:-4] + '.png'
     print str(index) + ' ' + file_name
     current_superpixel_data = cPickle.load(open(superpixel_data[index], "rb"))
     current_gt = cv2.imread(gt_files[index], 0)
@@ -232,58 +140,63 @@ def parallel_processing(index,superpixel_data,gt_files,folder_files,classifier,o
     current_all_layer_values = np.zeros((img_height, img_width, len(folder_files)))
     for key, value in folder.iteritems():
         current_layer_value = cv2.imread(folder_files[key][index], 0)
-        current_all_layer_values[:, :, key - 1]=convert_label_to_trainid(current_layer_value)
-
+        current_all_layer_values[:, :, key - 1] = convert_label_to_trainid(current_layer_value)
 
     # iterate through superpixel data of current image
     superpixel_label = current_superpixel_data[2]
     num_superpixels = np.max(superpixel_label) + 1
-    final_map=np.ones((img_height, img_width))*(int(num_superpixels)+10)
-    superpixel_feature_set=[]
-    superpixel_index_set=[]
+    final_map = np.ones((img_height, img_width)) * (int(num_superpixels) + 10)
+    superpixel_feature_set = []
+    superpixel_index_set = []
+    superpixel_categorical_label = []
     for index_superpixel in range(int(num_superpixels)):
         # decide the quality of current superpixel. Note: this is actually a test phase, so there should not be a GT!
-        quality,gt_label_consistency_rate,gt_label_count = get_quality(superpixel_label,current_all_layer_values, index_superpixel)
+        quality, gt_label_consistency_rate, predict_label_count = get_quality(superpixel_label,
+                                                                              current_all_layer_values,
+                                                                              index_superpixel)
 
         if not quality:
             # why bother to predict those regions? set to ignore label.
             # final_map[superpixel_label==index_superpixel]=255
             continue
 
-        #MODIFY FOR TEST IMAGES/SUPERPIXELS
-        # extract a 40 dimensional feature for current super pixel
-        feature=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,gt_label_count)
+        # MODIFY FOR TEST IMAGES/SUPERPIXELS
+        # extract a 100 dimensional feature for current super pixel
+        feature, label, categorical_label = get_feature_single_superpixel(superpixel_label, current_all_layer_values,
+                                                                          index_superpixel, gt_label_consistency_rate,
+                                                                          predict_label_count)
 
         # save to a single set to increase processing speed
         superpixel_feature_set.append(feature)
         superpixel_index_set.append(index_superpixel)
+        superpixel_categorical_label.append(categorical_label)
 
         if is_test_lower_bound:
-            label_candidates=[int(feature[i]) for i in [38,40,42]]
+            label_candidates = categorical_label
             label_selected = max(set(label_candidates), key=label_candidates.count)
             final_map[superpixel_label == index_superpixel] = label_selected
 
-        # else:
-        #     predicted_label_probs = classifier.predict_proba(feature)
-        #     label_candidates_probs=[predicted_label_probs[0][i] for i in label_candidates]
-        #     label_selected=label_candidates[np.argmax(label_candidates_probs)]
-        # final_map[superpixel_label == index_superpixel] = label_selected
+            # else:
+            #     predicted_label_probs = classifier.predict_proba(feature)
+            #     label_candidates_probs=[predicted_label_probs[0][i] for i in label_candidates]
+            #     label_selected=label_candidates[np.argmax(label_candidates_probs)]
+            # final_map[superpixel_label == index_superpixel] = label_selected
 
     # to improve speed, predict the features for one pass.
     predicted_label_probs = classifier.predict_proba(superpixel_feature_set)
     # then assign label to all superpixel
-    for predicted_index,superpixel_index in enumerate(superpixel_index_set):
-        predicted_current_superpixel_label_probs=predicted_label_probs[predicted_index]
-        label_candidates = [int(superpixel_feature_set[predicted_index][i]) for i in [38, 40, 42]]
+    for predicted_index, superpixel_index in enumerate(superpixel_index_set):
+        predicted_current_superpixel_label_probs = predicted_label_probs[predicted_index]
+        label_candidates = superpixel_categorical_label[predicted_index]
         label_candidates_probs = [predicted_current_superpixel_label_probs[i] for i in label_candidates]
         label_selected = label_candidates[np.argmax(label_candidates_probs)]
         final_map[superpixel_label == superpixel_index] = label_selected
-    final_map[final_map>int(num_superpixels)]=255
+    final_map[final_map > int(num_superpixels)] = 255
 
     # save score
-    final_map_saved=copy.deepcopy(final_map)
-    score=convert_trainid_to_label(final_map)
-    cv2.imwrite(os.path.join(result_location,'score',file_name),score)
+    final_map_saved = copy.deepcopy(final_map)
+    score = convert_trainid_to_label(final_map)
+    cv2.imwrite(os.path.join(result_location, 'score', file_name), score)
 
     # save visualization
     # original image

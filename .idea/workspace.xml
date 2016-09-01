@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7beb661-607e-4d39-83ac-cc8e6d093a5b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/random_forest_classifier_parallel.py" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_1.py" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_2.py" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_3.py" afterPath="" />
@@ -11,6 +10,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/feature_extraction_with_neighbor.py" afterPath="$PROJECT_DIR$/feature_extraction_with_neighbor.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/random_forest_classifier.py" afterPath="$PROJECT_DIR$/random_forest_classifier.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" afterPath="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/random_forest_classifier_parallel.py" afterPath="$PROJECT_DIR$/random_forest_classifier_parallel.py" />
     </list>
     <ignored path="SLIC_cityscapes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,29 +40,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="random_forest_classifier.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/random_forest_classifier.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-493">
-              <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
-              <folding>
-                <element signature="e#0#51#0" expanded="true" />
-                <element signature="e#1414#1761#0" expanded="false" />
-                <element signature="e#1818#2174#0" expanded="false" />
-                <element signature="e#2217#2700#0" expanded="false" />
-                <element signature="e#2784#3538#0" expanded="false" />
-                <element signature="e#3677#7144#0" expanded="false" />
-                <element signature="e#7285#7926#0" expanded="false" />
-                <element signature="e#8054#12500#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="feature_extraction_with_neighbor.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/feature_extraction_with_neighbor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="406">
+            <state relative-caret-position="841">
               <caret line="191" column="0" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
               <folding>
                 <element signature="e#43#53#0" expanded="true" />
@@ -71,12 +52,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="feature_extraction.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/feature_extraction.py">
+      <file leaf-file-name="random_forest_classifier.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/random_forest_classifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1723">
-              <caret line="175" column="45" selection-start-line="175" selection-start-column="20" selection-end-line="175" selection-end-column="45" />
-              <folding />
+            <state relative-caret-position="3860">
+              <caret line="234" column="109" selection-start-line="234" selection-start-column="109" selection-end-line="234" selection-end-column="109" />
+              <folding>
+                <element signature="e#0#51#0" expanded="true" />
+                <element signature="e#1474#1821#0" expanded="false" />
+                <element signature="e#1878#2234#0" expanded="false" />
+                <element signature="e#2277#2760#0" expanded="false" />
+                <element signature="e#3739#4380#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -96,10 +83,10 @@
         <option value="$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel_spark.py" />
         <option value="$PROJECT_DIR$/SLIC_merge_superpixels_parallel.py" />
         <option value="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" />
-        <option value="$PROJECT_DIR$/random_forest_classifier.py" />
-        <option value="$PROJECT_DIR$/random_forest_classifier_parallel.py" />
         <option value="$PROJECT_DIR$/feature_extraction_with_neighbor.py" />
         <option value="$PROJECT_DIR$/feature_extraction.py" />
+        <option value="$PROJECT_DIR$/random_forest_classifier_parallel.py" />
+        <option value="$PROJECT_DIR$/random_forest_classifier.py" />
       </list>
     </option>
   </component>
@@ -489,7 +476,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15537849" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15179282" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -499,7 +486,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3546911" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1884058" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -621,26 +608,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/random_forest_classifier_parallel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10063">
-          <caret line="367" column="8" selection-start-line="367" selection-start-column="8" selection-end-line="367" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="545">
           <caret line="345" column="0" selection-start-line="345" selection-start-column="0" selection-end-line="346" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/random_forest_classifier_cross_validation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1798">
-          <caret line="97" column="98" selection-start-line="97" selection-start-column="98" selection-end-line="97" selection-end-column="98" />
           <folding />
         </state>
       </provider>
@@ -653,26 +624,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/random_forest_classifier.py">
+    <entry file="file://$PROJECT_DIR$/random_forest_classifier_cross_validation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-493">
-          <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-            <element signature="e#1414#1761#0" expanded="false" />
-            <element signature="e#1818#2174#0" expanded="false" />
-            <element signature="e#2217#2700#0" expanded="false" />
-            <element signature="e#2784#3538#0" expanded="false" />
-            <element signature="e#3677#7144#0" expanded="false" />
-            <element signature="e#7285#7926#0" expanded="false" />
-            <element signature="e#8054#12500#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="1885">
+          <caret line="97" column="98" selection-start-line="97" selection-start-column="98" selection-end-line="97" selection-end-column="98" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/feature_extraction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2538">
+          <caret line="83" column="4" selection-start-line="83" selection-start-column="4" selection-end-line="83" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/random_forest_classifier_parallel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6783">
+          <caret line="26" column="60" selection-start-line="26" selection-start-column="60" selection-end-line="26" selection-end-column="60" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/feature_extraction_with_neighbor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="406">
+        <state relative-caret-position="841">
           <caret line="191" column="0" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
           <folding>
             <element signature="e#43#53#0" expanded="true" />
@@ -680,11 +658,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/feature_extraction.py">
+    <entry file="file://$PROJECT_DIR$/random_forest_classifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1723">
-          <caret line="175" column="45" selection-start-line="175" selection-start-column="20" selection-end-line="175" selection-end-column="45" />
-          <folding />
+        <state relative-caret-position="3860">
+          <caret line="234" column="109" selection-start-line="234" selection-start-column="109" selection-end-line="234" selection-end-column="109" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+            <element signature="e#1474#1821#0" expanded="false" />
+            <element signature="e#1878#2234#0" expanded="false" />
+            <element signature="e#2277#2760#0" expanded="false" />
+            <element signature="e#3739#4380#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
