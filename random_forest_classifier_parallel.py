@@ -25,7 +25,9 @@ sys.path.append( os.path.normpath( os.path.join('/home/panquwang/Dataset/CitySca
 import labels
 from labels     import trainId2label,id2label
 # matplotlib.use('Qt4Agg')
-
+sys.path.append( os.path.normpath( os.path.join('/home/panquwang/.local/lib/python2.7/') ) )
+from joblib import Parallel, delayed
+import multiprocessing
 
 def random_forest_classifier(all_feature_data):
     data=np.asarray(all_feature_data[0])
@@ -204,95 +206,100 @@ def test_lower_bound(all_feature_data,superpixel_data,gt_files,folder_files,orig
 
     lower_bound = float(np.sum(np.asarray(data_predictions_output) == label)) / len(label)
     print "Accuracy of lower bound is " + str(lower_bound)
+    num_cores = multiprocessing.cpu_count()
+    range_i = range(0, 500)
 
-    predict(superpixel_data, gt_files, folder_files, classifier, original_image_files, result_location,is_test_lower_bound)
+    Parallel(n_jobs=num_cores)(delayed(parallel_processing)
+                               (i, superpixel_data, gt_files, folder_files, classifier, original_image_files,
+                                result_location, is_test_lower_bound)
+                               for i in range_i)
+    # parallel_processing(superpixel_data, gt_files, folder_files, classifier, original_image_files, result_location,is_test_lower_bound)
 
 
-def predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound):
+def parallel_processing(index,superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound):
 
     img_width=2048
     img_height=1024
 
     # iterate through all images
-    for index in range(len(superpixel_data)):
-        file_name = superpixel_data[index].split('/')[-1][:-4]+'.png'
-        print str(index) + ' ' + file_name
-        current_superpixel_data = cPickle.load(open(superpixel_data[index], "rb"))
-        current_gt = cv2.imread(gt_files[index], 0)
-        original_image = cv2.imread(original_image_files[index])
+    file_name = superpixel_data[index].split('/')[-1][:-4]+'.png'
+    print str(index) + ' ' + file_name
+    current_superpixel_data = cPickle.load(open(superpixel_data[index], "rb"))
+    current_gt = cv2.imread(gt_files[index], 0)
+    original_image = cv2.imread(original_image_files[index])
 
-        # gather prediction maps, form multi-layer maps
-        current_all_layer_values = np.zeros((img_height, img_width, len(folder_files)))
-        for key, value in folder.iteritems():
-            current_layer_value = cv2.imread(folder_files[key][index], 0)
-            current_all_layer_values[:, :, key - 1]=convert_label_to_trainid(current_layer_value)
+    # gather prediction maps, form multi-layer maps
+    current_all_layer_values = np.zeros((img_height, img_width, len(folder_files)))
+    for key, value in folder.iteritems():
+        current_layer_value = cv2.imread(folder_files[key][index], 0)
+        current_all_layer_values[:, :, key - 1]=convert_label_to_trainid(current_layer_value)
 
 
-        # iterate through superpixel data of current image
-        superpixel_label = current_superpixel_data[2]
-        num_superpixels = np.max(superpixel_label) + 1
-        final_map=np.ones((img_height, img_width))*(int(num_superpixels)+10)
-        superpixel_feature_set=[]
-        superpixel_index_set=[]
-        for index_superpixel in range(int(num_superpixels)):
-            # decide the quality of current superpixel. Note: this is actually a test phase, so there should not be a GT!
-            quality,gt_label_consistency_rate,gt_label_count = get_quality(superpixel_label,current_all_layer_values, index_superpixel)
+    # iterate through superpixel data of current image
+    superpixel_label = current_superpixel_data[2]
+    num_superpixels = np.max(superpixel_label) + 1
+    final_map=np.ones((img_height, img_width))*(int(num_superpixels)+10)
+    superpixel_feature_set=[]
+    superpixel_index_set=[]
+    for index_superpixel in range(int(num_superpixels)):
+        # decide the quality of current superpixel. Note: this is actually a test phase, so there should not be a GT!
+        quality,gt_label_consistency_rate,gt_label_count = get_quality(superpixel_label,current_all_layer_values, index_superpixel)
 
-            if not quality:
-                # why bother to predict those regions? set to ignore label.
-                # final_map[superpixel_label==index_superpixel]=255
-                continue
+        if not quality:
+            # why bother to predict those regions? set to ignore label.
+            # final_map[superpixel_label==index_superpixel]=255
+            continue
 
-            #MODIFY FOR TEST IMAGES/SUPERPIXELS
-            # extract a 40 dimensional feature for current super pixel
-            feature=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,gt_label_count)
+        #MODIFY FOR TEST IMAGES/SUPERPIXELS
+        # extract a 40 dimensional feature for current super pixel
+        feature=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,gt_label_count)
 
-            # save to a single set to increase processing speed
-            superpixel_feature_set.append(feature)
-            superpixel_index_set.append(index_superpixel)
+        # save to a single set to increase processing speed
+        superpixel_feature_set.append(feature)
+        superpixel_index_set.append(index_superpixel)
 
-            if is_test_lower_bound:
-                label_candidates=[int(feature[i]) for i in [38,40,42]]
-                label_selected = max(set(label_candidates), key=label_candidates.count)
-                final_map[superpixel_label == index_superpixel] = label_selected
+        if is_test_lower_bound:
+            label_candidates=[int(feature[i]) for i in [38,40,42]]
+            label_selected = max(set(label_candidates), key=label_candidates.count)
+            final_map[superpixel_label == index_superpixel] = label_selected
 
-            # else:
-            #     predicted_label_probs = classifier.predict_proba(feature)
-            #     label_candidates_probs=[predicted_label_probs[0][i] for i in label_candidates]
-            #     label_selected=label_candidates[np.argmax(label_candidates_probs)]
-            # final_map[superpixel_label == index_superpixel] = label_selected
+        # else:
+        #     predicted_label_probs = classifier.predict_proba(feature)
+        #     label_candidates_probs=[predicted_label_probs[0][i] for i in label_candidates]
+        #     label_selected=label_candidates[np.argmax(label_candidates_probs)]
+        # final_map[superpixel_label == index_superpixel] = label_selected
 
-        # to improve speed, predict the features for one pass.
-        predicted_label_probs = classifier.predict_proba(superpixel_feature_set)
-        # then assign label to all superpixel
-        for predicted_index,superpixel_index in enumerate(superpixel_index_set):
-            predicted_current_superpixel_label_probs=predicted_label_probs[predicted_index]
-            label_candidates = [int(superpixel_feature_set[predicted_index][i]) for i in [38, 40, 42]]
-            label_candidates_probs = [predicted_current_superpixel_label_probs[i] for i in label_candidates]
-            label_selected = label_candidates[np.argmax(label_candidates_probs)]
-            final_map[superpixel_label == superpixel_index] = label_selected
-        final_map[final_map>int(num_superpixels)]=255
+    # to improve speed, predict the features for one pass.
+    predicted_label_probs = classifier.predict_proba(superpixel_feature_set)
+    # then assign label to all superpixel
+    for predicted_index,superpixel_index in enumerate(superpixel_index_set):
+        predicted_current_superpixel_label_probs=predicted_label_probs[predicted_index]
+        label_candidates = [int(superpixel_feature_set[predicted_index][i]) for i in [38, 40, 42]]
+        label_candidates_probs = [predicted_current_superpixel_label_probs[i] for i in label_candidates]
+        label_selected = label_candidates[np.argmax(label_candidates_probs)]
+        final_map[superpixel_label == superpixel_index] = label_selected
+    final_map[final_map>int(num_superpixels)]=255
 
-        # save score
-        final_map_saved=copy.deepcopy(final_map)
-        score=convert_trainid_to_label(final_map)
-        cv2.imwrite(os.path.join(result_location,'score',file_name),score)
+    # save score
+    final_map_saved=copy.deepcopy(final_map)
+    score=convert_trainid_to_label(final_map)
+    cv2.imwrite(os.path.join(result_location,'score',file_name),score)
 
-        # save visualization
-        # original image
-        concat_img = Image.new('RGB', (img_width * 3, img_height))
-        concat_img.paste(Image.fromarray(original_image[:, :, [2, 1, 0]]).convert('RGB'), (0, 0))
-        # ground truth
-        gt_img = Image.open(gt_files[index])
-        concat_img.paste(gt_img, (img_width, 0))
-        # prediction
-        final_map_saved = final_map_saved.astype(np.uint8)
-        result_img = Image.fromarray(final_map_saved).convert('P')
-        palette = get_palette()
-        result_img.putpalette(palette)
-        # concat_img.paste(result_img, (2048*2,0))
-        concat_img.paste(result_img.convert('RGB'), (img_width * 2, 0))
-        concat_img.save(os.path.join(result_location, 'visualization', file_name))
+    # save visualization
+    # original image
+    concat_img = Image.new('RGB', (img_width * 3, img_height))
+    concat_img.paste(Image.fromarray(original_image[:, :, [2, 1, 0]]).convert('RGB'), (0, 0))
+    # ground truth
+    gt_img = Image.open(gt_files[index])
+    concat_img.paste(gt_img, (img_width, 0))
+    # prediction
+    final_map_saved = final_map_saved.astype(np.uint8)
+    result_img = Image.fromarray(final_map_saved).convert('P')
+    palette = get_palette()
+    result_img.putpalette(palette)
+    # concat_img.paste(result_img, (2048*2,0))
+    concat_img.paste(result_img.convert('RGB'), (img_width * 2, 0))
+    concat_img.save(os.path.join(result_location, 'visualization', file_name))
 
 
 
@@ -355,8 +362,15 @@ if __name__ == '__main__':
 
     else:
         # random forest classifier
-        classifier = random_forest_classifier(all_feature_data)
-        predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound)
+        num_cores = multiprocessing.cpu_count()
 
+        range_i = range(0, 500)
+
+        classifier = random_forest_classifier(all_feature_data)
+        # parallel_processing(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound)
+
+        Parallel(n_jobs=num_cores)(delayed(parallel_processing)
+                                   (i, superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound)
+                                   for i in range_i)
 
 

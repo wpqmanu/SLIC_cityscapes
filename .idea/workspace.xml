@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7beb661-607e-4d39-83ac-cc8e6d093a5b" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/random_forest_classifier_parallel.py" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_1.py" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_2.py" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_3.py" afterPath="" />
@@ -41,29 +42,27 @@
       <file leaf-file-name="random_forest_classifier.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/random_forest_classifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4111">
-              <caret line="37" column="48" selection-start-line="37" selection-start-column="48" selection-end-line="37" selection-end-column="48" />
+            <state relative-caret-position="-4246">
+              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
-                <element signature="e#1416#1763#0" expanded="false" />
-                <element signature="e#1820#2176#0" expanded="false" />
-                <element signature="e#2219#2702#0" expanded="false" />
-                <element signature="e#2786#3540#0" expanded="false" />
-                <element signature="e#3679#7146#0" expanded="false" />
-                <element signature="e#7287#7928#0" expanded="false" />
+                <element signature="e#1414#1761#0" expanded="false" />
+                <element signature="e#1818#2174#0" expanded="false" />
+                <element signature="e#2217#2700#0" expanded="false" />
+                <element signature="e#2784#3538#0" expanded="false" />
+                <element signature="e#3677#7144#0" expanded="false" />
+                <element signature="e#7285#7926#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="feature_extraction_with_neighbor.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/feature_extraction_with_neighbor.py">
+      <file leaf-file-name="SLIC_new_cityscapes_training_server_parallel.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="321">
-              <caret line="204" column="78" selection-start-line="204" selection-start-column="78" selection-end-line="204" selection-end-column="78" />
-              <folding>
-                <element signature="e#43#53#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="545">
+              <caret line="345" column="0" selection-start-line="345" selection-start-column="0" selection-end-line="346" selection-end-column="24" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -86,6 +85,7 @@
         <option value="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" />
         <option value="$PROJECT_DIR$/feature_extraction_with_neighbor.py" />
         <option value="$PROJECT_DIR$/random_forest_classifier.py" />
+        <option value="$PROJECT_DIR$/random_forest_classifier_parallel.py" />
       </list>
     </option>
   </component>
@@ -474,7 +474,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.082071714" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19561753" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -571,14 +571,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="312" column="0" selection-start-line="312" selection-start-column="0" selection-end-line="318" selection-end-column="127" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/feature_extraction.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="812">
@@ -645,18 +637,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="545">
+          <caret line="345" column="0" selection-start-line="345" selection-start-column="0" selection-end-line="346" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/random_forest_classifier_parallel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10063">
+          <caret line="367" column="8" selection-start-line="367" selection-start-column="8" selection-end-line="367" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/random_forest_classifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4111">
-          <caret line="37" column="48" selection-start-line="37" selection-start-column="48" selection-end-line="37" selection-end-column="48" />
+        <state relative-caret-position="-4246">
+          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
           <folding>
             <element signature="e#0#51#0" expanded="true" />
-            <element signature="e#1416#1763#0" expanded="false" />
-            <element signature="e#1820#2176#0" expanded="false" />
-            <element signature="e#2219#2702#0" expanded="false" />
-            <element signature="e#2786#3540#0" expanded="false" />
-            <element signature="e#3679#7146#0" expanded="false" />
-            <element signature="e#7287#7928#0" expanded="false" />
+            <element signature="e#1414#1761#0" expanded="false" />
+            <element signature="e#1818#2174#0" expanded="false" />
+            <element signature="e#2217#2700#0" expanded="false" />
+            <element signature="e#2784#3538#0" expanded="false" />
+            <element signature="e#3677#7144#0" expanded="false" />
+            <element signature="e#7285#7926#0" expanded="false" />
           </folding>
         </state>
       </provider>
