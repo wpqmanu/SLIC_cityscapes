@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7beb661-607e-4d39-83ac-cc8e6d093a5b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_1.py" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_2.py" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_3.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/feature_extraction_with_neighbor.py" afterPath="$PROJECT_DIR$/feature_extraction_with_neighbor.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/random_forest_classifier.py" afterPath="$PROJECT_DIR$/random_forest_classifier.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" afterPath="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" />
     </list>
     <ignored path="SLIC_cityscapes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -23,8 +24,9 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$calculate_bound_val.coverage" NAME="calculate_bound_val Coverage Results" MODIFIED="1472584607904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$feature_extraction.coverage" NAME="feature_extraction Coverage Results" MODIFIED="1472592006768" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$random_forest_classifier.coverage" NAME="random_forest_classifier Coverage Results" MODIFIED="1472677289736" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$random_forest_classifier.coverage" NAME="random_forest_classifier Coverage Results" MODIFIED="1472758210606" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$SLIC_new_cityscapes_training_server_parallel_spark.coverage" NAME="SLIC_new_cityscapes_training_server_parallel_spark Coverage Results" MODIFIED="1472517008765" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$feature_extraction_with_neighbor.coverage" NAME="feature_extraction_with_neighbor Coverage Results" MODIFIED="1472689194093" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$SLIC_merge_superpixels.coverage" NAME="SLIC_merge_superpixels Coverage Results" MODIFIED="1472513851748" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -36,34 +38,32 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="SLIC_merge_superpixels_parallel.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SLIC_merge_superpixels_parallel.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="381">
-              <caret line="152" column="0" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="random_forest_classifier.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="random_forest_classifier.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/random_forest_classifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-247">
-              <caret line="44" column="4" selection-start-line="44" selection-start-column="4" selection-end-line="44" selection-end-column="4" />
+            <state relative-caret-position="-4111">
+              <caret line="37" column="48" selection-start-line="37" selection-start-column="48" selection-end-line="37" selection-end-column="48" />
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
+                <element signature="e#1416#1763#0" expanded="false" />
+                <element signature="e#1820#2176#0" expanded="false" />
+                <element signature="e#2219#2702#0" expanded="false" />
+                <element signature="e#2786#3540#0" expanded="false" />
+                <element signature="e#3679#7146#0" expanded="false" />
+                <element signature="e#7287#7928#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="random_forest_classifier_cross_validation.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/random_forest_classifier_cross_validation.py">
+      <file leaf-file-name="feature_extraction_with_neighbor.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/feature_extraction_with_neighbor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1798">
-              <caret line="82" column="73" selection-start-line="82" selection-start-column="73" selection-end-line="82" selection-end-column="73" />
-              <folding />
+            <state relative-caret-position="321">
+              <caret line="204" column="78" selection-start-line="204" selection-start-column="78" selection-end-line="204" selection-end-column="78" />
+              <folding>
+                <element signature="e#43#53#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -81,11 +81,11 @@
         <option value="$PROJECT_DIR$/calculate_bound_val.py" />
         <option value="$PROJECT_DIR$/calculate_bound_val_parallel.py" />
         <option value="$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel_spark.py" />
-        <option value="$PROJECT_DIR$/feature_extraction_with_neighbor.py" />
         <option value="$PROJECT_DIR$/feature_extraction.py" />
         <option value="$PROJECT_DIR$/SLIC_merge_superpixels_parallel.py" />
-        <option value="$PROJECT_DIR$/random_forest_classifier.py" />
         <option value="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" />
+        <option value="$PROJECT_DIR$/feature_extraction_with_neighbor.py" />
+        <option value="$PROJECT_DIR$/random_forest_classifier.py" />
       </list>
     </option>
   </component>
@@ -161,25 +161,6 @@
     </key>
   </component>
   <component name="RunManager" selected="Python.random_forest_classifier">
-    <configuration default="false" name="SLIC_merge_superpixels" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="LD_LIBRARY_PATH" value="/mnt/scratch/third-party-packages/libopencv_3.1.0/lib" />
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="SLIC_cityscapes" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SLIC_merge_superpixels.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="calculate_bound_val" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -248,6 +229,24 @@
       <module name="SLIC_cityscapes" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/random_forest_classifier.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="feature_extraction_with_neighbor" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SLIC_cityscapes" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/feature_extraction_with_neighbor.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -438,19 +437,19 @@
       <method />
     </configuration>
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="Python.SLIC_merge_superpixels" />
-      <item index="1" class="java.lang.String" itemvalue="Python.calculate_bound_val" />
-      <item index="2" class="java.lang.String" itemvalue="Python.SLIC_new_cityscapes_training_server_parallel_spark" />
-      <item index="3" class="java.lang.String" itemvalue="Python.feature_extraction" />
-      <item index="4" class="java.lang.String" itemvalue="Python.random_forest_classifier" />
+      <item index="0" class="java.lang.String" itemvalue="Python.calculate_bound_val" />
+      <item index="1" class="java.lang.String" itemvalue="Python.SLIC_new_cityscapes_training_server_parallel_spark" />
+      <item index="2" class="java.lang.String" itemvalue="Python.feature_extraction" />
+      <item index="3" class="java.lang.String" itemvalue="Python.random_forest_classifier" />
+      <item index="4" class="java.lang.String" itemvalue="Python.feature_extraction_with_neighbor" />
     </list>
     <recent_temporary>
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Python.random_forest_classifier" />
-        <item index="1" class="java.lang.String" itemvalue="Python.feature_extraction" />
-        <item index="2" class="java.lang.String" itemvalue="Python.calculate_bound_val" />
-        <item index="3" class="java.lang.String" itemvalue="Python.SLIC_new_cityscapes_training_server_parallel_spark" />
-        <item index="4" class="java.lang.String" itemvalue="Python.SLIC_merge_superpixels" />
+        <item index="1" class="java.lang.String" itemvalue="Python.feature_extraction_with_neighbor" />
+        <item index="2" class="java.lang.String" itemvalue="Python.feature_extraction" />
+        <item index="3" class="java.lang.String" itemvalue="Python.calculate_bound_val" />
+        <item index="4" class="java.lang.String" itemvalue="Python.SLIC_new_cityscapes_training_server_parallel_spark" />
       </list>
     </recent_temporary>
   </component>
@@ -475,17 +474,17 @@
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23625498" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.082071714" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34248665" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2723112" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17086194" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3546911" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -514,6 +513,11 @@
           <line>205</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/feature_extraction_with_neighbor.py</url>
+          <line>206</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -522,7 +526,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="38" />
+      <option name="time" value="42" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -575,14 +579,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/feature_extraction_with_neighbor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="633">
-          <caret line="202" column="16" selection-start-line="202" selection-start-column="16" selection-end-line="202" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/feature_extraction.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="812">
@@ -623,29 +619,45 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/random_forest_classifier_cross_validation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="97" column="98" selection-start-line="97" selection-start-column="98" selection-end-line="97" selection-end-column="98" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SLIC_merge_superpixels_parallel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="381">
+        <state relative-caret-position="533">
           <caret line="152" column="0" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/random_forest_classifier.py">
+    <entry file="file://$PROJECT_DIR$/feature_extraction_with_neighbor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-247">
-          <caret line="44" column="4" selection-start-line="44" selection-start-column="4" selection-end-line="44" selection-end-column="4" />
+        <state relative-caret-position="321">
+          <caret line="204" column="78" selection-start-line="204" selection-start-column="78" selection-end-line="204" selection-end-column="78" />
           <folding>
-            <element signature="e#0#51#0" expanded="true" />
+            <element signature="e#43#53#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/random_forest_classifier_cross_validation.py">
+    <entry file="file://$PROJECT_DIR$/random_forest_classifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1798">
-          <caret line="82" column="73" selection-start-line="82" selection-start-column="73" selection-end-line="82" selection-end-column="73" />
-          <folding />
+        <state relative-caret-position="-4111">
+          <caret line="37" column="48" selection-start-line="37" selection-start-column="48" selection-end-line="37" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+            <element signature="e#1416#1763#0" expanded="false" />
+            <element signature="e#1820#2176#0" expanded="false" />
+            <element signature="e#2219#2702#0" expanded="false" />
+            <element signature="e#2786#3540#0" expanded="false" />
+            <element signature="e#3679#7146#0" expanded="false" />
+            <element signature="e#7287#7928#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

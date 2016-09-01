@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 
-import cv2
+
 import sys
 import scipy
 import scipy.linalg
@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 import glob
 import cPickle
 sys.path.insert(0,'/mnt/scratch/third-party-packages/libopencv_3.1.0/lib/python')
+import cv2
 from PIL import Image
 from datetime import datetime
 import collections
@@ -196,12 +197,13 @@ def extract_features(superpixel_data,gt_files,folder_files):
         num_superpixels = int(np.max(superpixel_label)) + 1
 
         # statistics
-        stat=[]
+        each_label_size=[]
         for index_superpixel in range(num_superpixels):
             length=len(superpixel_label[superpixel_label==index_superpixel])
-            if length<=20:
-                superpixel_label[superpixel_label == index_superpixel]=-1
-        stat.sort()
+            each_label_size.append(length)
+            # if length<=1000:
+            #     superpixel_label[superpixel_label == index_superpixel]=num_superpixels+100
+
 
         for index_superpixel in range(num_superpixels):
             # decide the quality of current superpixel
@@ -209,6 +211,15 @@ def extract_features(superpixel_data,gt_files,folder_files):
 
             if not quality:
                 continue
+                
+            # TODO: distanceTransform
+            # map_for_distance_transform=np.ones((1024,2048))*255
+            map_for_distance_transform=(1-(superpixel_label==index_superpixel)).astype(np.uint8)
+            return_map_for_dt=cv2.distanceTransform(map_for_distance_transform,distanceType=cv2.DIST_L2,maskSize=3)
+            neighbor_labels=np.unique(superpixel_label[return_map_for_dt==np.unique(return_map_for_dt)[1]])
+            all_sizes_neigbor_labels=[]
+            for neighbor_label in neighbor_labels:
+                all_sizes_neigbor_labels.append(each_label_size[int(neighbor_label)])
 
             # extract a 40 dimensional feature for current super pixel
             feature, label=get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,gt_label_consistency_rate,gt_label_count)

@@ -27,19 +27,6 @@ from labels     import trainId2label,id2label
 # matplotlib.use('Qt4Agg')
 
 
-def test_lower_bound(all_feature_data):
-    data=np.asarray(all_feature_data[0])
-    label=np.asarray(all_feature_data[1])
-
-    # majority voting
-    data_predictions=data[:,[38,40,42]]
-    data_predictions_output=[]
-    for temp_index in range(data_predictions.shape[0]):
-        value=list(data_predictions[temp_index])
-        data_predictions_output.append(max(set(value), key=value.count))
-
-    lower_bound = float(np.sum(np.asarray(data_predictions_output) == label)) / len(label)
-    print "Accuracy of lower bound is " + str(lower_bound)
 
 
 def random_forest_classifier(all_feature_data):
@@ -55,8 +42,8 @@ def random_forest_classifier(all_feature_data):
     accuracy=float(np.sum(result==label))/len(label)
     print "Training accuracy is " + str(accuracy)
 
-    scores = cross_val_score(clf, data, label, cv=10)
-    print "Cross validation score is "+ str(scores.mean())
+    # scores = cross_val_score(clf, data, label, cv=10)
+    # print "Cross validation score is "+ str(scores.mean())
 
     return fit_clf
 
@@ -94,7 +81,6 @@ def convert_trainid_to_label(label):
     label[label == 255] = 0
     return label
 
-
 def get_quality(superpixel_label,current_all_layer_values, index_superpixel):
     quality=False
     # ground-truth of current superpixel
@@ -114,7 +100,6 @@ def get_quality(superpixel_label,current_all_layer_values, index_superpixel):
 
     # otherwise pass the quality test
     return True,predict_label_consistency_rate,predict_label_count
-
 
 def get_feature_single_superpixel(superpixel_label,current_all_layer_values,index_superpixel,label_consistency_rate,gt_label_count):
     binary_mask=(superpixel_label == index_superpixel).astype(np.uint8)
@@ -208,7 +193,24 @@ def get_feature_single_superpixel(superpixel_label,current_all_layer_values,inde
 
     return feature
 
-def predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location):
+def test_lower_bound(all_feature_data,superpixel_data,gt_files,folder_files,original_image_files,result_location,is_test_lower_bound):
+    data=np.asarray(all_feature_data[0])
+    label=np.asarray(all_feature_data[1])
+
+    # majority voting for classifier
+    data_predictions=data[:,[38,40,42]]
+    data_predictions_output=[]
+    for temp_index in range(data_predictions.shape[0]):
+        value=list(data_predictions[temp_index])
+        data_predictions_output.append(max(set(value), key=value.count))
+
+    lower_bound = float(np.sum(np.asarray(data_predictions_output) == label)) / len(label)
+    print "Accuracy of lower bound is " + str(lower_bound)
+
+    predict(superpixel_data, gt_files, folder_files, classifier, original_image_files, result_location,is_test_lower_bound)
+
+
+def predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound):
 
     img_width=2048
     img_height=1024
@@ -231,7 +233,9 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
         # iterate through superpixel data of current image
         superpixel_label = current_superpixel_data[2]
         num_superpixels = np.max(superpixel_label) + 1
-        final_map=np.ones((img_height, img_width))*(255)
+        final_map=np.ones((img_height, img_width))*(int(num_superpixels)+10) #  TODO: maybe a bug (set to 255)?
+        superpixel_feature_set=[]
+        superpixel_index_set=[]
         for index_superpixel in range(int(num_superpixels)):
             # decide the quality of current superpixel. Note: this is actually a test phase, so there should not be a GT!
             quality,gt_label_consistency_rate,gt_label_count = get_quality(superpixel_label,current_all_layer_values, index_superpixel)
@@ -244,11 +248,32 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
             # TODO: MODIFY FOR TEST IMAGES/SUPERPIXELS
             # extract a 40 dimensional feature for current super pixel
             feature=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,gt_label_count)
-            label_candidates=[int(feature[i]) for i in [38,40,42]]
-            predicted_label_probs = classifier.predict_proba(feature)
-            label_candidates_probs=[predicted_label_probs[0][i] for i in label_candidates]
-            label_selected=label_candidates[np.argmax(label_candidates_probs)]
-            final_map[superpixel_label == index_superpixel] = label_selected
+
+            # save to a single set to increase processing speed
+            superpixel_feature_set.append(feature)
+            superpixel_index_set.append(index_superpixel)
+
+            if is_test_lower_bound:
+                label_candidates=[int(feature[i]) for i in [38,40,42]]
+                label_selected = max(set(label_candidates), key=label_candidates.count)
+                final_map[superpixel_label == index_superpixel] = label_selected
+
+            # else:
+            #     predicted_label_probs = classifier.predict_proba(feature)
+            #     label_candidates_probs=[predicted_label_probs[0][i] for i in label_candidates]
+            #     label_selected=label_candidates[np.argmax(label_candidates_probs)]
+            # final_map[superpixel_label == index_superpixel] = label_selected
+
+        # to improve speed, predict the features for one pass.
+        predicted_label_probs = classifier.predict_proba(superpixel_feature_set)
+        # then assign label to all superpixel
+        for predicted_index,superpixel_index in enumerate(superpixel_index_set):
+            predicted_current_superpixel_label_probs=predicted_label_probs[predicted_index]
+            label_candidates = [int(superpixel_feature_set[predicted_index][i]) for i in [38, 40, 42]]
+            label_candidates_probs = [predicted_current_superpixel_label_probs[i] for i in label_candidates]
+            label_selected = label_candidates[np.argmax(label_candidates_probs)]
+            final_map[superpixel_label == superpixel_index] = label_selected
+        final_map[final_map>int(num_superpixels)]=255
 
         # save score
         final_map_saved=copy.deepcopy(final_map)
@@ -276,6 +301,7 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
 if __name__ == '__main__':
 
     dataset='val'
+    is_test_lower_bound=0
 
     original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
     original_image_files=glob.glob(os.path.join(original_image_folder,"*","*.png"))
@@ -307,11 +333,6 @@ if __name__ == '__main__':
         os.makedirs(os.path.join(result_location,'score'))
         os.makedirs(os.path.join(result_location,'visualization'))
 
-    # # test lower bound
-    # test_lower_bound(all_feature_data)
-
-    # random forest classifier
-    classifier=random_forest_classifier(all_feature_data)
 
 
     # prediction for validation set
@@ -330,7 +351,14 @@ if __name__ == '__main__':
 
     print "start to predict..."
 
-    predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location)
+    # # test lower bound
+    if is_test_lower_bound:
+        test_lower_bound(all_feature_data,superpixel_data,gt_files,folder_files,original_image_files,result_location,is_test_lower_bound)
+
+    else:
+        # random forest classifier
+        classifier = random_forest_classifier(all_feature_data)
+        predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound)
 
 
 

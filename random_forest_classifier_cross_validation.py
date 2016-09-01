@@ -21,9 +21,7 @@ from sklearn.datasets import make_blobs
 from sklearn.ensemble import RandomForestClassifier
 # sys.path.insert(0,'/mnt/scratch/third-party-packages/libopencv_3.1.0/lib/python')
 import cv2
-sys.path.append( os.path.normpath( os.path.join('/home/panquwang/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
-import labels
-from labels     import trainId2label,id2label
+
 # matplotlib.use('Qt4Agg')
 
 
@@ -46,36 +44,41 @@ def cross_validation_random_forest_classifier(all_feature_data):
     data=np.asarray(all_feature_data[0])
     label=np.asarray(all_feature_data[1])
 
-    n_estimators_all=[25,50,75,125,175,225,325,525,1000]
-    criterion_all=['gini','entropy']
-    max_depth_all=[None,5]
-    min_samples_split_all=[1,2]
+    #
+    # criterion_all=['gini','entropy']
+    # max_depth_all=[None,5]
+    # min_samples_split_all=[1,2]
+    criterion_all=['entropy']
+    max_depth_all=[5]
+    min_samples_split_all=[2]
+    n_estimators_all = [25, 50, 75, 125, 175, 225, 325, 525, 1000]
     min_samples_leaf_all=[1,2]
     max_leaf_nodes_all=[None,10]
     max_features_all = [1, 5, 10, 15, 20, 25, 30, 35, None]
 
-    for n_estimators in n_estimators_all:
-        for criterion in criterion_all:
-            for max_depth in max_depth_all:
-                for min_samples_split in min_samples_split_all:
+
+    for criterion in criterion_all:
+        for max_depth in max_depth_all:
+            for min_samples_split in min_samples_split_all:
+                for n_estimators in n_estimators_all:
                     for min_samples_leaf in min_samples_leaf_all:
                         for max_leaf_nodes in max_leaf_nodes_all:
                             for max_features in max_features_all:
                                 RF_params = {}
-                                RF_params['n_estimators'] = n_estimators
                                 RF_params['criterion'] = criterion
                                 RF_params['max_depth'] = max_depth
                                 RF_params['min_samples_split'] = min_samples_split
+                                RF_params['n_estimators'] = n_estimators
                                 RF_params['min_samples_leaf'] = min_samples_leaf
                                 RF_params['max_leaf_nodes'] = max_leaf_nodes
                                 RF_params['max_features'] = max_features
 
 
 
-                                clf = RandomForestClassifier(n_estimators=n_estimators,
-                                                             criterion=criterion,
+                                clf = RandomForestClassifier(criterion=criterion,
                                                              max_depth=max_depth,
                                                              min_samples_split=min_samples_split,
+                                                             n_estimators=n_estimators,
                                                              min_samples_leaf=min_samples_leaf,
                                                              max_leaf_nodes=max_leaf_nodes,
                                                              max_features=max_features,
@@ -87,16 +90,16 @@ def cross_validation_random_forest_classifier(all_feature_data):
                                 accuracy=float(np.sum(result==label))/len(label)
                                 print "Training accuracy is " + str(accuracy)
 
-                                scores = cross_val_score(clf, data, label, cv=10)
+                                scores = cross_val_score(clf, data, label, cv=5)
                                 print "Cross validation score is "+ str(scores.mean())
 
                                 SLIC_result_file = '/mnt/scratch/panqu/SLIC/SLIC_result_file.txt'
                                 with open(SLIC_result_file, "a") as SLIC_result_file:
-                                    SLIC_result_file.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t'.format(
-                                        str(n_estimators),
+                                    SLIC_result_file.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t\n'.format(
                                         str(criterion),
                                         str(max_depth),
                                         str(min_samples_split),
+                                        str(n_estimators),
                                         str(min_samples_leaf),
                                         str(max_leaf_nodes),
                                         str(max_features),
