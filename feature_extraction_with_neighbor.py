@@ -14,8 +14,9 @@ matplotlib.use('Qt4Agg')
 import matplotlib.pyplot as plt
 import glob
 import cPickle
-sys.path.insert(0,'/mnt/scratch/third-party-packages/libopencv_3.1.0/lib/python')
+# sys.path.insert(0,'/mnt/scratch/third-party-packages/libopencv_3.1.0/lib/python')
 import cv2
+import cv2.cv as cv
 from PIL import Image
 from datetime import datetime
 import collections
@@ -82,7 +83,7 @@ def get_quality(superpixel_label,current_all_layer_values, current_gt, index_sup
     return True,predict_label_consistency_rate,gt_label_count
 
 
-def get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,label_consistency_rate,gt_label_count):
+def get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,label_consistency_rate,gt_label_count,each_label_size):
     label=gt_label_count[0][0]
     binary_mask=(superpixel_label == index_superpixel).astype(np.uint8)
     gt_label = current_gt[superpixel_label == index_superpixel]
@@ -174,6 +175,34 @@ def get_feature_single_superpixel(superpixel_label,current_all_layer_values,curr
         feature.extend([current_layer_label_count[0][0],current_layer_consistency_rate])
 
 
+    # TODO: distanceTransform to get neighbors
+    map_for_distance_transform = (1 - (superpixel_label == index_superpixel)).astype(np.uint8)
+    return_map_for_dt = cv2.distanceTransform(map_for_distance_transform, distanceType=cv.CV_DIST_L2, maskSize=3)
+    # get all neighbors superpixel ids and their sizes (keep the order)
+    neighbor_labels_indexes = \
+    np.unique(superpixel_label[return_map_for_dt == np.unique(return_map_for_dt)[1]], return_index=True)[1]
+    neighbor_labels = [superpixel_label[return_map_for_dt == np.unique(return_map_for_dt)[1]][index] for index in
+                       sorted(neighbor_labels_indexes)]
+    all_sizes_neigbor_labels = []
+    for neighbor_label in neighbor_labels:
+        all_sizes_neigbor_labels.append(each_label_size[int(neighbor_label)])
+
+    # get the four superpixels that has the biggest size
+    sort_neighbor_size_index = np.argsort(all_sizes_neigbor_labels)
+    if len(sort_neighbor_size_index)>4:
+        chosen_big_neighbor_indexes=sort_neighbor_size_index[::-1][:4]
+        chosen_big_neighbor_indexes.sort()
+    else:
+        chosen_big_neighbor_indexes=sort_neighbor_size_index[::-1]
+        chosen_big_neighbor_indexes.sort()
+        while len(chosen_big_neighbor_indexes)<4:
+            chosen_big_neighbor_indexes.append(chosen_big_neighbor_indexes[-1])
+
+    for chosen_big_neighbor_index in chosen_big_neighbor_indexes:
+        print "aggregating neighbor information..."
+
+
+
     return feature,label
 
 def extract_features(superpixel_data,gt_files,folder_files):
@@ -212,17 +241,10 @@ def extract_features(superpixel_data,gt_files,folder_files):
             if not quality:
                 continue
                 
-            # TODO: distanceTransform
-            # map_for_distance_transform=np.ones((1024,2048))*255
-            map_for_distance_transform=(1-(superpixel_label==index_superpixel)).astype(np.uint8)
-            return_map_for_dt=cv2.distanceTransform(map_for_distance_transform,distanceType=cv2.DIST_L2,maskSize=3)
-            neighbor_labels=np.unique(superpixel_label[return_map_for_dt==np.unique(return_map_for_dt)[1]])
-            all_sizes_neigbor_labels=[]
-            for neighbor_label in neighbor_labels:
-                all_sizes_neigbor_labels.append(each_label_size[int(neighbor_label)])
+
 
             # extract a 40 dimensional feature for current super pixel
-            feature, label=get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,gt_label_consistency_rate,gt_label_count)
+            feature, label=get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,gt_label_consistency_rate,gt_label_count,each_label_size)
 
             feature_set.append(feature)
             label_set.append(label)

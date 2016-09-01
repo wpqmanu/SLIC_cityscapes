@@ -7,6 +7,7 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_2.py" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_3.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/feature_extraction.py" afterPath="$PROJECT_DIR$/feature_extraction.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/feature_extraction_with_neighbor.py" afterPath="$PROJECT_DIR$/feature_extraction_with_neighbor.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/random_forest_classifier.py" afterPath="$PROJECT_DIR$/random_forest_classifier.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" afterPath="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" />
@@ -24,10 +25,10 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$calculate_bound_val.coverage" NAME="calculate_bound_val Coverage Results" MODIFIED="1472584607904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$feature_extraction.coverage" NAME="feature_extraction Coverage Results" MODIFIED="1472592006768" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$random_forest_classifier.coverage" NAME="random_forest_classifier Coverage Results" MODIFIED="1472758210606" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$feature_extraction.coverage" NAME="feature_extraction Coverage Results" MODIFIED="1472769947833" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$SLIC_new_cityscapes_training_server_parallel_spark.coverage" NAME="SLIC_new_cityscapes_training_server_parallel_spark Coverage Results" MODIFIED="1472517008765" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$feature_extraction_with_neighbor.coverage" NAME="feature_extraction_with_neighbor Coverage Results" MODIFIED="1472689194093" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$feature_extraction_with_neighbor.coverage" NAME="feature_extraction_with_neighbor Coverage Results" MODIFIED="1472769901002" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$SLIC_merge_superpixels.coverage" NAME="SLIC_merge_superpixels Coverage Results" MODIFIED="1472513851748" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -39,11 +40,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="random_forest_classifier.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="random_forest_classifier.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/random_forest_classifier.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4246">
-              <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+            <state relative-caret-position="-493">
+              <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
               <folding>
                 <element signature="e#0#51#0" expanded="true" />
                 <element signature="e#1414#1761#0" expanded="false" />
@@ -52,16 +53,29 @@
                 <element signature="e#2784#3538#0" expanded="false" />
                 <element signature="e#3677#7144#0" expanded="false" />
                 <element signature="e#7285#7926#0" expanded="false" />
+                <element signature="e#8054#12500#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SLIC_new_cityscapes_training_server_parallel.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel.py">
+      <file leaf-file-name="feature_extraction_with_neighbor.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/feature_extraction_with_neighbor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="545">
-              <caret line="345" column="0" selection-start-line="345" selection-start-column="0" selection-end-line="346" selection-end-column="24" />
+            <state relative-caret-position="406">
+              <caret line="191" column="0" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
+              <folding>
+                <element signature="e#43#53#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="feature_extraction.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/feature_extraction.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1723">
+              <caret line="175" column="45" selection-start-line="175" selection-start-column="20" selection-end-line="175" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -80,12 +94,12 @@
         <option value="$PROJECT_DIR$/calculate_bound_val.py" />
         <option value="$PROJECT_DIR$/calculate_bound_val_parallel.py" />
         <option value="$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel_spark.py" />
-        <option value="$PROJECT_DIR$/feature_extraction.py" />
         <option value="$PROJECT_DIR$/SLIC_merge_superpixels_parallel.py" />
         <option value="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" />
-        <option value="$PROJECT_DIR$/feature_extraction_with_neighbor.py" />
         <option value="$PROJECT_DIR$/random_forest_classifier.py" />
         <option value="$PROJECT_DIR$/random_forest_classifier_parallel.py" />
+        <option value="$PROJECT_DIR$/feature_extraction_with_neighbor.py" />
+        <option value="$PROJECT_DIR$/feature_extraction.py" />
       </list>
     </option>
   </component>
@@ -160,7 +174,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.random_forest_classifier">
+  <component name="RunManager" selected="Python.feature_extraction">
     <configuration default="false" name="calculate_bound_val" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -237,6 +251,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
+        <env name="LD_LIBRARY_PATH" value="/mnt/scratch/third-party-packages/libopencv_3.1.0/lib" />
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
@@ -445,9 +460,9 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.random_forest_classifier" />
+        <item index="0" class="java.lang.String" itemvalue="Python.feature_extraction" />
         <item index="1" class="java.lang.String" itemvalue="Python.feature_extraction_with_neighbor" />
-        <item index="2" class="java.lang.String" itemvalue="Python.feature_extraction" />
+        <item index="2" class="java.lang.String" itemvalue="Python.random_forest_classifier" />
         <item index="3" class="java.lang.String" itemvalue="Python.calculate_bound_val" />
         <item index="4" class="java.lang.String" itemvalue="Python.SLIC_new_cityscapes_training_server_parallel_spark" />
       </list>
@@ -474,17 +489,17 @@
     <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19561753" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15537849" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2723112" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2723112" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3546911" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3546911" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -509,14 +524,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/feature_extraction.py</url>
-          <line>205</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/feature_extraction_with_neighbor.py</url>
-          <line>206</line>
-          <option name="timeStamp" value="38" />
+          <line>191</line>
+          <option name="timeStamp" value="45" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -526,7 +536,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="42" />
+      <option name="time" value="48" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -571,14 +581,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/feature_extraction.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="812">
-          <caret line="72" column="47" selection-start-line="72" selection-start-column="34" selection-end-line="72" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/calculate_bound_val.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -611,36 +613,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/random_forest_classifier_cross_validation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="97" column="98" selection-start-line="97" selection-start-column="98" selection-end-line="97" selection-end-column="98" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SLIC_merge_superpixels_parallel.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="533">
           <caret line="152" column="0" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/feature_extraction_with_neighbor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="321">
-          <caret line="204" column="78" selection-start-line="204" selection-start-column="78" selection-end-line="204" selection-end-column="78" />
-          <folding>
-            <element signature="e#43#53#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
-          <caret line="345" column="0" selection-start-line="345" selection-start-column="0" selection-end-line="346" selection-end-column="24" />
           <folding />
         </state>
       </provider>
@@ -653,10 +629,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="545">
+          <caret line="345" column="0" selection-start-line="345" selection-start-column="0" selection-end-line="346" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/random_forest_classifier_cross_validation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1798">
+          <caret line="97" column="98" selection-start-line="97" selection-start-column="98" selection-end-line="97" selection-end-column="98" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2016.1/system/python_stubs/-1247972723/cv2/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="1341" column="33" selection-start-line="1341" selection-start-column="33" selection-end-line="1341" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/random_forest_classifier.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4246">
-          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+        <state relative-caret-position="-493">
+          <caret line="101" column="0" selection-start-line="101" selection-start-column="0" selection-end-line="101" selection-end-column="0" />
           <folding>
             <element signature="e#0#51#0" expanded="true" />
             <element signature="e#1414#1761#0" expanded="false" />
@@ -665,7 +665,26 @@
             <element signature="e#2784#3538#0" expanded="false" />
             <element signature="e#3677#7144#0" expanded="false" />
             <element signature="e#7285#7926#0" expanded="false" />
+            <element signature="e#8054#12500#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/feature_extraction_with_neighbor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="191" column="0" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
+          <folding>
+            <element signature="e#43#53#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/feature_extraction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1723">
+          <caret line="175" column="45" selection-start-line="175" selection-start-column="20" selection-end-line="175" selection-end-column="45" />
+          <folding />
         </state>
       </provider>
     </entry>
