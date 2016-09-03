@@ -53,7 +53,7 @@ def get_quality(superpixel_label,current_all_layer_values, current_gt, index_sup
     predict_label = superpixel_label[superpixel_label == index_superpixel]
 
     # superpixel too small
-    if len(gt_label)<=20:
+    if len(gt_label)<=10:
         return False,0,[]
 
     # superpixel contains lots of ignore region except road
@@ -167,27 +167,31 @@ def get_feature_single_superpixel(superpixel_label,current_all_layer_values,curr
     Hu_moments=cv2.HuMoments(M).flatten()
     feature.extend(Hu_moments)
 
-    # feature dimension 38, 39, 40, 41, 42, 43: prediction of our models and consistency
+    categorical_label = []
+    # feature dimension 38-57, 58, 59-78, 79, 80-99, 100: prediction of our models and consistency
     for layer_index in range(current_all_layer_values.shape[2]):
         current_layer_current_superpixel_label = current_all_layer_values[:,:,layer_index][superpixel_label == index_superpixel]
         current_layer_label_count = Counter(current_layer_current_superpixel_label).most_common()
         current_layer_consistency_rate = float(current_layer_label_count[0][1]) / len(current_layer_current_superpixel_label)
-        feature.extend([current_layer_label_count[0][0],current_layer_consistency_rate])
+        # one-hot encoding
+        one_hot=[0]*20
+        one_hot[int(current_layer_label_count[0][0])]=1
+        feature.extend(one_hot+[current_layer_consistency_rate])
+        categorical_label.append(current_layer_label_count[0][0])
 
 
     # TODO: distanceTransform to get neighbors
     map_for_distance_transform = (1 - (superpixel_label == index_superpixel)).astype(np.uint8)
     return_map_for_dt = cv2.distanceTransform(map_for_distance_transform, distanceType=cv.CV_DIST_L2, maskSize=3)
     # get all neighbors superpixel ids and their sizes (keep the order)
-    neighbor_labels_indexes = \
-    np.unique(superpixel_label[return_map_for_dt == np.unique(return_map_for_dt)[1]], return_index=True)[1]
+    neighbor_labels_indexes = np.unique(superpixel_label[return_map_for_dt == np.unique(return_map_for_dt)[1]], return_index=True)[1]
     neighbor_labels = [superpixel_label[return_map_for_dt == np.unique(return_map_for_dt)[1]][index] for index in
                        sorted(neighbor_labels_indexes)]
     all_sizes_neigbor_labels = []
     for neighbor_label in neighbor_labels:
         all_sizes_neigbor_labels.append(each_label_size[int(neighbor_label)])
 
-    # get the four superpixels that has the biggest size
+    # get the four neighboring superpixels that has the biggest size. If less than 4, fill it out
     sort_neighbor_size_index = np.argsort(all_sizes_neigbor_labels)
     if len(sort_neighbor_size_index)>4:
         chosen_big_neighbor_indexes=sort_neighbor_size_index[::-1][:4]
@@ -196,14 +200,28 @@ def get_feature_single_superpixel(superpixel_label,current_all_layer_values,curr
         chosen_big_neighbor_indexes=sort_neighbor_size_index[::-1]
         chosen_big_neighbor_indexes.sort()
         while len(chosen_big_neighbor_indexes)<4:
-            chosen_big_neighbor_indexes.append(chosen_big_neighbor_indexes[-1])
+            chosen_big_neighbor_indexes=np.append(chosen_big_neighbor_indexes,chosen_big_neighbor_indexes[-1])
 
-    for chosen_big_neighbor_index in chosen_big_neighbor_indexes:
+    # for each of the big neighbors, get its superpixel label, gt label and the prediction of all three layers
+    chosen_big_neighbor_labels=[int(neighbor_labels[i]) for i in chosen_big_neighbor_indexes]
+    for chosen_big_neighbor_label in chosen_big_neighbor_labels:
         print "aggregating neighbor information..."
+        for layer_index in range(current_all_layer_values.shape[2]):
+            current_layer_current_superpixel_label = current_all_layer_values[:, :, layer_index][
+                superpixel_label == chosen_big_neighbor_label]
+            current_layer_label_count = Counter(current_layer_current_superpixel_label).most_common()
+            current_layer_consistency_rate = float(current_layer_label_count[0][1]) / len(
+                current_layer_current_superpixel_label)
+            # one-hot encoding
+            one_hot = [0] * 20
+            one_hot[int(current_layer_label_count[0][0])] = 1
+            # feature dimension 101-160, 160-220, 220-280, 280-340: 4 neighbors information, each neighbor has 3 layers.
+            feature.extend(one_hot)
+
+            # print "neighbor label is "+str(label_current_big_neighbor)+" and our one of the three maps predict them to be "+str(current_layer_label_count[0][0])
 
 
-
-    return feature,label
+    return feature,label,categorical_label
 
 def extract_features(superpixel_data,gt_files,folder_files):
     # iterate through all images
@@ -240,13 +258,11 @@ def extract_features(superpixel_data,gt_files,folder_files):
 
             if not quality:
                 continue
-                
-
 
             # extract a 40 dimensional feature for current super pixel
-            feature, label=get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,gt_label_consistency_rate,gt_label_count,each_label_size)
+            feature, label, categorical_label=get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,gt_label_consistency_rate,gt_label_count,each_label_size)
 
-            feature_set.append(feature)
+            feature_set.append(feature) # dimension of 340
             label_set.append(label)
             num_features=num_features+1
             print num_features
@@ -255,7 +271,7 @@ def extract_features(superpixel_data,gt_files,folder_files):
 
 
 if __name__ == '__main__':
-    dataset='val'
+    dataset='train'
 
     superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'/data/'
     superpixel_data=glob.glob(os.path.join(superpixel_result_folder,'*.dat'))

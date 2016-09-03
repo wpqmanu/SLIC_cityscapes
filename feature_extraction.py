@@ -211,7 +211,7 @@ def extract_features(superpixel_data,gt_files,folder_files):
                 continue
 
             # extract a 40 dimensional feature for current super pixel
-            feature, label,categorical_label=get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,gt_label_consistency_rate,gt_label_count)
+            feature, label,categorical_label=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,gt_label_count)
 
             feature_set.append(feature)
             label_set.append(label)
@@ -222,7 +222,7 @@ def extract_features(superpixel_data,gt_files,folder_files):
 
 
 if __name__ == '__main__':
-    dataset='train'
+    dataset='val'
 
     superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'/data/'
     superpixel_data=glob.glob(os.path.join(superpixel_result_folder,'*.dat'))

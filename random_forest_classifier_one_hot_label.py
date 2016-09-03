@@ -29,24 +29,27 @@ from feature_extraction import get_feature_single_superpixel
 
 def random_forest_classifier(all_feature_data):
     input_data=np.asarray(all_feature_data[0])
-    label=np.asarray(all_feature_data[1])
+    input_label=np.asarray(all_feature_data[1])
 
-    data=input_data[:,:]
+    label=np.zeros((len(input_label),20))
+    for index,single_label in enumerate(label):
+        target=input_label[index]
+        label[index,target]=1
+
+    data=input_data[:,38:]
     # data=sklearn.preprocessing.normalize(data,axis=0)
 
-    clf = RandomForestClassifier(n_estimators=200,
-                                 verbose=True,
-                                 n_jobs=8,
-                                 max_features=50,
-                                 max_depth=None,
-                                 min_samples_split=2,
-                                 min_samples_leaf=2,
-                                 max_leaf_nodes=None
-                                 )
+    clf = RandomForestClassifier(n_estimators=50,verbose=True,n_jobs=8,max_features=None)
     fit_clf=clf.fit(data,label)
 
     result=fit_clf.predict(data)
-    accuracy=float(np.sum(result==label))/len(label)
+
+    # result_to_label=[]
+    # for single_result in result:
+    #     # single_result=single_result.tolist()
+    #     result_to_label.append(np.argmax(single_result))
+    result_to_label=np.argmax(result,axis=1)
+    accuracy=float(np.sum(result_to_label==input_label))/len(input_label)
     print "Training accuracy is " + str(accuracy)
 
     # scores = cross_val_score(clf, data, label, cv=10)
@@ -165,7 +168,7 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
             feature, label, categorical_label=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,predict_label_count)
 
             # save to a single set to increase processing speed
-            superpixel_feature_set.append(feature[:])
+            superpixel_feature_set.append(feature[38:])
             superpixel_index_set.append(index_superpixel)
             superpixel_categorical_label.append(categorical_label)
 
