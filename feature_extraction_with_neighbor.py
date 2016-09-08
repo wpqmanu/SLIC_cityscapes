@@ -83,10 +83,9 @@ def get_quality(superpixel_label,current_all_layer_values, current_gt, index_sup
     return True,predict_label_consistency_rate,gt_label_count
 
 
-def get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,label_consistency_rate,gt_label_count,each_label_size):
+def get_feature_single_superpixel(superpixel_label,current_all_layer_values,index_superpixel,label_consistency_rate,gt_label_count,each_label_size):
     label=gt_label_count[0][0]
     binary_mask=(superpixel_label == index_superpixel).astype(np.uint8)
-    gt_label = current_gt[superpixel_label == index_superpixel]
 
     # plt.imshow(binary_mask)
     # plt.show()
@@ -205,7 +204,7 @@ def get_feature_single_superpixel(superpixel_label,current_all_layer_values,curr
     # for each of the big neighbors, get its superpixel label, gt label and the prediction of all three layers
     chosen_big_neighbor_labels=[int(neighbor_labels[i]) for i in chosen_big_neighbor_indexes]
     for chosen_big_neighbor_label in chosen_big_neighbor_labels:
-        print "aggregating neighbor information..."
+        # print "aggregating neighbor information..."
         for layer_index in range(current_all_layer_values.shape[2]):
             current_layer_current_superpixel_label = current_all_layer_values[:, :, layer_index][
                 superpixel_label == chosen_big_neighbor_label]
@@ -259,8 +258,8 @@ def extract_features(superpixel_data,gt_files,folder_files):
             if not quality:
                 continue
 
-            # extract a 40 dimensional feature for current super pixel
-            feature, label, categorical_label=get_feature_single_superpixel(superpixel_label,current_all_layer_values,current_gt, index_superpixel,gt_label_consistency_rate,gt_label_count,each_label_size)
+            # extract a 340 dimensional feature for current super pixel
+            feature, label, categorical_label=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,gt_label_count,each_label_size)
 
             feature_set.append(feature) # dimension of 340
             label_set.append(label)

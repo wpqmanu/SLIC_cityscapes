@@ -26,44 +26,46 @@ import labels
 from labels     import trainId2label,id2label
 # matplotlib.use('Qt4Agg')
 from feature_extraction import get_feature_single_superpixel
-import xgboost as xgb
-from feature_extraction import get_feature_single_superpixel
 import feature_extraction_with_neighbor
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.externals.six import StringIO
+from sklearn import tree
+import pydotplus
 
-def xgbt_classifier(all_feature_data_train,all_feature_data_val):
-    train_data=np.asarray(all_feature_data_train[0])
-    train_data=train_data[:,38:]
+def decision_tree_classifier(all_feature_data):
+    input_data=np.asarray(all_feature_data[0])
+    label=np.asarray(all_feature_data[1])
 
-    train_label=np.asarray(all_feature_data_train[1])
-    val_data = np.asarray(all_feature_data_val[0])
-    val_data = val_data[:, 38:]
-    val_label = np.asarray(all_feature_data_val[1])
+    data=input_data[:,:]
+    # data=sklearn.preprocessing.normalize(data,axis=0)
 
-    xg_train = xgb.DMatrix(train_data, label=train_label)
-    xg_test = xgb.DMatrix(val_data, label=val_label)
+    # clf = DecisionTreeClassifier(criterion="gini",
+                                 # splitter="best",
+                                 # max_features=None,
+                                 # max_depth=5,
+                                 # min_samples_leaf=1,
+                                 # min_samples_split=2,
+                                 # class_weight=None
+                                 # )
+    clf = DecisionTreeClassifier()
+    fit_clf=clf.fit(data,label)
 
-    # setup parameters for xgboost
-    param = {}
-    # use softmax multi-class classification
-    param['objective'] = 'multi:softprob'
-    # scale weight of positive examples
-    param['eta'] = 0.3
-    param['max_depth'] = 7
-    param['silent'] = 0
-    param['nthread'] = 8
-    param['num_class'] = 20
-    param['subsample'] = 0.9
-    param['colsample_bytree'] = 0.9
-    param['eval_metric'] = ['merror', 'mlogloss']
-    watchlist = [(xg_train, 'train'), (xg_test, 'test')]
+    result=fit_clf.predict(data)
+    accuracy=float(np.sum(result==label))/len(label)
+    print "Training accuracy is " + str(accuracy)
+    with open("cityscapes.dot", 'w') as f:
+        f = tree.export_graphviz(clf, out_file=f)
 
-    num_round = 1
-    bst = xgb.train(param, xg_train, num_round, watchlist)
+    # dot_data = StringIO()
+    # tree.export_graphviz(clf, out_file=dot_data)
+    # graph = pydotplus.graph_from_dot_data(dot_data.getvalue())
+    # graph.write_pdf("cityscapes.pdf")
 
-    # # get prediction
-    # pred = bst.predict(xg_test).reshape(len(val_label),param['num_class'])
 
-    return bst
+    # scores = cross_val_score(clf, data, label, cv=10)
+    # print "Cross validation score is "+ str(scores.mean())
+
+    return fit_clf
 
 def get_palette():
     # get palette
@@ -105,7 +107,7 @@ def get_quality(superpixel_label,current_all_layer_values, index_superpixel):
     predict_label = superpixel_label[superpixel_label == index_superpixel]
 
     # superpixel too small
-    if len(predict_label)<=20:
+    if len(predict_label)<=10:
         return False,0,[]
 
     # if prediction label does not agree with each other uniformly in this area. (Set agreement threshold to 0.5 by default)
@@ -135,6 +137,33 @@ def test_lower_bound(all_feature_data,superpixel_data,gt_files,folder_files,orig
 
     predict(superpixel_data, gt_files, folder_files, classifier, original_image_files, result_location,is_test_lower_bound)
 
+def get_only_3_dim_data(all_feature_data_train,all_feature_data_val):
+    all_feature_data_train_data = all_feature_data_train[0]
+    all_feature_data_val_data = all_feature_data_val[0]
+
+    all_feature_data_train_data_label_only = []
+    all_feature_data_val_data_label_only = []
+
+    label_list = [38, 40, 42]
+    for feature_row in all_feature_data_train_data:
+        temp_list = []
+        for label_in_list in label_list:
+            temp_list.append(feature_row[label_in_list])
+        all_feature_data_train_data_label_only.append(temp_list)
+
+    for feature_row in all_feature_data_val_data:
+        temp_list = []
+        for label_in_list in label_list:
+            temp_list.append(feature_row[label_in_list])
+        all_feature_data_val_data_label_only.append(temp_list)
+
+    saved_location = '/mnt/scratch/panqu/SLIC/features/'
+    cPickle.dump((all_feature_data_train_data_label_only, all_feature_data_train[1]),
+                 open(os.path.join(saved_location, 'features_' + 'train' + '_3.dat'), "w+"))
+    cPickle.dump((all_feature_data_val_data_label_only, all_feature_data_val[1]),
+                 open(os.path.join(saved_location, 'features_' + 'val' + '_3.dat'), "w+"))
+
+
 def predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound,is_use_neighbor):
 
     img_width=2048
@@ -155,6 +184,8 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
             current_all_layer_values[:, :, key - 1]=convert_label_to_trainid(current_layer_value)
 
 
+
+
         # iterate through superpixel data of current image
         superpixel_label = current_superpixel_data[2]
         num_superpixels = np.max(superpixel_label) + 1
@@ -171,7 +202,6 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
         superpixel_index_set=[]
         superpixel_categorical_label=[]
         for index_superpixel in range(int(num_superpixels)):
-            print index_superpixel
             # decide the quality of current superpixel. Note: this is actually a test phase, so there should not be a GT!
             quality,gt_label_consistency_rate,predict_label_count = get_quality(superpixel_label,current_all_layer_values, index_superpixel)
 
@@ -181,16 +211,18 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
                 continue
 
             #MODIFY FOR TEST IMAGES/SUPERPIXELS
+
             if not is_use_neighbor:
                 # extract a 100 dimensional feature for current super pixel
                 feature, label, categorical_label=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,predict_label_count)
             else:
+                # extract a 240 dimensional feature for current super pixel
                 feature, label, categorical_label=feature_extraction_with_neighbor.get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,predict_label_count,each_label_size)
 
 
-
             # save to a single set to increase processing speed
-            superpixel_feature_set.append(feature[38:])
+            feature_get=[feature[i] for i in [38,40,42]]
+            superpixel_feature_set.append(feature_get)
             superpixel_index_set.append(index_superpixel)
             superpixel_categorical_label.append(categorical_label)
 
@@ -206,8 +238,7 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
             # final_map[superpixel_label == index_superpixel] = label_selected
 
         # to improve speed, predict the features for one pass.
-        superpixel_feature_set = np.asarray(superpixel_feature_set)
-        predicted_label_probs = classifier.predict(xgb.DMatrix(superpixel_feature_set)).reshape(superpixel_feature_set.shape[0],20)
+        predicted_label_probs = classifier.predict_proba(superpixel_feature_set)
         # then assign label to all superpixel
         for predicted_index,superpixel_index in enumerate(superpixel_index_set):
             predicted_current_superpixel_label_probs=predicted_label_probs[predicted_index]
@@ -244,7 +275,7 @@ if __name__ == '__main__':
 
     dataset='val'
     is_test_lower_bound=0
-    is_use_neighbor = 0
+    is_use_neighbor=0
 
     original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
     original_image_files=glob.glob(os.path.join(original_image_folder,"*","*.png"))
@@ -269,11 +300,15 @@ if __name__ == '__main__':
     # all_features_data = (feature1_data[0]+feature2_data[0]+feature3_data[0],feature1_data[1]+feature2_data[1]+feature3_data[1])
     # cPickle.dump(all_features_data, open(os.path.join('/mnt/scratch/panqu/SLIC/features/', 'features_train_100.dat'), "w+"))
     if is_use_neighbor != 1:
-        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100.dat'), "rb"))
-        all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_100.dat'), "rb"))
+        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_3.dat'), "rb"))
+        all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_3.dat'), "rb"))
     else:
         all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_with_neighbor.dat'), "rb"))
         all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_with_neighbor.dat'), "rb"))
+
+
+    # get_only_3_dim_data(all_feature_data_train,all_feature_data_val)
+
 
     result_location=os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/', datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
     if not os.path.exists(result_location):
@@ -304,9 +339,8 @@ if __name__ == '__main__':
         test_lower_bound(all_feature_data_train,superpixel_data,gt_files,folder_files,original_image_files,result_location,is_test_lower_bound)
 
     else:
-        # xgboost classifier
-        classifier = xgbt_classifier(all_feature_data_train,all_feature_data_val)
-
+        # random forest classifier
+        classifier = decision_tree_classifier(all_feature_data_train)
         predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound,is_use_neighbor)
 
 

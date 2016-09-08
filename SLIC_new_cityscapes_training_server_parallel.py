@@ -335,7 +335,7 @@ if __name__ == '__main__':
     img_height=1024
     img_channels=len(folder_files)
     num_superpixels = 50000
-    step=int(math.floor((img_width*img_height/num_superpixels)**0.5))
+    step=int(math.ceil((img_width*img_height/num_superpixels)**0.5))
     result_dir=os.path.join('/mnt/scratch/panqu/SLIC/server_'+dataset ,datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
     if not os.path.exists(result_dir):
         os.makedirs(result_dir)

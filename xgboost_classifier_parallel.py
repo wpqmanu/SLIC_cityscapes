@@ -27,6 +27,8 @@ from labels     import trainId2label,id2label
 # matplotlib.use('Qt4Agg')
 from feature_extraction import get_feature_single_superpixel
 import xgboost as xgb
+from feature_extraction import get_feature_single_superpixel
+import feature_extraction_with_neighbor
 from joblib import Parallel, delayed
 import multiprocessing
 
@@ -39,55 +41,28 @@ def xgbt_classifier(all_feature_data_train,all_feature_data_val):
     xg_train = xgb.DMatrix(train_data, label=train_label)
     xg_test = xgb.DMatrix(val_data, label=val_label)
 
-    # setup parameters for xgboost
+        # setup parameters for xgboost
     param = {}
     # use softmax multi-class classification
     param['objective'] = 'multi:softprob'
     # scale weight of positive examples
     param['eta'] = 0.3
-    param['max_depth'] = 10
-    param['silent'] = 1
+    param['max_depth'] = 7
+    param['silent'] = 0
     param['nthread'] = 8
     param['num_class'] = 20
-    param['subsample'] = 0.8
-    param['colsample_bytree'] = 0.8
+    param['subsample'] = 0.9
+    param['colsample_bytree'] = 0.9
     param['eval_metric'] = ['merror', 'mlogloss']
     watchlist = [(xg_train, 'train'), (xg_test, 'test')]
 
-    num_round = 500
+    num_round = 50
     bst = xgb.train(param, xg_train, num_round, watchlist)
 
-    # get prediction
-    pred = bst.predict(xg_test).reshape(len(val_label),param['num_class'])
+    # # get prediction
+    # pred = bst.predict(xg_test).reshape(len(val_label),param['num_class'])
 
     return bst
-
-def random_forest_classifier(all_feature_data):
-    input_data=np.asarray(all_feature_data[0])
-    label=np.asarray(all_feature_data[1])
-
-    data=input_data[:,:]
-    # data=sklearn.preprocessing.normalize(data,axis=0)
-
-    clf = RandomForestClassifier(n_estimators=200,
-                                 verbose=True,
-                                 n_jobs=8,
-                                 max_features=50,
-                                 max_depth=None,
-                                 min_samples_split=2,
-                                 min_samples_leaf=2,
-                                 max_leaf_nodes=None
-                                 )
-    fit_clf=clf.fit(data,label)
-
-    result=fit_clf.predict(data)
-    accuracy=float(np.sum(result==label))/len(label)
-    print "Training accuracy is " + str(accuracy)
-
-    # scores = cross_val_score(clf, data, label, cv=10)
-    # print "Cross validation score is "+ str(scores.mean())
-
-    return fit_clf
 
 def get_palette():
     # get palette
@@ -129,7 +104,7 @@ def get_quality(superpixel_label,current_all_layer_values, index_superpixel):
     predict_label = superpixel_label[superpixel_label == index_superpixel]
 
     # superpixel too small
-    if len(predict_label)<=10:
+    if len(predict_label)<=20:
         return False,0,[]
 
     # if prediction label does not agree with each other uniformly in this area. (Set agreement threshold to 0.5 by default)
@@ -159,13 +134,12 @@ def test_lower_bound(all_feature_data,superpixel_data,gt_files,folder_files,orig
 
     # predict(superpixel_data, gt_files, folder_files, classifier, original_image_files, result_location,is_test_lower_bound)
 
-def parallel_processing(index, superpixel_data, gt_files, folder_files, classifier, original_image_files,
-                                    result_location, is_test_lower_bound):
+def parallel_processing(index, superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound,is_use_neighbor):
 
     img_width=2048
     img_height=1024
 
-
+    # iterate through all images
     file_name = superpixel_data[index].split('/')[-1][:-4]+'.png'
     print str(index) + ' ' + file_name
     current_superpixel_data = cPickle.load(open(superpixel_data[index], "rb"))
@@ -182,11 +156,20 @@ def parallel_processing(index, superpixel_data, gt_files, folder_files, classifi
     # iterate through superpixel data of current image
     superpixel_label = current_superpixel_data[2]
     num_superpixels = np.max(superpixel_label) + 1
+
+    # statistics
+    each_label_size = []
+    for index_superpixel in range(int(num_superpixels)):
+        length = len(superpixel_label[superpixel_label == index_superpixel])
+        each_label_size.append(length)
+
+
     final_map=np.ones((img_height, img_width))*(int(num_superpixels)+10)
     superpixel_feature_set=[]
     superpixel_index_set=[]
     superpixel_categorical_label=[]
     for index_superpixel in range(int(num_superpixels)):
+        print index_superpixel
         # decide the quality of current superpixel. Note: this is actually a test phase, so there should not be a GT!
         quality,gt_label_consistency_rate,predict_label_count = get_quality(superpixel_label,current_all_layer_values, index_superpixel)
 
@@ -196,8 +179,13 @@ def parallel_processing(index, superpixel_data, gt_files, folder_files, classifi
             continue
 
         #MODIFY FOR TEST IMAGES/SUPERPIXELS
-        # extract a 100 dimensional feature for current super pixel
-        feature, label, categorical_label=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,predict_label_count)
+        if is_use_neighbor!=1:
+            # extract a 100 dimensional feature for current super pixel
+            feature, label, categorical_label=get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,predict_label_count)
+        else:
+            feature, label, categorical_label=feature_extraction_with_neighbor.get_feature_single_superpixel(superpixel_label,current_all_layer_values, index_superpixel,gt_label_consistency_rate,predict_label_count,each_label_size)
+
+
 
         # save to a single set to increase processing speed
         superpixel_feature_set.append(feature[:])
@@ -254,6 +242,7 @@ if __name__ == '__main__':
 
     dataset='val'
     is_test_lower_bound=0
+    is_use_neighbor = 0
 
     original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
     original_image_files=glob.glob(os.path.join(original_image_folder,"*","*.png"))
@@ -277,8 +266,12 @@ if __name__ == '__main__':
     # feature3_data = cPickle.load(open(feature3, "rb"))
     # all_features_data = (feature1_data[0]+feature2_data[0]+feature3_data[0],feature1_data[1]+feature2_data[1]+feature3_data[1])
     # cPickle.dump(all_features_data, open(os.path.join('/mnt/scratch/panqu/SLIC/features/', 'features_train_100.dat'), "w+"))
-    all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100.dat'), "rb"))
-    all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_100.dat'), "rb"))
+    if is_use_neighbor != 1:
+        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100.dat'), "rb"))
+        all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_100.dat'), "rb"))
+    else:
+        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_train_with_neighbor.dat'), "rb"))
+        all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_with_neighbor.dat'), "rb"))
 
     result_location=os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/', datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
     if not os.path.exists(result_location):
@@ -310,13 +303,11 @@ if __name__ == '__main__':
 
     else:
         num_cores = multiprocessing.cpu_count()
-
         range_i = range(0, 500)
 
         # xgboost classifier
-        classifier = xgbt_classifier(all_feature_data_train, all_feature_data_val)
+        classifier = xgbt_classifier(all_feature_data_train,all_feature_data_val)
 
-        Parallel(n_jobs=num_cores)(delayed(parallel_processing)
-                                   (i,superpixel_data, gt_files, folder_files, classifier, original_image_files,
-                                    result_location, is_test_lower_bound)
-                                   for i in range_i)
+        Parallel(n_jobs=num_cores)(
+            delayed(parallel_processing)(i, superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound,is_use_neighbor)
+            for i in range_i)
