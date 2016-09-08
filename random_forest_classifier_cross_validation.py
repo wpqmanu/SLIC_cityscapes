@@ -41,21 +41,27 @@ def test_lower_bound(all_feature_data):
 
 
 def cross_validation_random_forest_classifier(all_feature_data):
-    data=np.asarray(all_feature_data[0])
+    input_data=np.asarray(all_feature_data[0])
     label=np.asarray(all_feature_data[1])
 
-    #
-    # criterion_all=['gini','entropy']
-    # max_depth_all=[None,5]
-    # min_samples_split_all=[1,2]
-    criterion_all=['entropy']
-    max_depth_all=[5]
-    min_samples_split_all=[2]
-    n_estimators_all = [25, 50, 75, 125, 175, 225, 325, 525, 1000]
-    min_samples_leaf_all=[1,2]
-    max_leaf_nodes_all=[None,10]
-    max_features_all = [1, 5, 10, 15, 20, 25, 30, 35, None]
+    data=input_data[:,range(38,58)+range(59,79)+range(80,100)]
 
+    # #
+    # criterion_all=['gini','entropy']
+    # max_depth_all=[None,5,3]
+    # min_samples_split_all=[1,2]
+    # n_estimators_all = [5, 25, 50, 75, 125, 225, 500]
+    # min_samples_leaf_all=[1,2]
+    # max_leaf_nodes_all=[None,5,10]
+    # max_features_all = [1, 5, 10, 15, 20, 25, 30, 35, None]
+
+    criterion_all=['entropy']
+    max_depth_all=[None]
+    min_samples_split_all=[2,8,16]
+    n_estimators_all = [50]
+    min_samples_leaf_all=[2,4,16]
+    max_leaf_nodes_all=[None]
+    max_features_all = [20,40,60]
 
     for criterion in criterion_all:
         for max_depth in max_depth_all:
@@ -93,7 +99,7 @@ def cross_validation_random_forest_classifier(all_feature_data):
                                 scores = cross_val_score(clf, data, label, cv=5)
                                 print "Cross validation score is "+ str(scores.mean())
 
-                                SLIC_result_file = '/mnt/scratch/panqu/SLIC/SLIC_result_file.txt'
+                                SLIC_result_file = '/mnt/scratch/panqu/SLIC/SLIC_result_file_four_cat.txt'
                                 with open(SLIC_result_file, "a") as SLIC_result_file:
                                     SLIC_result_file.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t\n'.format(
                                         str(criterion),
@@ -124,7 +130,7 @@ if __name__ == '__main__':
 
 
     training_feature_location='/mnt/scratch/panqu/SLIC/'
-    all_feature_data = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_40.dat'), "rb"))
+    all_feature_data = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100_four_cats.dat'), "rb"))
 
     # result_location=os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/', datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
     # if not os.path.exists(result_location):

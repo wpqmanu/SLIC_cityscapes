@@ -19,39 +19,53 @@ import sklearn
 from sklearn.cross_validation import cross_val_score
 from sklearn.datasets import make_blobs
 from sklearn.ensemble import RandomForestClassifier
+from feature_extraction import get_feature_single_superpixel
+import feature_extraction_with_neighbor
 # sys.path.insert(0,'/mnt/scratch/third-party-packages/libopencv_3.1.0/lib/python')
 import cv2
+# matplotlib.use('Qt4Agg')
 sys.path.append( os.path.normpath( os.path.join('/home/panquwang/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
 import labels
 from labels     import trainId2label,id2label
-# matplotlib.use('Qt4Agg')
-from feature_extraction import get_feature_single_superpixel
-import feature_extraction_with_neighbor
 
-def random_forest_classifier(all_feature_data):
+
+def random_forest_classifier(all_feature_data,category_list):
     input_data=np.asarray(all_feature_data[0])
     label=np.asarray(all_feature_data[1])
 
-    data=input_data[:,:]
+    # category_list=[3,14,15,16]
+    # selected_data=[]
+    # for index_label, single_label in enumerate(label):
+    #     if single_label in category_list:
+    #         selected_data.append(index_label)
+    #
+    # input_data_selected=input_data[selected_data,:]
+    # label_selected=label[selected_data]
+    # cPickle.dump((input_data_selected, label_selected), open(os.path.join('/mnt/scratch/panqu/SLIC/features/', 'features_' + 'train' + '_100_four_cats.dat'), "w+"))
+
+    data=input_data[:,range(38,58)+range(59,79)+range(80,100)]
+    # data=input_data[:,38:]
+
     # data=sklearn.preprocessing.normalize(data,axis=0)
 
-    clf = RandomForestClassifier(n_estimators=1,
+    clf = RandomForestClassifier(n_estimators=50,
+                                 criterion="entropy",
                                  verbose=True,
                                  n_jobs=8,
-                                 max_features=3,
+                                 max_features=20,
                                  max_depth=None,
-                                 min_samples_split=2,
-                                 min_samples_leaf=2,
+                                 min_samples_split=8,
+                                 min_samples_leaf=4,
                                  max_leaf_nodes=None
                                  )
     fit_clf=clf.fit(data,label)
 
-    # result=fit_clf.predict(data)
-    # accuracy=float(np.sum(result==label))/len(label)
-    # print "Training accuracy is " + str(accuracy)
+    result=fit_clf.predict(data)
+    accuracy=float(np.sum(result==label))/len(label)
+    print "Training accuracy is " + str(accuracy)
 
-    # scores = cross_val_score(clf, data, label, cv=10)
-    # print "Cross validation score is "+ str(scores.mean())
+    scores = cross_val_score(clf, data, label, cv=5)
+    print "Cross validation score is "+ str(scores.mean())
 
     return fit_clf
 
@@ -152,7 +166,7 @@ def get_only_3_dim_data(all_feature_data_train,all_feature_data_val):
                  open(os.path.join(saved_location, 'features_' + 'val' + '_3.dat'), "w+"))
 
 
-def predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound,is_use_neighbor):
+def predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound,is_use_neighbor,category_list):
 
     img_width=2048
     img_height=1024
@@ -209,7 +223,9 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
 
 
             # save to a single set to increase processing speed
-            feature_get=[feature[i] for i in [38,40,42]]
+            # feature_get=[feature[i] for i in [38,40,42]]
+            feature_get=[feature[i] for i in range(38,58)+range(59,79)+range(80,100)]
+            # feature_get=feature[38:]
             superpixel_feature_set.append(feature_get)
             superpixel_index_set.append(index_superpixel)
             superpixel_categorical_label.append(categorical_label)
@@ -219,21 +235,25 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
                 label_selected = max(set(label_candidates), key=label_candidates.count)
                 final_map[superpixel_label == index_superpixel] = label_selected
 
-            # else:
-            #     predicted_label_probs = classifier.predict_proba(feature)
-            #     label_candidates_probs=[predicted_label_probs[0][i] for i in label_candidates]
-            #     label_selected=label_candidates[np.argmax(label_candidates_probs)]
-            # final_map[superpixel_label == index_superpixel] = label_selected
-
         # to improve speed, predict the features for one pass.
         predicted_label_probs = classifier.predict_proba(superpixel_feature_set)
+
         # then assign label to all superpixel
+        # NOTE HERE WE HAVE DIFFERENT RULES:
+        # 1. If superpixel_categorical_label does not have anything in category_list, assign layer 1.
+        # 1. If superpixel_categorical_label has something in category_list, assign the prediction.
         for predicted_index,superpixel_index in enumerate(superpixel_index_set):
-            predicted_current_superpixel_label_probs=predicted_label_probs[predicted_index]
-            label_candidates = superpixel_categorical_label[predicted_index]
-            label_candidates_probs = [predicted_current_superpixel_label_probs[i] for i in label_candidates]
-            label_selected = label_candidates[np.argmax(label_candidates_probs)]
-            final_map[superpixel_label == superpixel_index] = label_selected
+            is_relevant=not set(superpixel_categorical_label[predicted_index]).isdisjoint(category_list)
+            if is_relevant:
+                predicted_current_superpixel_label_probs=predicted_label_probs[predicted_index]
+                # label_candidates = superpixel_categorical_label[predicted_index]
+                # label_candidates_probs = [predicted_current_superpixel_label_probs[i] for i in label_candidates]
+                label_selected = category_list[np.argmax(predicted_current_superpixel_label_probs)]
+                final_map[superpixel_label == superpixel_index] = label_selected
+            else:
+                final_map[superpixel_label == superpixel_index] = superpixel_categorical_label[predicted_index][0]
+
+
         final_map[final_map>int(num_superpixels)]=255
 
         # save score
@@ -288,8 +308,8 @@ if __name__ == '__main__':
     # all_features_data = (feature1_data[0]+feature2_data[0]+feature3_data[0],feature1_data[1]+feature2_data[1]+feature3_data[1])
     # cPickle.dump(all_features_data, open(os.path.join('/mnt/scratch/panqu/SLIC/features/', 'features_train_100.dat'), "w+"))
     if is_use_neighbor != 1:
-        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100.dat'), "rb"))
-        all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_100.dat'), "rb"))
+        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100_four_cats.dat'), "rb"))
+        all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_train_100_four_cats.dat'), "rb"))
     else:
         all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_with_neighbor.dat'), "rb"))
         all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_with_neighbor.dat'), "rb"))
@@ -328,8 +348,9 @@ if __name__ == '__main__':
 
     else:
         # random forest classifier
-        classifier = random_forest_classifier(all_feature_data_train)
-        predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound,is_use_neighbor)
+        category_list=[3,14,15,16]
+        classifier = random_forest_classifier(all_feature_data_train,category_list)
+        predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound,is_use_neighbor,category_list)
 
 
 
