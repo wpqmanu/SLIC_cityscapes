@@ -28,53 +28,59 @@ sys.path.append( os.path.normpath( os.path.join('/home/panquwang/Dataset/CitySca
 import labels
 from labels     import trainId2label,id2label
 
-def get_subset_category_data(all_feature_data, category_list,subset_dataset):
-    input_data = np.asarray(all_feature_data[0])
-    label = np.asarray(all_feature_data[1])
 
-    # Here you get the original feature data and select the categories you want. You then save the new data.
-    selected_data=[]
-    for index_label, single_label in enumerate(label):
-        if single_label in category_list:
-            selected_data.append(index_label)
+def random_forest_classifier(all_feature_data,category_list):
+    input_data=np.asarray(all_feature_data[0])
+    label=np.asarray(all_feature_data[1])
 
-    input_data_selected=input_data[selected_data,:]
-    label_selected=label[selected_data]
-    cPickle.dump((input_data_selected, label_selected), open(os.path.join('/mnt/scratch/panqu/SLIC/features/', 'features_' + subset_dataset + '_100_four_cats.dat'), "w+"))
-
-
-def random_forest_classifier(all_feature_data_train,all_feature_data_val,category_list):
-    input_data=np.asarray(all_feature_data_train[0])
-    label=np.asarray(all_feature_data_train[1])
-
-    val_data=np.asarray(all_feature_data_val[0])
-    val_label=np.asarray(all_feature_data_val[1])
-
-    # # Here you get the original feature data and select the categories you want. You then save the new data.
     # category_list=[3,14,15,16]
     # selected_data=[]
+    # selected_background=[]
     # for index_label, single_label in enumerate(label):
-    #     if single_label in category_list:
+    #     print index_label
+    #     layer1_label_feature=input_data[index_label,38:58]
+    #     layer1_label=layer1_label_feature.tolist().index(1)
+    #     layer2_label_feature=input_data[index_label,59:79]
+    #     layer2_label=layer2_label_feature.tolist().index(1)
+    #     layer3_label_feature=input_data[index_label,80:100]
+    #     layer3_label=layer3_label_feature.tolist().index(1)
+    #     if (single_label in category_list):
     #         selected_data.append(index_label)
+    #         continue
+    #     if (layer1_label in category_list) or (layer2_label in category_list) or (layer3_label in category_list):
+    #         selected_background.append(index_label)
     #
-    # input_data_selected=input_data[selected_data,:]
-    # label_selected=label[selected_data]
-    # cPickle.dump((input_data_selected, label_selected), open(os.path.join('/mnt/scratch/panqu/SLIC/features/', 'features_' + 'train' + '_100_four_cats.dat'), "w+"))
+    #     # label[selected_background]=255
+    #     combined_list=selected_data+selected_background
+    #     combined_list.sort()
+    #
+    # input_data_selected=input_data[combined_list,:]
+    # label_selected=label[combined_list]
+    # cPickle.dump((input_data_selected, label_selected), open(os.path.join('/mnt/scratch/panqu/SLIC/features/', 'features_' + 'train' + '_100_four_cats_with_background_full_label.dat'), "w+"))
 
-    data = input_data[:,range(38,58)+range(59,79)+range(80,100)]
-    val_data = val_data[:, range(38, 58) + range(59, 79) + range(80, 100)]
+    # choose training set
+    label_four_cats_indexes = [i for i, x in enumerate(label) if x != 255]
+    label_non_four_cats = [i for i, x in enumerate(label) if x == 255]
+
+    label_non_four_cats_random_choice = np.random.choice(label_non_four_cats, 2500)
+    label_non_four_cats_random_choice.sort()
+
+    selected_indexes = np.concatenate((label_four_cats_indexes, label_non_four_cats_random_choice))
+
+    input_data = input_data[selected_indexes, :]
+    label = label[selected_indexes]
+
+
     # data=input_data[:,38:]
-
-    # data=sklearn.preprocessing.normalize(data,axis=0)
+    data=input_data[:,range(38,58)+range(59,79)+range(80,100)]
 
     clf = RandomForestClassifier(n_estimators=50,
-                                 criterion="entropy",
                                  verbose=True,
                                  n_jobs=8,
-                                 max_features=20,
+                                 # max_features=None,
                                  max_depth=None,
-                                 min_samples_split=8,
-                                 min_samples_leaf=4,
+                                 min_samples_split=2,
+                                 min_samples_leaf=2,
                                  max_leaf_nodes=None
                                  )
     fit_clf=clf.fit(data,label)
@@ -86,9 +92,6 @@ def random_forest_classifier(all_feature_data_train,all_feature_data_val,categor
     scores = cross_val_score(clf, data, label, cv=5)
     print "Cross validation score is "+ str(scores.mean())
 
-    result=fit_clf.predict(val_data)
-    accuracy=float(np.sum(result==val_label))/len(val_label)
-    print "Validation accuracy is " + str(accuracy)
 
     return fit_clf
 
@@ -272,7 +275,10 @@ def predict(superpixel_data,gt_files,folder_files,classifier,original_image_file
                 # label_candidates = superpixel_categorical_label[predicted_index]
                 # label_candidates_probs = [predicted_current_superpixel_label_probs[i] for i in label_candidates]
                 label_selected = category_list[np.argmax(predicted_current_superpixel_label_probs)]
-                final_map[superpixel_label == superpixel_index] = label_selected
+                if label_selected==255:
+                    final_map[superpixel_label == superpixel_index] = superpixel_categorical_label[predicted_index][0]
+                else:
+                    final_map[superpixel_label == superpixel_index] = label_selected
             else:
                 final_map[superpixel_label == superpixel_index] = superpixel_categorical_label[predicted_index][0]
 
@@ -307,7 +313,6 @@ if __name__ == '__main__':
     dataset='val'
     is_test_lower_bound=0
     is_use_neighbor=0
-    is_get_subset_category_data=0
 
     original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
     original_image_files=glob.glob(os.path.join(original_image_folder,"*","*.png"))
@@ -332,8 +337,8 @@ if __name__ == '__main__':
     # all_features_data = (feature1_data[0]+feature2_data[0]+feature3_data[0],feature1_data[1]+feature2_data[1]+feature3_data[1])
     # cPickle.dump(all_features_data, open(os.path.join('/mnt/scratch/panqu/SLIC/features/', 'features_train_100.dat'), "w+"))
     if is_use_neighbor != 1:
-        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100_four_cats.dat'), "rb"))
-        all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_100_four_cats.dat'), "rb"))
+        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100_four_cats_with_background.dat'), "rb"))
+        all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_train_100_four_cats_with_background.dat'), "rb"))
     else:
         all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_with_neighbor.dat'), "rb"))
         all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_with_neighbor.dat'), "rb"))
@@ -342,7 +347,7 @@ if __name__ == '__main__':
     # get_only_3_dim_data(all_feature_data_train,all_feature_data_val)
 
 
-    result_location=os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_cats/', datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
+    result_location=os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_cats_with_bg/', datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
     if not os.path.exists(result_location):
         os.makedirs(result_location)
         os.makedirs(os.path.join(result_location,'score'))
@@ -372,16 +377,8 @@ if __name__ == '__main__':
 
     else:
         # random forest classifier
-        category_list=[3,14,15,16]
-        subset_dataset='train'
-        if is_get_subset_category_data:
-            if subset_dataset=='train':
-                get_subset_category_data(all_feature_data_train, category_list,subset_dataset)
-            else:
-                get_subset_category_data(all_feature_data_val, category_list, subset_dataset)
-
-
-        classifier = random_forest_classifier(all_feature_data_train, all_feature_data_val, category_list)
+        category_list=[3,14,15,16,255]
+        classifier = random_forest_classifier(all_feature_data_train,category_list)
         predict(superpixel_data,gt_files,folder_files,classifier,original_image_files,result_location,is_test_lower_bound,is_use_neighbor,category_list)
 
 

@@ -25,26 +25,15 @@ import cv2
 # matplotlib.use('Qt4Agg')
 
 
-def test_lower_bound(all_feature_data):
-    data=np.asarray(all_feature_data[0])
-    label=np.asarray(all_feature_data[1])
-
-    # majority voting
-    data_predictions=data[:,[38,40,42]]
-    data_predictions_output=[]
-    for temp_index in range(data_predictions.shape[0]):
-        value=list(data_predictions[temp_index])
-        data_predictions_output.append(max(set(value), key=value.count))
-
-    lower_bound = float(np.sum(np.asarray(data_predictions_output) == label)) / len(label)
-    print "Accuracy of lower bound is " + str(lower_bound)
-
-
-def cross_validation_random_forest_classifier(all_feature_data):
+def cross_validation_random_forest_classifier(all_feature_data,all_feature_validation_data):
     input_data=np.asarray(all_feature_data[0])
     label=np.asarray(all_feature_data[1])
 
+    val_data=np.asarray(all_feature_validation_data[0])
+    val_label=np.asarray(all_feature_validation_data[1])
+
     data=input_data[:,range(38,58)+range(59,79)+range(80,100)]
+    val_data = val_data[:, range(38, 58) + range(59, 79) + range(80, 100)]
 
     # #
     # criterion_all=['gini','entropy']
@@ -55,13 +44,22 @@ def cross_validation_random_forest_classifier(all_feature_data):
     # max_leaf_nodes_all=[None,5,10]
     # max_features_all = [1, 5, 10, 15, 20, 25, 30, 35, None]
 
+    #
     criterion_all=['entropy']
-    max_depth_all=[None]
-    min_samples_split_all=[2,8,16]
-    n_estimators_all = [50]
-    min_samples_leaf_all=[2,4,16]
+    max_depth_all=[None,5]
+    min_samples_split_all=[1,2,8]
+    n_estimators_all = [50, 75, 125, 225, 500]
+    min_samples_leaf_all=[1,2,8]
     max_leaf_nodes_all=[None]
-    max_features_all = [20,40,60]
+    max_features_all = [5, 10, 20, 40, 60]
+
+    # criterion_all=['entropy']
+    # max_depth_all=[None]
+    # min_samples_split_all=[2,8,16]
+    # n_estimators_all = [50]
+    # min_samples_leaf_all=[2,4,16]
+    # max_leaf_nodes_all=[None]
+    # max_features_all = [20,40,60]
 
     for criterion in criterion_all:
         for max_depth in max_depth_all:
@@ -99,9 +97,13 @@ def cross_validation_random_forest_classifier(all_feature_data):
                                 scores = cross_val_score(clf, data, label, cv=5)
                                 print "Cross validation score is "+ str(scores.mean())
 
+                                result = fit_clf.predict(val_data)
+                                validation_accuracy = float(np.sum(result == val_label)) / len(val_label)
+                                print "Validation accuracy is " + str(validation_accuracy)
+
                                 SLIC_result_file = '/mnt/scratch/panqu/SLIC/SLIC_result_file_four_cat.txt'
                                 with open(SLIC_result_file, "a") as SLIC_result_file:
-                                    SLIC_result_file.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t\n'.format(
+                                    SLIC_result_file.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t\n'.format(
                                         str(criterion),
                                         str(max_depth),
                                         str(min_samples_split),
@@ -110,7 +112,9 @@ def cross_validation_random_forest_classifier(all_feature_data):
                                         str(max_leaf_nodes),
                                         str(max_features),
                                         str(accuracy),
-                                        str(scores.mean())))
+                                        str(scores.mean()),
+                                        str(validation_accuracy)
+                                    ))
 
 if __name__ == '__main__':
 
@@ -130,7 +134,8 @@ if __name__ == '__main__':
 
 
     training_feature_location='/mnt/scratch/panqu/SLIC/'
-    all_feature_data = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100_four_cats.dat'), "rb"))
+    all_feature_training_data = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100_four_cats.dat'), "rb"))
+    all_feature_validation_data = cPickle.load(open(os.path.join(training_feature_location,'features','features_val_100_four_cats.dat'), "rb"))
 
     # result_location=os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/', datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
     # if not os.path.exists(result_location):
@@ -138,10 +143,7 @@ if __name__ == '__main__':
     #     os.makedirs(os.path.join(result_location,'score'))
     #     os.makedirs(os.path.join(result_location,'visualization'))
 
-    # # test lower bound
-    # test_lower_bound(all_feature_data)
-
     # random forest classifier
-    classifier=cross_validation_random_forest_classifier(all_feature_data)
+    classifier=cross_validation_random_forest_classifier(all_feature_training_data,all_feature_validation_data)
 
 
