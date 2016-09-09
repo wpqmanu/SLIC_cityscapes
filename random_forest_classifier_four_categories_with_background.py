@@ -74,7 +74,7 @@ def random_forest_classifier(all_feature_data,category_list):
     # data=input_data[:,38:]
     data=input_data[:,range(38,58)+range(59,79)+range(80,100)]
 
-    clf = RandomForestClassifier(n_estimators=50,
+    clf = RandomForestClassifier(n_estimators=75,
                                  verbose=True,
                                  n_jobs=8,
                                  # max_features=None,

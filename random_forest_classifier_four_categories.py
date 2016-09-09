@@ -67,14 +67,14 @@ def random_forest_classifier(all_feature_data_train,all_feature_data_val,categor
 
     # data=sklearn.preprocessing.normalize(data,axis=0)
 
-    clf = RandomForestClassifier(n_estimators=50,
+    clf = RandomForestClassifier(n_estimators=100,
                                  criterion="entropy",
                                  verbose=True,
                                  n_jobs=8,
                                  max_features=20,
                                  max_depth=None,
-                                 min_samples_split=8,
-                                 min_samples_leaf=4,
+                                 min_samples_split=2,
+                                 min_samples_leaf=2,
                                  max_leaf_nodes=None
                                  )
     fit_clf=clf.fit(data,label)
@@ -332,7 +332,7 @@ if __name__ == '__main__':
     # all_features_data = (feature1_data[0]+feature2_data[0]+feature3_data[0],feature1_data[1]+feature2_data[1]+feature3_data[1])
     # cPickle.dump(all_features_data, open(os.path.join('/mnt/scratch/panqu/SLIC/features/', 'features_train_100.dat'), "w+"))
     if is_use_neighbor != 1:
-        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100_four_cats.dat'), "rb"))
+        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location,'features','features_val_100_four_cats.dat'), "rb"))
         all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_100_four_cats.dat'), "rb"))
     else:
         all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_with_neighbor.dat'), "rb"))
@@ -342,7 +342,7 @@ if __name__ == '__main__':
     # get_only_3_dim_data(all_feature_data_train,all_feature_data_val)
 
 
-    result_location=os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_cats/', datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
+    result_location=os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_cats/',dataset, datetime.now().strftime('%Y_%m_%d_%H:%M:%S'))
     if not os.path.exists(result_location):
         os.makedirs(result_location)
         os.makedirs(os.path.join(result_location,'score'))

@@ -3,22 +3,14 @@
 
 import cv2
 import sys
-import scipy
-import scipy.linalg
-import random
-import math
 import os.path
 import numpy as np
 import matplotlib
 matplotlib.use('Qt4Agg')
-import matplotlib.pyplot as plt
 import glob
 import cPickle
 sys.path.insert(0,'/mnt/scratch/third-party-packages/libopencv_3.1.0/lib/python')
-from PIL import Image
-from datetime import datetime
-import collections
-sys.path.append( os.path.normpath( os.path.join('/home/panquwang/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
+sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
 from labels     import trainId2label,id2label
 from collections import Counter
 
