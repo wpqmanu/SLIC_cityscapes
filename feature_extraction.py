@@ -85,9 +85,15 @@ def get_feature_single_superpixel(superpixel_label,current_all_layer_values, ind
     # feature dimension 1: area
     contours, hierarchy = cv2.findContours(binary_mask, 0, 2)
     contours_with_holes, hierarchy_with_holes = cv2.findContours(binary_mask, 1, 2)
-    cnt = contours[0]
-    area = cv2.contourArea(cnt)
-    feature.extend([area])
+    if len(contours)<1:
+        contours, hierarchy = cv2.findContours((np.ones((1024,2048))).astype(np.uint8), 0, 2)
+        cnt = contours[0]
+        area = cv2.contourArea(cnt)
+        feature.extend([area])
+    else:
+        cnt = contours[0]
+        area = cv2.contourArea(cnt)
+        feature.extend([area])
 
     # feature dimension 2: perimeter
     perimeter = cv2.arcLength(cnt, True)

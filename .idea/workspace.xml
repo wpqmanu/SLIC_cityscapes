@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7beb661-607e-4d39-83ac-cc8e6d093a5b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_init.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/cityscapes.dot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/feature_extraction_with_neighbor_1.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py" afterPath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/feature_extraction.py" afterPath="$PROJECT_DIR$/feature_extraction.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/random_forest_classifier_four_categories.py" afterPath="$PROJECT_DIR$/random_forest_classifier_four_categories.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/random_forest_classifier_four_categories_with_background.py" afterPath="$PROJECT_DIR$/random_forest_classifier_four_categories_with_background.py" />
     </list>
     <ignored path="SLIC_cityscapes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,15 +33,23 @@
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_manual_classifier.coverage" NAME="decision_tree_manual_classifier Coverage Results" MODIFIED="1473291238320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$xgboost_classifier_parallel.coverage" NAME="xgboost_classifier_parallel Coverage Results" MODIFIED="1473208552739" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$xgboost_classifier_four_categories.coverage" NAME="xgboost_classifier_four_categories Coverage Results" MODIFIED="1473363286589" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse_pixel_level.coverage" NAME="decision_tree_classifier_four_categories_traverse_pixel_level Coverage Results" MODIFIED="1473705184038" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$SLIC_merge_superpixels.coverage" NAME="SLIC_merge_superpixels Coverage Results" MODIFIED="1472513851748" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$random_forest_classifier_cross_validation.coverage" NAME="random_forest_classifier_cross_validation Coverage Results" MODIFIED="1473366567664" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$XGBM_classifier.coverage" NAME="XGBM_classifier Coverage Results" MODIFIED="1473202059043" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$xgboost_classifier.coverage" NAME="xgboost_classifier Coverage Results" MODIFIED="1473272433779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse.coverage" NAME="decision_tree_classifier_four_categories_traverse Coverage Results" MODIFIED="1473384099328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse_init.coverage" NAME="decision_tree_classifier_four_categories_traverse_init Coverage Results" MODIFIED="1473443007993" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse.coverage" NAME="decision_tree_classifier_four_categories_traverse Coverage Results" MODIFIED="1473701661185" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse_init.coverage" NAME="decision_tree_classifier_four_categories_traverse_init Coverage Results" MODIFIED="1473446374940" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DatabaseView">
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_TABLE_DETAILS" value="true" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
@@ -49,29 +57,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="decision_tree_classifier_four_categories_traverse.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py">
+      <file leaf-file-name="decision_tree_classifier_four_categories_traverse_pixel_level.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2394">
-              <caret line="165" column="0" selection-start-line="165" selection-start-column="0" selection-end-line="165" selection-end-column="0" />
+            <state relative-caret-position="348">
+              <caret line="148" column="25" selection-start-line="148" selection-start-column="25" selection-end-line="148" selection-end-column="25" />
               <folding>
-                <element signature="e#944#1291#0" expanded="false" />
-                <element signature="e#1348#1704#0" expanded="false" />
-                <element signature="e#1747#2230#0" expanded="false" />
-                <element signature="e#2314#3068#0" expanded="false" />
+                <element signature="e#1056#2256#0" expanded="false" />
+                <element signature="e#2281#2628#0" expanded="false" />
+                <element signature="e#2685#3041#0" expanded="false" />
+                <element signature="e#3084#3567#0" expanded="false" />
+                <element signature="e#3642#5239#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="decision_tree_classifier_four_categories_traverse_init.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_init.py">
+      <file leaf-file-name="SLIC_new_cityscapes_training_server_parallel.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="365">
-              <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
-              <folding>
-                <element signature="e#170#180#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="838">
+              <caret line="348" column="9" selection-start-line="348" selection-start-column="0" selection-end-line="349" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -90,7 +97,6 @@
         <option value="$PROJECT_DIR$/SLIC_merge_superpixels_parallel.py" />
         <option value="$PROJECT_DIR$/random_forest_classifier_parallel.py" />
         <option value="$PROJECT_DIR$/random_forest_classifier_one_hot_label.py" />
-        <option value="$PROJECT_DIR$/feature_extraction.py" />
         <option value="$PROJECT_DIR$/XGBM_classifier.py" />
         <option value="$PROJECT_DIR$/feature_extraction_with_neighbor.py" />
         <option value="$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel.py" />
@@ -104,8 +110,10 @@
         <option value="$PROJECT_DIR$/random_forest_classifier_cross_validation.py" />
         <option value="$PROJECT_DIR$/random_forest_classifier_four_categories.py" />
         <option value="$PROJECT_DIR$/random_forest_classifier_four_categories_with_background.py" />
-        <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py" />
         <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_init.py" />
+        <option value="$PROJECT_DIR$/feature_extraction.py" />
+        <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py" />
+        <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py" />
       </list>
     </option>
   </component>
@@ -180,7 +188,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.decision_tree_classifier_four_categories_traverse_init">
+  <component name="RunManager" selected="Python.decision_tree_classifier_four_categories_traverse_pixel_level">
     <configuration default="false" name="random_forest_classifier_four_categories" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -217,24 +225,6 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="xgboost_classifier_four_categories" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="SLIC_cityscapes" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/xgboost_classifier_four_categories.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="decision_tree_classifier_four_categories_traverse" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -267,6 +257,24 @@
       <module name="SLIC_cityscapes" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_init.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="decision_tree_classifier_four_categories_traverse_pixel_level" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SLIC_cityscapes" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -459,17 +467,17 @@
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.random_forest_classifier_four_categories" />
       <item index="1" class="java.lang.String" itemvalue="Python.random_forest_classifier_cross_validation" />
-      <item index="2" class="java.lang.String" itemvalue="Python.xgboost_classifier_four_categories" />
-      <item index="3" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse" />
-      <item index="4" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_init" />
+      <item index="2" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse" />
+      <item index="3" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_init" />
+      <item index="4" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_pixel_level" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_init" />
+        <item index="0" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_pixel_level" />
         <item index="1" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse" />
-        <item index="2" class="java.lang.String" itemvalue="Python.random_forest_classifier_four_categories" />
-        <item index="3" class="java.lang.String" itemvalue="Python.random_forest_classifier_cross_validation" />
-        <item index="4" class="java.lang.String" itemvalue="Python.xgboost_classifier_four_categories" />
+        <item index="2" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_init" />
+        <item index="3" class="java.lang.String" itemvalue="Python.random_forest_classifier_four_categories" />
+        <item index="4" class="java.lang.String" itemvalue="Python.random_forest_classifier_cross_validation" />
       </list>
     </recent_temporary>
   </component>
@@ -500,21 +508,21 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-5" width="2560" height="1445" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32951945" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2822273" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2753623" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32951945" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29800797" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2613546" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32988048" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3768116" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.115179256" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -562,6 +570,16 @@
           <line>92</line>
           <option name="timeStamp" value="124" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_init.py</url>
+          <line>81</line>
+          <option name="timeStamp" value="134" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py</url>
+          <line>189</line>
+          <option name="timeStamp" value="179" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
@@ -573,7 +591,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="134" />
+      <option name="time" value="180" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -660,14 +678,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/feature_extraction_with_neighbor_1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/xgboost/python-package/xgboost/core.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="284">
@@ -724,14 +734,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1142">
-          <caret line="333" column="18" selection-start-line="333" selection-start-column="18" selection-end-line="333" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SLIC_merge_superpixels_parallel.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4002">
@@ -778,26 +780,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-377">
           <caret line="307" column="45" selection-start-line="307" selection-start-column="26" selection-end-line="307" selection-end-column="45" />
-          <folding>
-            <element signature="e#1065#1880#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/decision_tree_classifier.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2014">
-          <caret line="245" column="107" selection-start-line="245" selection-start-column="91" selection-end-line="245" selection-end-column="107" />
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-            <element signature="e#2327#2674#0" expanded="false" />
-            <element signature="e#2731#3087#0" expanded="false" />
-            <element signature="e#3130#3613#0" expanded="false" />
-            <element signature="e#3697#4451#0" expanded="false" />
-            <element signature="e#4592#5233#0" expanded="false" />
-            <element signature="e#5309#6429#0" expanded="false" />
-            <element signature="e#13532#13811#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -851,14 +834,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/feature_extraction.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="177" column="42" selection-start-line="177" selection-start-column="25" selection-end-line="177" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/random_forest_classifier_four_categories.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="29">
@@ -869,25 +844,98 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py">
+    <entry file="file://$PROJECT_DIR$/feature_extraction_with_neighbor_1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2394">
-          <caret line="165" column="0" selection-start-line="165" selection-start-column="0" selection-end-line="165" selection-end-column="0" />
+        <state relative-caret-position="-2436">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="443">
+          <caret line="302" column="132" selection-start-line="302" selection-start-column="8" selection-end-line="302" selection-end-column="132" />
           <folding>
-            <element signature="e#944#1291#0" expanded="false" />
-            <element signature="e#1348#1704#0" expanded="false" />
-            <element signature="e#1747#2230#0" expanded="false" />
-            <element signature="e#2314#3068#0" expanded="false" />
+            <element signature="e#0#51#0" expanded="true" />
+            <element signature="e#2327#2674#0" expanded="false" />
+            <element signature="e#2731#3087#0" expanded="false" />
+            <element signature="e#3130#3613#0" expanded="false" />
+            <element signature="e#3697#4451#0" expanded="false" />
+            <element signature="e#4592#5233#0" expanded="false" />
+            <element signature="e#5309#6429#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_prediction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-870">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_init.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="106" column="0" selection-start-line="106" selection-start-column="0" selection-end-line="106" selection-end-column="0" />
+        <state relative-caret-position="390">
+          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
           <folding>
             <element signature="e#170#180#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/feature_extraction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="93" column="0" selection-start-line="93" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6351">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2789">
+          <caret line="310" column="0" selection-start-line="310" selection-start-column="0" selection-end-line="310" selection-end-column="0" />
+          <folding>
+            <element signature="e#2221#2568#0" expanded="false" />
+            <element signature="e#2625#2981#0" expanded="false" />
+            <element signature="e#3024#3507#0" expanded="false" />
+            <element signature="e#3582#5179#0" expanded="false" />
+            <element signature="e#5263#6016#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="838">
+          <caret line="348" column="9" selection-start-line="348" selection-start-column="0" selection-end-line="349" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="148" column="25" selection-start-line="148" selection-start-column="25" selection-end-line="148" selection-end-column="25" />
+          <folding>
+            <element signature="e#1056#2256#0" expanded="false" />
+            <element signature="e#2281#2628#0" expanded="false" />
+            <element signature="e#2685#3041#0" expanded="false" />
+            <element signature="e#3084#3567#0" expanded="false" />
+            <element signature="e#3642#5239#0" expanded="false" />
           </folding>
         </state>
       </provider>
