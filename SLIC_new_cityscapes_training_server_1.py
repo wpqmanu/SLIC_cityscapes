@@ -293,24 +293,26 @@ class SlicCalculator(object):
 
 
 if __name__ == '__main__':
-    dataset='val'
+    dataset='train'
 
 
+    # use 500 training subfolder
     folder={}
-    # base
-    folder[1]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/',dataset, dataset+'-epoch-35-CRF', 'score')
-    # truck, wall
-    folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'-epoch-39-CRF-050', 'score')
-    # bus, train
-    folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
-
+    # base:
+    folder[1]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/',dataset, dataset+'_sub-epoch-35-CRF')
+    # scale 05
+    folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'_sub-epoch-39-CRF-050')
+    # wild atrous
+    folder[3]=os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_crf_'+dataset+'_sub', 'score')
+    # deconv
+    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_'+dataset+'_sub_crf', 'score')
     folder_files={}
     previous_key=0
     for key,value in folder.iteritems():
         folder_files[key]=glob.glob(os.path.join(value,'*.png'))
         folder_files[key].sort()
-        if int(key)>=2 and not len(folder_files[key])==len(folder_files[previous_key]):
-            raise ValueError('file folder lengths are not equal!')
+        # if int(key)>=2 and not len(folder_files[key])==len(folder_files[previous_key]):
+        #     raise ValueError('file folder lengths are not equal!')
         previous_key=key
 
 
@@ -328,7 +330,7 @@ if __name__ == '__main__':
 
 
     total_files=len(folder_files[1])
-    for index in range(38,39):
+    for index in range(0,1):
         print "start file "+folder_files[1][index].split('/')[-1]
         # get initial multi-channel input (channel can be arbitrary positive integer)
         input=np.zeros((img_height,img_width,img_channels))

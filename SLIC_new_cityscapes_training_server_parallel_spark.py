@@ -27,16 +27,6 @@ import fnmatch
 import os
 from pyspark import SparkContext, SparkConf
 
-num_cores=75
-conf = SparkConf()
-conf.setAppName("semantic_segmentation").setMaster("spark://192.168.1.132:7077")
-conf.set("spark.scheduler.mode", "FAIR")
-conf.set("spark.cores.max", num_cores)
-sc = SparkContext(conf=conf)
-
-
-
-
 def argmin(_list):
     return _list.index(min(_list))
 
@@ -91,7 +81,7 @@ class SlicCalculator(object):
     ## Superparameter
     M = 20  ##weight of color in distance
     INITCENTER_SEARCHDIFF = 1  ## minimum gradient
-    ERROR_THRESHOLD = 5
+    ERROR_THRESHOLD = 10
 
     ## Config
     INIFINITY_DISTANCE = 1 << 23
@@ -315,17 +305,21 @@ def processing(index,total_files,folder_files,img_height,img_width,img_channels,
     calculator.calc()
 
 def spark_processing(i):
-    dataset = 'test'
+    dataset = 'train'
+    # use 500 training subfolder
     folder = {}
-    # base
+    # base:
     folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,
-                             dataset + '-epoch-35-CRF', 'score')
-    # truck, wall
+                             dataset + '_sub-epoch-35-CRF')
+    # scale 05
     folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,
-                             dataset + '-epoch-39-CRF-050', 'score')
-    # bus, train
-    folder[3] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset,
-                             dataset + '-epoch-33-CRF', 'score')
+                             dataset + '_sub-epoch-39-CRF-050')
+    # wild atrous
+    folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_crf_' + dataset + '_sub',
+                             'score')
+    # deconv
+    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_sub_crf', 'score')
+
     folder_files = {}
     previous_key = 0
     for key, value in folder.iteritems():
@@ -352,9 +346,14 @@ def spark_processing(i):
     return 1
 
 
+num_cores=75
+conf = SparkConf()
+conf.setAppName("semantic_segmentation").setMaster("spark://192.168.1.132:7077")
+conf.set("spark.scheduler.mode", "FAIR")
+conf.set("spark.cores.max", num_cores)
+sc = SparkContext(conf=conf)
 
-
-range_i = range(0, 1525)
+range_i = range(0, 500)
 RDDList = sc.parallelize(range_i, num_cores)
 print '------------------------------------start spark-----------------------------------'
 

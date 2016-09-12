@@ -203,15 +203,18 @@ if __name__ == '__main__':
     with open(list_location, "r") as list_to_be_read:
         all_lists = list_to_be_read.readlines()
     all_lists_lines = [x.strip('\n') for x in all_lists]
-    for current_line in all_lists_lines:
-        current_image_name=current_line.strip('\t')[1].strip('/')[-1]
+
+    current_image_names=[current_line.split('\t')[1].split('/')[-1] for current_line in all_lists_lines]
+    current_image_folder_name=[current_image_name.split('_')[0] for current_image_name in current_image_names]
 
     original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
-    original_image_files=glob.glob(os.path.join(original_image_folder,"*","*.png"))
+    original_image_files=[os.path.join(original_image_folder,current_image_folder_name[i],current_image_names[i]) for i in range(len(current_image_names))]
+    # original_image_files=glob.glob(os.path.join(original_image_folder,"*","*.png"))
     original_image_files.sort()
 
     gt_folder = '/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'/'
-    gt_files=glob.glob(os.path.join(gt_folder,"*","*gtFine_color.png"))
+    gt_files=[os.path.join(gt_folder,current_image_folder_name[i],current_image_names[i].replace('leftImg8bit','gtFine_color')) for i in range(len(current_image_names))]
+    # gt_files=glob.glob(os.path.join(gt_folder,"*","*gtFine_color.png"))
     gt_files.sort()
 
 
@@ -226,7 +229,8 @@ if __name__ == '__main__':
 
     folder_files={}
     for key,value in folder.iteritems():
-        folder_files[key]=glob.glob(os.path.join(value,'*.png'))
+        folder_files[key] = [os.path.join(value, current_image_names[i]) for i in range(len(current_image_names))]
+        # folder_files[key]=glob.glob(os.path.join(value,'*.png'))
         folder_files[key].sort()
 
     print "start to predict..."
@@ -243,7 +247,7 @@ if __name__ == '__main__':
 
 
     # prediction
-    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_cats_rule_traverse/', dataset,'all_selected_rules_pixel_level')
+    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_cats_rule_traverse/', dataset,'all_selected_rules_pixel_level_hard_case')
     if not os.path.exists(result_location):
         os.makedirs(result_location)
         os.makedirs(os.path.join(result_location, 'score'))

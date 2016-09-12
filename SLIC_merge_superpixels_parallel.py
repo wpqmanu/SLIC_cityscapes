@@ -64,7 +64,7 @@ def palette(new_superpixel_label):
         palette[index] = np.random.choice(range(0,255))
     return palette
 
-def parallel_processing(index,superpixel_data,superpixel_images,original_files,gt_files,place_to_save):
+def parallel_processing(index,superpixel_data,superpixel_images,place_to_save):
     print index
     current_superpixel_data = cPickle.load(open(superpixel_data[index], "rb"))
     to_be_saved_file_name=superpixel_data[index].split('/')[-1][:-11]+'_merged.png'
@@ -73,11 +73,6 @@ def parallel_processing(index,superpixel_data,superpixel_images,original_files,g
     # statisticst
     num_superpixels=len(current_superpixel_data[0])
     superpixel_labels=current_superpixel_data[1]
-
-    # refine superpixel within an image
-    index_superpixel=0
-    del_list=[]
-    new_starting_index=0
 
     # find unique labels
     unique_labels=find_unique_labels(current_superpixel_data)
@@ -93,7 +88,7 @@ def parallel_processing(index,superpixel_data,superpixel_images,original_files,g
 
     new_superpixel_label=0
     chosen_label_values=[]
-    final_map=np.ones((1024,2048))*(-1)
+    final_map=np.ones((1024,2048))*(num_superpixels+10)
     for index_unique_label,unique_label in enumerate(unique_labels):
         current_unique_label_layer=return_map==index_unique_label
         current_unique_label_layer=current_unique_label_layer.astype(np.uint8)
@@ -126,8 +121,10 @@ def parallel_processing(index,superpixel_data,superpixel_images,original_files,g
 
 
 if __name__ == '__main__':
-    dataset='test'
-    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_'+dataset+'/'
+    dataset='train'
+
+    # superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_'+dataset+'/'
+    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_train/2016_09_12_15:33:44'
     original_files_folder='/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
     gt_folder='/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'/'
 
@@ -137,14 +134,14 @@ if __name__ == '__main__':
     superpixel_data=glob.glob(os.path.join(superpixel_result_folder,'*.dat'))
     superpixel_data.sort()
 
-    original_files=glob.glob(os.path.join(original_files_folder,"*","*.png"))
-    original_files.sort()
-
-    gt_files=glob.glob(os.path.join(gt_folder,"*","*gtFine_labelTrainIds.png"))
-    gt_files.sort()
+    # original_files=glob.glob(os.path.join(original_files_folder,"*","*.png"))
+    # original_files.sort()
+    #
+    # gt_files=glob.glob(os.path.join(gt_folder,"*","*gtFine_labelTrainIds.png"))
+    # gt_files.sort()
 
     time=datetime.now().strftime('%Y_%m_%d_%H:%M:%S')
-    place_to_save = '/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'/'
+    place_to_save = '/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'_subset/'
     if not os.path.exists(place_to_save):
         os.makedirs(place_to_save)
         os.makedirs(os.path.join(place_to_save, 'data'))
@@ -152,9 +149,9 @@ if __name__ == '__main__':
 
 
     num_cores = multiprocessing.cpu_count()
-    range_i=range(0,400)
+    range_i=range(0,500)
 
-    Parallel(n_jobs=num_cores)(delayed(parallel_processing)(i,superpixel_data,superpixel_images,original_files,gt_files,place_to_save) for i in range_i)
+    Parallel(n_jobs=num_cores)(delayed(parallel_processing)(i,superpixel_data,superpixel_images,place_to_save) for i in range_i)
 
 
 
