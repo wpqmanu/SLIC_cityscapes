@@ -263,7 +263,7 @@ if __name__ == '__main__':
 
     dataset='val'
     is_test_lower_bound=0
-    is_use_neighbor=0
+    is_use_neighbor=1
 
     original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
     original_image_files=glob.glob(os.path.join(original_image_folder,"*","*.png"))
@@ -291,7 +291,7 @@ if __name__ == '__main__':
         all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location,'features','features_train_100.dat'), "rb"))
         all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_100.dat'), "rb"))
     else:
-        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_with_neighbor.dat'), "rb"))
+        all_feature_data_train = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_train_with_neighbor.dat'), "rb"))
         all_feature_data_val = cPickle.load(open(os.path.join(training_feature_location, 'features', 'features_val_with_neighbor.dat'), "rb"))
 
 

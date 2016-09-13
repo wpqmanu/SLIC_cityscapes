@@ -247,34 +247,49 @@ def predict(random_list,superpixel_data,gt_files,folder_files,final_selected_rul
 
 
 if __name__ == '__main__':
-    dataset='val'
+    dataset='train'
+    
     is_test_lower_bound=0
     is_use_neighbor=0
     is_get_subset_category_data=0
     is_calculate_purity=0
 
 
-    original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
+    original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'_for_traverse/'
     original_image_files=glob.glob(os.path.join(original_image_folder,"*","*.png"))
     original_image_files.sort()
 
-    gt_folder = '/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'/'
+    gt_folder = '/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'_for_traverse/'
     gt_files=glob.glob(os.path.join(gt_folder,"*","*gtFine_color.png"))
     gt_files.sort()
 
-    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'/data/'
+    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'_subset/data/'
     superpixel_data=glob.glob(os.path.join(superpixel_result_folder,'*.dat'))
     superpixel_data.sort()
 
 
     # prediction for validation set
-    folder={}
-    # base
-    folder[1]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/',dataset, dataset+'-epoch-35-CRF', 'score')
-    # truck, wall
-    folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'-epoch-39-CRF-050', 'score')
-    # bus, train
-    folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
+    # folder={}
+    # # base
+    # folder[1]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/',dataset, dataset+'-epoch-35-CRF', 'score')
+    # # truck, wall
+    # folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'-epoch-39-CRF-050', 'score')
+    # # bus, train
+    # folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
+    folder = {}
+    # base:
+    folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,
+                             dataset + '_sub-epoch-35-CRF')
+    # scale 05
+    folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,
+                             dataset + '_sub-epoch-39-CRF-050')
+    # wild atrous
+    folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_crf_' + dataset + '_sub',
+                             'score')
+    # deconv
+    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_sub_crf', 'score')
+
+
 
     folder_files={}
     for key,value in folder.iteritems():

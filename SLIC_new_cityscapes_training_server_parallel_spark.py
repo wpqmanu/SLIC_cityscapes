@@ -337,7 +337,9 @@ def spark_processing(i):
     img_channels=len(folder_files)
     num_superpixels = 50000
     step=int(math.ceil((img_width*img_height/num_superpixels)**0.5))
-    result_dir=os.path.join('/mnt/scratch/panqu/SLIC/server_'+dataset)
+    result_dir=os.path.join('/mnt/scratch/panqu/SLIC/server_'+dataset+'_subset')
+    if not os.path.exists(result_dir):
+        os.makedirs(result_dir)
 
     total_files=len(folder_files[1])
 
@@ -346,7 +348,7 @@ def spark_processing(i):
     return 1
 
 
-num_cores=75
+num_cores=72
 conf = SparkConf()
 conf.setAppName("semantic_segmentation").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")

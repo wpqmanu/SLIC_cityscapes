@@ -124,7 +124,7 @@ if __name__ == '__main__':
     dataset='train'
 
     # superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_'+dataset+'/'
-    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_train/2016_09_12_15:33:44'
+    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_train_subset/'
     original_files_folder='/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
     gt_folder='/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'/'
 
