@@ -196,7 +196,7 @@ if __name__ == '__main__':
     import labels
     from labels     import trainId2label,id2label
 
-    dataset='train'
+    dataset='val'
 
     is_test_lower_bound=0
     is_use_neighbor=0
@@ -225,18 +225,21 @@ if __name__ == '__main__':
     # folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'-epoch-39-CRF-050', 'score')
     # # bus, train
     # folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
+
+    # use 150 validation subfolder
     folder = {}
     # base:
     folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,
-                             dataset + '_sub-epoch-35-CRF')
+                             dataset + '-epoch-35-CRF_for_traverse', 'score')
     # scale 05
     folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,
-                             dataset + '_sub-epoch-39-CRF-050')
+                             dataset + '-epoch-39-CRF-050_for_traverse', 'score')
     # wild atrous
-    folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_crf_' + dataset + '_sub',
-                             'score')
+    folder[3] = os.path.join(
+        '/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf', 'score')
     # deconv
-    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_sub_crf', 'score')
+    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf',
+                             'score')
 
     folder_files={}
     for key,value in folder.iteritems():
@@ -247,7 +250,7 @@ if __name__ == '__main__':
 
     traverse_list_length=4 # you have three layers for ensemble
     traverse_category_list=[2,3,4,5,255] # you only want to explore several categories (255 means all others)
-    random_list=range(0,500)
+    random_list=range(0,150)
 
     # enumerate all rules
     all_possible_rule_list=[]

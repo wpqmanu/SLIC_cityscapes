@@ -179,7 +179,7 @@ def spark_processing(rule_index):
     import labels
     from labels     import trainId2label,id2label
 
-    dataset='train'
+    dataset='val'
 
     is_test_lower_bound=0
     is_use_neighbor=0
@@ -208,18 +208,21 @@ def spark_processing(rule_index):
     # folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'-epoch-39-CRF-050', 'score')
     # # bus, train
     # folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
+
+    # use 150 validation subfolder
     folder = {}
     # base:
     folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,
-                             dataset + '_sub-epoch-35-CRF')
+                             dataset + '-epoch-35-CRF_for_traverse', 'score')
     # scale 05
     folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,
-                             dataset + '_sub-epoch-39-CRF-050')
+                             dataset + '-epoch-39-CRF-050_for_traverse', 'score')
     # wild atrous
-    folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_crf_' + dataset + '_sub',
-                             'score')
+    folder[3] = os.path.join(
+        '/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf', 'score')
     # deconv
-    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_sub_crf', 'score')
+    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf',
+                             'score')
 
     folder_files={}
     for key,value in folder.iteritems():
@@ -230,7 +233,7 @@ def spark_processing(rule_index):
 
     traverse_list_length=4 # you have three layers for ensemble
     traverse_category_list=[6,7,8,9,255] # you only want to explore several categories (255 means all others)
-    random_list=range(0,500)
+    random_list=range(0,150)
 
     # enumerate all rules
     all_possible_rule_list=[]
@@ -272,7 +275,7 @@ def spark_processing(rule_index):
 
 traverse_list_length=4 # you have three layers for ensemble
 traverse_category_list=[6,7,8,9,255] # you only want to explore several categories (255 means all others)
-random_list=range(0,500)
+random_list=range(0,150)
 
 # enumerate all rules
 all_possible_rule_list=[]
@@ -299,7 +302,7 @@ for value in to_be_deleted_list[::-1]:
 len_rules=len(all_possible_rule_list)
 
 
-num_cores=80
+num_cores=60
 conf = SparkConf()
 conf.setAppName("segmentation_rule_traverse").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")

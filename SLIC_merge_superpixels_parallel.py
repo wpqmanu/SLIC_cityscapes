@@ -149,7 +149,7 @@ if __name__ == '__main__':
 
 
     num_cores = multiprocessing.cpu_count()
-    range_i=range(0,len(superpixel_images))
+    range_i=range(0,60)
 
     Parallel(n_jobs=num_cores)(delayed(parallel_processing)(i,superpixel_data,superpixel_images,place_to_save) for i in range_i)
 
