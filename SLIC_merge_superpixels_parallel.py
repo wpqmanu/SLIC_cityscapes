@@ -121,12 +121,12 @@ def parallel_processing(index,superpixel_data,superpixel_images,place_to_save):
 
 
 if __name__ == '__main__':
-    dataset='train'
+    dataset='val'
 
     # superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_'+dataset+'/'
-    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_train_subset/'
-    original_files_folder='/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
-    gt_folder='/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'/'
+    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_'+dataset+'_subset/'
+    # original_files_folder='/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
+    # gt_folder='/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'/'
 
     superpixel_images=glob.glob(os.path.join(superpixel_result_folder,'*.png'))
     superpixel_images.sort()
@@ -140,7 +140,7 @@ if __name__ == '__main__':
     # gt_files=glob.glob(os.path.join(gt_folder,"*","*gtFine_labelTrainIds.png"))
     # gt_files.sort()
 
-    time=datetime.now().strftime('%Y_%m_%d_%H:%M:%S')
+    # time=datetime.now().strftime('%Y_%m_%d_%H:%M:%S')
     place_to_save = '/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'_subset/'
     if not os.path.exists(place_to_save):
         os.makedirs(place_to_save)
@@ -149,7 +149,7 @@ if __name__ == '__main__':
 
 
     num_cores = multiprocessing.cpu_count()
-    range_i=range(0,500)
+    range_i=range(0,len(superpixel_images))
 
     Parallel(n_jobs=num_cores)(delayed(parallel_processing)(i,superpixel_data,superpixel_images,place_to_save) for i in range_i)
 

@@ -305,20 +305,34 @@ def processing(index,total_files,folder_files,img_height,img_width,img_channels,
     calculator.calc()
 
 def spark_processing(i):
-    dataset = 'train'
-    # use 500 training subfolder
+    dataset = 'val'
+
+    # # use 500 training subfolder
+    # folder = {}
+    # # base:
+    # folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,dataset + '_sub-epoch-35-CRF')
+    # # scale 05
+    # folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,dataset + '_sub-epoch-39-CRF-050')
+    # # wild atrous
+    # folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_crf_' + dataset + '_sub','score')
+    # # deconv
+    # folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_sub_crf', 'score')
+
+    # use 150 validation subfolder
     folder = {}
     # base:
-    folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,
-                             dataset + '_sub-epoch-35-CRF')
+    folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset, dataset+'-epoch-35-CRF_for_traverse', 'score')
     # scale 05
-    folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,
-                             dataset + '_sub-epoch-39-CRF-050')
+    folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,dataset + '-epoch-39-CRF-050_for_traverse','score')
     # wild atrous
-    folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_crf_' + dataset + '_sub',
-                             'score')
+    folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf','score')
     # deconv
-    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_sub_crf', 'score')
+    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf', 'score')
+    # # scale 1.25
+    # folder[5] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_sub_crf', 'score')
+
+
+
 
     folder_files = {}
     previous_key = 0
@@ -348,14 +362,14 @@ def spark_processing(i):
     return 1
 
 
-num_cores=72
+num_cores=80
 conf = SparkConf()
 conf.setAppName("semantic_segmentation").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")
 conf.set("spark.cores.max", num_cores)
 sc = SparkContext(conf=conf)
 
-range_i = range(0, 500)
+range_i = range(0, 150)
 RDDList = sc.parallelize(range_i, num_cores)
 print '------------------------------------start spark-----------------------------------'
 

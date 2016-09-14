@@ -32,7 +32,7 @@ def copy_from_list(lst_file, src_dir, dst_dir, is_replace=0, postfix=''):
 
 if __name__ == '__main__':
     list_name='/mnt/scratch/pengfei/to_panqu/train_sub.lst'
-    dataset='train'
+    dataset='val'
 
     original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
     original_image_files_all=glob.glob(os.path.join(original_image_folder,"*","*.png"))
@@ -65,6 +65,22 @@ if __name__ == '__main__':
     copy_from_list(lst_file=list_name,src_dir=gt_folder,dst_dir=gt_dir_for_traverse,is_replace=1,postfix='gtFine_labelIds.png')
     copy_from_list(lst_file=list_name,src_dir=gt_folder,dst_dir=gt_dir_for_traverse,is_replace=1,postfix='gtFine_polygons.json')
     copy_from_list(lst_file=list_name,src_dir=gt_folder,dst_dir=gt_dir_for_traverse,is_replace=1,postfix='gtFine_instanceIds.png')
+
+
+    # val_150_folder='/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/val/val-epoch-35-CRF_for_traverse/score/'
+    # file_names_folder=glob.glob(os.path.join(val_150_folder,'*.png'))
+    #
+    # folder_2_name='/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_val_crf/score/'
+    # folder_3_name='/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_val_crf/score/'
+    #
+    # os.makedirs('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_val_subset_crf/score/')
+    # os.makedirs('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_val_subset_crf/score/')
+    #
+    # for index,name in enumerate(file_names_folder):
+    #     file_name=file_names_folder[index].split('/')[-1]
+    #     copy(os.path.join(folder_2_name,file_name), '/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_val_subset_crf/score/')
+    #     copy(os.path.join(folder_3_name,file_name), '/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_val_subset_crf/score/')
+
 
 
     # superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'/data/'

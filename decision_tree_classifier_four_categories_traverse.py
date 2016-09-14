@@ -248,7 +248,7 @@ def predict(random_list,superpixel_data,gt_files,folder_files,final_selected_rul
 
 if __name__ == '__main__':
     dataset='train'
-    
+
     is_test_lower_bound=0
     is_use_neighbor=0
     is_get_subset_category_data=0
@@ -298,24 +298,24 @@ if __name__ == '__main__':
 
     print "start to predict..."
 
-    traverse_list_length=3 # you have three layers for ensemble
-    traverse_category_list=[3,14,15,16,255] # you only want to explore four categories (255 means all others)
+    traverse_list_length=4 # you have three layers for ensemble
+    traverse_category_list=[2,3,4,5,255] # you only want to explore several categories (255 means all others)
     # This is used in finding rules
-    # random_list=[   1,   2,   3,   4,   7,   8,   14,  17,  21,  24,  26,  28,  32,
-    #                 34,  35,  42,  43,  46,  48,  50,  53,  54,  56,  58,  61,  64,
-    #                 65,  66,  75,  76,  77,  78,  82,  85,  86,  92,  93, 101, 102,
-    #                106, 111, 112, 113, 114, 115, 116, 118, 120, 121, 127, 131, 134,
-    #                136, 138, 140, 152, 154, 156, 162, 167, 170, 174, 178, 181, 183,
-    #                184, 186, 188, 192, 198, 199, 201, 203, 204, 205, 206, 207, 211,
-    #                213, 215, 218, 223, 225, 226, 228, 229, 234, 235, 238, 251, 253,
-    #                259, 261, 263, 267, 271, 273, 275, 280, 284, 292, 299, 301, 315,
-    #                316, 317, 319, 322, 326, 328, 330, 334, 335, 337, 338, 351, 353,
-    #                357, 358, 360, 362, 368, 382, 387, 392, 396, 398, 403, 411, 418,
-    #                420, 421, 424, 435, 437, 438, 443, 445, 454, 459, 472, 478, 479,
-    #                482, 484, 487, 488, 494, 495, 498]
+    random_list=[   1,   2,   3,   4,   7,   8,   14,  17,  21,  24,  26,  28,  32,
+                    34,  35,  42,  43,  46,  48,  50,  53,  54,  56,  58,  61,  64,
+                    65,  66,  75,  76,  77,  78,  82,  85,  86,  92,  93, 101, 102,
+                   106, 111, 112, 113, 114, 115, 116, 118, 120, 121, 127, 131, 134,
+                   136, 138, 140, 152, 154, 156, 162, 167, 170, 174, 178, 181, 183,
+                   184, 186, 188, 192, 198, 199, 201, 203, 204, 205, 206, 207, 211,
+                   213, 215, 218, 223, 225, 226, 228, 229, 234, 235, 238, 251, 253,
+                   259, 261, 263, 267, 271, 273, 275, 280, 284, 292, 299, 301, 315,
+                   316, 317, 319, 322, 326, 328, 330, 334, 335, 337, 338, 351, 353,
+                   357, 358, 360, 362, 368, 382, 387, 392, 396, 398, 403, 411, 418,
+                   420, 421, 424, 435, 437, 438, 443, 445, 454, 459, 472, 478, 479,
+                   482, 484, 487, 488, 494, 495, 498]
 
     # This is used in prediction.
-    random_list=range(0,len(original_image_files))
+    # random_list=range(0,len(original_image_files))
     performance_threshold=0.75368
 
     saved_rule_traverse_result='/home/panquwang/adas-segmentation-cityscape/test/rule_traverse_result_file_with_purity.txt'

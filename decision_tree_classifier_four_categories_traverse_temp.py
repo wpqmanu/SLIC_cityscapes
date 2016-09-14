@@ -11,7 +11,7 @@ import cv2
 # sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
 # import labels
 # from labels     import trainId2label,id2label
-from pyspark import SparkContext, SparkConf
+# from pyspark import SparkContext, SparkConf
 
 def get_palette():
     sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
@@ -100,23 +100,22 @@ def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,origi
         superpixel_label = current_superpixel_data[2]
         num_superpixels = np.max(superpixel_label) + 1
 
-        # # statistics
-        # each_label_size = []
-        # for index_superpixel in range(int(num_superpixels)):
-        #     length = len(superpixel_label[superpixel_label == index_superpixel])
-        #     each_label_size.append(length)
+        # statistics
+        each_label_size = []
+        for index_superpixel in range(int(num_superpixels)):
+            length = len(superpixel_label[superpixel_label == index_superpixel])
+            each_label_size.append(length)
 
 
         final_map=np.ones((img_height, img_width))*(int(num_superpixels)+10)
         superpixel_index_set=[]
         superpixel_categorical_label=[]
         for index_superpixel in range(int(num_superpixels)):
-            # TODO: categorical label
             categorical_label=[]
             for layer_index in range(current_all_layer_values.shape[2]):
                 current_layer_current_superpixel_label = current_all_layer_values[:,:,layer_index][superpixel_label == index_superpixel]
                 current_layer_label_count = Counter(current_layer_current_superpixel_label).most_common()
-                # current_layer_consistency_rate = float(current_layer_label_count[0][1]) / len(current_layer_current_superpixel_label)
+                current_layer_consistency_rate = float(current_layer_label_count[0][1]) / len(current_layer_current_superpixel_label)
                 categorical_label.append(current_layer_label_count[0][0])
 
             # apply the hard-coded primming rule to avoid bug such as (1,2,3,4) not treated as (255,2,3,4)
@@ -132,11 +131,12 @@ def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,origi
             superpixel_index_set.append(index_superpixel)
             superpixel_categorical_label.append(categorical_label)
 
+
         superpixel_categorical_label_copy=copy.deepcopy(superpixel_categorical_label)
         # assign label to all superpixels
         for predicted_index,superpixel_index in enumerate(superpixel_index_set):
             current_categorical_labels=superpixel_categorical_label_copy[predicted_index]
-            # given a superpixel, set all except 4 big object labels to ignore label (255) to match input
+            # given a superpixel, set all except chosen object labels to ignore label (255) to match input
             for current_categorical_label_index, current_categorical_label in enumerate(current_categorical_labels):
                 if current_categorical_label not in traverse_category_list[:-1]:
                     current_categorical_labels[current_categorical_label_index]=traverse_category_list[-1]
@@ -156,123 +156,83 @@ def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,origi
         final_map[final_map>int(num_superpixels)]=255
 
         # save score
-        # final_map_saved=copy.deepcopy(final_map)
+        final_map_saved=copy.deepcopy(final_map)
         score=convert_trainid_to_label(final_map)
         cv2.imwrite(os.path.join(result_location,'score',file_name),score)
 
-        # # save visualization
-        # # original image
-        # concat_img = Image.new('RGB', (img_width * 3, img_height))
-        # concat_img.paste(Image.fromarray(original_image[:, :, [2, 1, 0]]).convert('RGB'), (0, 0))
-        # # ground truth
-        # gt_img = Image.open(gt_files[index])
-        # concat_img.paste(gt_img, (img_width, 0))
-        # # prediction
-        # final_map_saved = final_map_saved.astype(np.uint8)
-        # result_img = Image.fromarray(final_map_saved).convert('P')
-        # palette = get_palette()
-        # result_img.putpalette(palette)
-        # # concat_img.paste(result_img, (2048*2,0))
-        # concat_img.paste(result_img.convert('RGB'), (img_width * 2, 0))
-        # concat_img.save(os.path.join(result_location, 'visualization', file_name))
-
-def spark_processing(rule_index):
-    sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/SLIC_cityscapes/' ) ) )
-    from feature_extraction import get_feature_single_superpixel
-    sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
-    import labels
-    from labels     import trainId2label,id2label
-
-    dataset='train'
-
-    is_test_lower_bound=0
-    is_use_neighbor=0
-    is_get_subset_category_data=0
-    is_calculate_purity=0
+        # save visualization
+        # original image
+        concat_img = Image.new('RGB', (img_width * 3, img_height))
+        concat_img.paste(Image.fromarray(original_image[:, :, [2, 1, 0]]).convert('RGB'), (0, 0))
+        # ground truth
+        gt_img = Image.open(gt_files[index])
+        concat_img.paste(gt_img, (img_width, 0))
+        # prediction
+        final_map_saved = final_map_saved.astype(np.uint8)
+        result_img = Image.fromarray(final_map_saved).convert('P')
+        palette = get_palette()
+        result_img.putpalette(palette)
+        # concat_img.paste(result_img, (2048*2,0))
+        concat_img.paste(result_img.convert('RGB'), (img_width * 2, 0))
+        concat_img.save(os.path.join(result_location, 'visualization', file_name))
 
 
-    original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'_for_traverse/'
-    original_image_files=glob.glob(os.path.join(original_image_folder,"*.png"))
-    original_image_files.sort()
-
-    gt_folder = '/mnt/scratch/panqu/Dataset/CityScapes/gtFine/'+dataset+'_for_traverse/'
-    gt_files=glob.glob(os.path.join(gt_folder,"*gtFine_color.png"))
-    gt_files.sort()
-
-    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'_subset/data/'
-    superpixel_data=glob.glob(os.path.join(superpixel_result_folder,'*.dat'))
-    superpixel_data.sort()
 
 
-    # prediction for validation set
-    # folder={}
-    # # base
-    # folder[1]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/',dataset, dataset+'-epoch-35-CRF', 'score')
-    # # truck, wall
-    # folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'-epoch-39-CRF-050', 'score')
-    # # bus, train
-    # folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
-    folder = {}
-    # base:
-    folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,
-                             dataset + '_sub-epoch-35-CRF')
-    # scale 05
-    folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,
-                             dataset + '_sub-epoch-39-CRF-050')
-    # wild atrous
-    folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_crf_' + dataset + '_sub',
-                             'score')
-    # deconv
-    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_sub_crf', 'score')
 
-    folder_files={}
-    for key,value in folder.iteritems():
-        folder_files[key]=glob.glob(os.path.join(value,'*.png'))
-        folder_files[key].sort()
+sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/SLIC_cityscapes/' ) ) )
+sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
+import labels
+from labels     import trainId2label,id2label
 
-    print "start to predict..."
+dataset='train'
 
-    traverse_list_length=4 # you have three layers for ensemble
-    traverse_category_list=[2,3,4,5,255] # you only want to explore several categories (255 means all others)
-    random_list=range(0,500)
-
-    # enumerate all rules
-    all_possible_rule_list=[]
-    for first_item_in_list in traverse_category_list:
-        for second_item_in_list in traverse_category_list:
-            for third_item_in_list in traverse_category_list:
-                for fourth_item_in_list in traverse_category_list:
-                    current_category_list=[first_item_in_list,second_item_in_list,third_item_in_list,fourth_item_in_list]
-                    if len(set(current_category_list))==1:
-                        continue
-                    for possible_category in np.unique(np.asarray(current_category_list)):
-                        all_possible_rule_list.append((current_category_list,possible_category))
-
-    # trim the rule list
-    to_be_deleted_list=[]
-    for index,possible_rule in enumerate(all_possible_rule_list):
-        # pole (label 5) and wall (label 3) and building (label 2)
-        if possible_rule[0][1]==5 or possible_rule[0][2]==5 or possible_rule[0][0]==3 or possible_rule[0][3]==3 or possible_rule[0][1]==2:
-            to_be_deleted_list.append(index)
-
-    for value in to_be_deleted_list[::-1]:
-        del all_possible_rule_list[value]
+is_test_lower_bound=0
+is_use_neighbor=0
+is_get_subset_category_data=0
+is_calculate_purity=0
 
 
-    current_rule=all_possible_rule_list[rule_index]
-    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse_category_set_2345/', dataset,
-                                   str(current_rule[0][0])+'_'+str(current_rule[0][1])+'_'+
-                                   str(current_rule[0][2])+'_'+str(current_rule[0][3])+'_'+str(current_rule[1]))
-    if not os.path.exists(result_location):
-        os.makedirs(result_location)
-        os.makedirs(os.path.join(result_location, 'score'))
-        os.makedirs(os.path.join(result_location, 'visualization'))
+original_image_folder = '/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'_for_traverse/'
+original_image_files=glob.glob(os.path.join(original_image_folder,"*.png"))
+original_image_files.sort()
 
-    predict(random_list,superpixel_data,gt_files,folder_files,current_rule,original_image_files,result_location,is_test_lower_bound,is_use_neighbor,traverse_category_list)
+gt_folder = '/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'_for_traverse/'
+gt_files=glob.glob(os.path.join(gt_folder,"*gtFine_color.png"))
+gt_files.sort()
 
-    return 1
+superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'_subset/data/'
+superpixel_data=glob.glob(os.path.join(superpixel_result_folder,'*.dat'))
+superpixel_data.sort()
 
 
+# prediction for validation set
+# folder={}
+# # base
+# folder[1]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/',dataset, dataset+'-epoch-35-CRF', 'score')
+# # truck, wall
+# folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'-epoch-39-CRF-050', 'score')
+# # bus, train
+# folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
+folder = {}
+# base:
+folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,
+                         dataset + '_sub-epoch-35-CRF')
+# scale 05
+folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,
+                         dataset + '_sub-epoch-39-CRF-050')
+# wild atrous
+folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_crf_' + dataset + '_sub',
+                         'score')
+# deconv
+folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_sub_crf', 'score')
+
+folder_files={}
+for key,value in folder.iteritems():
+    folder_files[key]=glob.glob(os.path.join(value,'*.png'))
+    folder_files[key].sort()
+
+print "start to predict..."
 
 traverse_list_length=4 # you have three layers for ensemble
 traverse_category_list=[2,3,4,5,255] # you only want to explore several categories (255 means all others)
@@ -300,25 +260,15 @@ for index,possible_rule in enumerate(all_possible_rule_list):
 for value in to_be_deleted_list[::-1]:
     del all_possible_rule_list[value]
 
-len_rules=len(all_possible_rule_list)
+for rule_index in range(len(all_possible_rule_list)):
+    current_rule=all_possible_rule_list[rule_index]
+    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse_category_set_2345/', dataset,
+                                   str(current_rule[0][0])+'_'+str(current_rule[0][1])+'_'+
+                                   str(current_rule[0][2])+'_'+str(current_rule[0][3])+'_'+str(current_rule[1]))
+    if not os.path.exists(result_location):
+        os.makedirs(result_location)
+        os.makedirs(os.path.join(result_location, 'score'))
+        os.makedirs(os.path.join(result_location, 'visualization'))
 
-
-num_cores=80
-conf = SparkConf()
-conf.setAppName("segmentation_rule_traverse").setMaster("spark://192.168.1.132:7077")
-conf.set("spark.scheduler.mode", "FAIR")
-conf.set("spark.cores.max", num_cores)
-sc = SparkContext(conf=conf)
-
-
-
-range_i = range(0, len_rules)
-RDDList = sc.parallelize(range_i, num_cores)
-print '------------------------------------start spark-----------------------------------'
-
-mapper = RDDList.map(spark_processing).reduce(lambda a, b : a+b)
-print "total files processed {}".format(mapper)
-print '-------------------------------------done-----------------------------------------'
-
-
+    predict(random_list,superpixel_data,gt_files,folder_files,current_rule,original_image_files,result_location,is_test_lower_bound,is_use_neighbor,traverse_category_list)
 

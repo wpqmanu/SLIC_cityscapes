@@ -293,19 +293,19 @@ class SlicCalculator(object):
 
 
 if __name__ == '__main__':
-    dataset='train'
+    dataset='val'
 
 
-    # use 500 training subfolder
-    folder={}
+    # use 150 validation subfolder
+    folder = {}
     # base:
-    folder[1]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/',dataset, dataset+'_sub-epoch-35-CRF')
+    folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset, dataset+'-epoch-35-CRF_for_traverse', 'score')
     # scale 05
-    folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'_sub-epoch-39-CRF-050')
+    folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,dataset + '-epoch-39-CRF-050_for_traverse','score')
     # wild atrous
-    folder[3]=os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_crf_'+dataset+'_sub', 'score')
+    folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf','score')
     # deconv
-    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_'+dataset+'_sub_crf', 'score')
+    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf', 'score')
     folder_files={}
     previous_key=0
     for key,value in folder.iteritems():

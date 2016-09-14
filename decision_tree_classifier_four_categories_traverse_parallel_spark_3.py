@@ -120,13 +120,13 @@ def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,origi
                 categorical_label.append(current_layer_label_count[0][0])
 
             # apply the hard-coded primming rule to avoid bug such as (1,2,3,4) not treated as (255,2,3,4)
-            if categorical_label[0]==3:
+            if categorical_label[0]==14 or categorical_label[0]==15 or categorical_label[0]==16:
                 categorical_label[0]=255
-            if categorical_label[1]==5 or categorical_label[1]==2:
+            if categorical_label[1]==13:
                 categorical_label[1]=255
-            if categorical_label[2]==5:
+            if categorical_label[2]==13:
                 categorical_label[2]=255
-            if categorical_label[3]==3:
+            if categorical_label[3]==13:
                 categorical_label[3]=255
 
             superpixel_index_set.append(index_superpixel)
@@ -233,7 +233,7 @@ def spark_processing(rule_index):
     print "start to predict..."
 
     traverse_list_length=4 # you have three layers for ensemble
-    traverse_category_list=[2,3,4,5,255] # you only want to explore several categories (255 means all others)
+    traverse_category_list=[13,14,15,16,255] # you only want to explore several categories (255 means all others)
     random_list=range(0,500)
 
     # enumerate all rules
@@ -251,8 +251,8 @@ def spark_processing(rule_index):
     # trim the rule list
     to_be_deleted_list=[]
     for index,possible_rule in enumerate(all_possible_rule_list):
-        # pole (label 5) and wall (label 3) and building (label 2)
-        if possible_rule[0][1]==5 or possible_rule[0][2]==5 or possible_rule[0][0]==3 or possible_rule[0][3]==3 or possible_rule[0][1]==2:
+        # car (13) and truck (14) and bus (15) and train (16)
+        if possible_rule[0][0]==14 or possible_rule[0][0]==15 or possible_rule[0][0]==16 or possible_rule[0][1]==13 or possible_rule[0][2]==13 or possible_rule[0][3]==13:
             to_be_deleted_list.append(index)
 
     for value in to_be_deleted_list[::-1]:
@@ -260,7 +260,7 @@ def spark_processing(rule_index):
 
 
     current_rule=all_possible_rule_list[rule_index]
-    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse_category_set_2345/', dataset,
+    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse_category_set_13141516/', dataset,
                                    str(current_rule[0][0])+'_'+str(current_rule[0][1])+'_'+
                                    str(current_rule[0][2])+'_'+str(current_rule[0][3])+'_'+str(current_rule[1]))
     if not os.path.exists(result_location):
@@ -275,7 +275,7 @@ def spark_processing(rule_index):
 
 
 traverse_list_length=4 # you have three layers for ensemble
-traverse_category_list=[2,3,4,5,255] # you only want to explore several categories (255 means all others)
+traverse_category_list=[13,14,15,16,255] # you only want to explore several categories (255 means all others)
 random_list=range(0,500)
 
 # enumerate all rules
@@ -293,8 +293,8 @@ for first_item_in_list in traverse_category_list:
 # trim the rule list
 to_be_deleted_list=[]
 for index,possible_rule in enumerate(all_possible_rule_list):
-    # pole (label 5) and wall (label 3) and building (label 2)
-    if possible_rule[0][1]==5 or possible_rule[0][2]==5 or possible_rule[0][0]==3 or possible_rule[0][3]==3 or possible_rule[0][1]==2:
+    # car (13) and truck (14) and bus (15) and train (16)
+    if possible_rule[0][0]==14 or possible_rule[0][0]==15 or possible_rule[0][0]==16 or possible_rule[0][1]==13 or possible_rule[0][2]==13 or possible_rule[0][3]==13:
         to_be_deleted_list.append(index)
 
 for value in to_be_deleted_list[::-1]:
