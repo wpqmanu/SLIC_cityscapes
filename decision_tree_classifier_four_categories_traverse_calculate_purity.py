@@ -88,7 +88,7 @@ def convert_trainid_to_label(label):
     label[label == 255] = 0
     return label
 
-def calculate_purity_2345(traverse_category_list,folder_files,gt_files):
+def get_stats_2345(traverse_category_list,folder_files,gt_files):
     # go through all training files
     C=Counter()
     for index in range(len(gt_files)):
@@ -125,7 +125,7 @@ def calculate_purity_2345(traverse_category_list,folder_files,gt_files):
     cPickle.dump(C, open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_2345.dat'), "w+"))
 
 
-def calculate_purity_6789(traverse_category_list,folder_files,gt_files):
+def get_stats_6789(traverse_category_list,folder_files,gt_files):
     # go through all training files
     C=Counter()
     for index in range(len(gt_files)):
@@ -161,7 +161,7 @@ def calculate_purity_6789(traverse_category_list,folder_files,gt_files):
     cPickle.dump(C, open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_6789.dat'), "w+"))
 
 
-def calculate_purity_13141516(traverse_category_list,folder_files,gt_files):
+def get_stats_13141516(traverse_category_list,folder_files,gt_files):
     # go through all training files
     C=Counter()
     for index in range(len(gt_files)):
@@ -322,12 +322,29 @@ def predict(random_list,superpixel_data,gt_files,folder_files,final_selected_rul
         concat_img.paste(result_img.convert('RGB'), (img_width * 2, 0))
         concat_img.save(os.path.join(result_location, 'visualization', file_name))
 
+def calculate_purity(stats):
+    new_list=[]
+    for key,value in stats.iteritems():
+        current_list=list(key)+[value]
+        new_list.append(current_list)
 
+    new_list_copy=copy.deepcopy(new_list)
+    new_list_first_4=np.array([i[:4] for i in new_list])
+    for index,item in enumerate(new_list):
+        first_four_value=item[:4]
+        same_first_four_values=np.where(np.all(new_list_first_4==first_four_value,axis=1))
+        print same_first_four_values
+        total_count_same_first_four_values=[new_list[i][-1] for i in same_first_four_values[0]]
+        purity_current_rule=float(item[-1])/sum(total_count_same_first_four_values)
+        new_list_copy[index].append(purity_current_rule)
+
+    return new_list_copy
 
 if __name__ == '__main__':
     dataset = 'val'
 
-    is_calculate_purity = 1
+    is_calculate_purity = 0
+    is_load_purity_result=1
 
     original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/' + dataset + '_for_traverse/'
     original_image_files = glob.glob(os.path.join(original_image_folder, "*.png"))
@@ -377,15 +394,27 @@ if __name__ == '__main__':
 
     if is_calculate_purity:
         traverse_category_list_2345 = [2, 3, 4, 5, 255]  # you only want to explore several categories (255 means all others)
-        calculate_purity_2345(traverse_category_list_2345,folder_files,gt_files)
+        get_stats_2345(traverse_category_list_2345,folder_files,gt_files)
 
         traverse_category_list_6789 = [6, 7, 8, 9, 255]  # you only want to explore several categories (255 means all others)
-        calculate_purity_6789(traverse_category_list_6789,folder_files,gt_files)
+        get_stats_6789(traverse_category_list_6789,folder_files,gt_files)
 
         traverse_category_list_13141516 = [13, 14, 15, 16, 255]  # you only want to explore several categories (255 means all others)
-        calculate_purity_13141516(traverse_category_list_13141516,folder_files,gt_files)
+        get_stats_13141516(traverse_category_list_13141516,folder_files,gt_files)
 
-    # saved_rule_traverse_result='/home/panquwang/adas-segmentation-cityscape/test/rule_traverse_result_file_with_purity.txt'
+    if is_load_purity_result:
+        purity_2345 = cPickle.load(open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_2345.dat'), "rb"))
+        purity_6789 = cPickle.load(open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_6789.dat'), "rb"))
+        purity_13141516 = cPickle.load(open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_13141516.dat'), "rb"))
+
+        print "calculating stats..."
+        purity_2345_final = calculate_purity(purity_2345)
+        purity_6789_final = calculate_purity(purity_6789)
+        purity_13141516_final = calculate_purity(purity_13141516)
+
+        cPickle.dump((purity_2345_final,purity_6789_final,purity_13141516_final), open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_final.dat'), "w+"))
+
+        # saved_rule_traverse_result='/home/panquwang/adas-segmentation-cityscape/test/rule_traverse_result_file_with_purity.txt'
     #
     #
     # # prediction

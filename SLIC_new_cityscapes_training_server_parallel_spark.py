@@ -321,13 +321,13 @@ def spark_processing(i):
     # use 150 validation subfolder
     folder = {}
     # base:
-    folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset, dataset+'-epoch-35-CRF_for_traverse', 'score')
+    folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset, dataset+'-epoch-35-CRF_for_traverse_frankfurt')
     # scale 05
-    folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,dataset + '-epoch-39-CRF-050_for_traverse','score')
+    folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,dataset + '-epoch-39-CRF-050_for_traverse_frankfurt')
     # wild atrous
-    folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf','score')
+    folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf_frankfurt')
     # deconv
-    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf', 'score')
+    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf_frankfurt')
     # # scale 1.25
     # folder[5] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_sub_crf', 'score')
 
@@ -351,7 +351,7 @@ def spark_processing(i):
     img_channels=len(folder_files)
     num_superpixels = 50000
     step=int(math.floor((img_width*img_height/num_superpixels)**0.5))
-    result_dir=os.path.join('/mnt/scratch/panqu/SLIC/server_'+dataset+'_subset')
+    result_dir=os.path.join('/mnt/scratch/panqu/SLIC/server_'+dataset+'_subset_frankfurt')
     if not os.path.exists(result_dir):
         os.makedirs(result_dir)
 
@@ -369,7 +369,7 @@ conf.set("spark.scheduler.mode", "FAIR")
 conf.set("spark.cores.max", num_cores)
 sc = SparkContext(conf=conf)
 
-range_i = range(0, 233)
+range_i = range(0, 267)
 RDDList = sc.parallelize(range_i, num_cores)
 print '------------------------------------start spark-----------------------------------'
 
