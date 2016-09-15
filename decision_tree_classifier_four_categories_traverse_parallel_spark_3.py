@@ -237,7 +237,7 @@ def spark_processing(rule_index):
 
     traverse_list_length=4 # you have three layers for ensemble
     traverse_category_list=[13,14,15,16,255] # you only want to explore several categories (255 means all others)
-    random_list=range(0,150)
+    random_list=range(0,233)
 
     # enumerate all rules
     all_possible_rule_list=[]
@@ -279,7 +279,7 @@ def spark_processing(rule_index):
 
 traverse_list_length=4 # you have three layers for ensemble
 traverse_category_list=[13,14,15,16,255] # you only want to explore several categories (255 means all others)
-random_list=range(0,150)
+random_list=range(0,233)
 
 # enumerate all rules
 all_possible_rule_list=[]
@@ -306,7 +306,7 @@ for value in to_be_deleted_list[::-1]:
 len_rules=len(all_possible_rule_list)
 
 
-num_cores=60
+num_cores=80
 conf = SparkConf()
 conf.setAppName("segmentation_rule_traverse").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")

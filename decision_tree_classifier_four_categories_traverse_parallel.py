@@ -250,7 +250,7 @@ if __name__ == '__main__':
 
     traverse_list_length=4 # you have three layers for ensemble
     traverse_category_list=[2,3,4,5,255] # you only want to explore several categories (255 means all others)
-    random_list=range(0,150)
+    random_list=range(0,233)
 
     # enumerate all rules
     all_possible_rule_list=[]

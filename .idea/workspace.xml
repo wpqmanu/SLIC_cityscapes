@@ -2,15 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7beb661-607e-4d39-83ac-cc8e6d093a5b" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/accuracy.npy" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/calculate_bound_val.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark.py" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_calculate_purity.py" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level_mutiple_set_trimmed_rules.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SLIC_merge_superpixels_parallel.py" afterPath="$PROJECT_DIR$/SLIC_merge_superpixels_parallel.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel_spark.py" afterPath="$PROJECT_DIR$/SLIC_new_cityscapes_training_server_parallel_spark.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel.py" afterPath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark_2.py" afterPath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark_2.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark_3.py" afterPath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark_3.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py" afterPath="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py" />
     </list>
     <ignored path="SLIC_cityscapes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,18 +25,9 @@
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse_pixel_level_hard_case.coverage" NAME="decision_tree_classifier_four_categories_traverse_pixel_level_hard_case Coverage Results" MODIFIED="1473711971307" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$feature_extraction.coverage" NAME="feature_extraction Coverage Results" MODIFIED="1472854925767" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$random_forest_classifier_four_categories.coverage" NAME="random_forest_classifier_four_categories Coverage Results" MODIFIED="1473374880578" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$SLIC_new_cityscapes_training_server_parallel_spark.coverage" NAME="SLIC_new_cityscapes_training_server_parallel_spark Coverage Results" MODIFIED="1472517008765" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse_parallel.coverage" NAME="decision_tree_classifier_four_categories_traverse_parallel Coverage Results" MODIFIED="1473891344958" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$feature_extraction_with_neighbor.coverage" NAME="feature_extraction_with_neighbor Coverage Results" MODIFIED="1472865222185" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$random_forest_classifier_one_hot_label.coverage" NAME="random_forest_classifier_one_hot_label Coverage Results" MODIFIED="1472851064248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$random_forest_classifier_four_categories_with_background.coverage" NAME="random_forest_classifier_four_categories_with_background Coverage Results" MODIFIED="1473358146883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$calculate_bound_val.coverage" NAME="calculate_bound_val Coverage Results" MODIFIED="1472584607904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$SLIC_new_cityscapes_training_server_1.coverage" NAME="SLIC_new_cityscapes_training_server_1 Coverage Results" MODIFIED="1473885568210" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$random_forest_classifier.coverage" NAME="random_forest_classifier Coverage Results" MODIFIED="1473277253701" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier.coverage" NAME="decision_tree_classifier Coverage Results" MODIFIED="1473285674258" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_manual_classifier.coverage" NAME="decision_tree_manual_classifier Coverage Results" MODIFIED="1473291238320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$xgboost_classifier_parallel.coverage" NAME="xgboost_classifier_parallel Coverage Results" MODIFIED="1473208552739" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$xgboost_classifier_four_categories.coverage" NAME="xgboost_classifier_four_categories Coverage Results" MODIFIED="1473363286589" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse_pixel_level.coverage" NAME="decision_tree_classifier_four_categories_traverse_pixel_level Coverage Results" MODIFIED="1473715121062" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -45,8 +36,19 @@
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$XGBM_classifier.coverage" NAME="XGBM_classifier Coverage Results" MODIFIED="1473202059043" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$xgboost_classifier.coverage" NAME="xgboost_classifier Coverage Results" MODIFIED="1473272433779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse.coverage" NAME="decision_tree_classifier_four_categories_traverse Coverage Results" MODIFIED="1473880780492" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse_init.coverage" NAME="decision_tree_classifier_four_categories_traverse_init Coverage Results" MODIFIED="1473885412280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/SLIC_cityscapes$SLIC_merge_superpixels_parallel.coverage" NAME="SLIC_merge_superpixels_parallel Coverage Results" MODIFIED="1473888909445" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$feature_extraction.coverage" NAME="feature_extraction Coverage Results" MODIFIED="1472854925767" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse_parallel.coverage" NAME="decision_tree_classifier_four_categories_traverse_parallel Coverage Results" MODIFIED="1473891344958" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$random_forest_classifier_one_hot_label.coverage" NAME="random_forest_classifier_one_hot_label Coverage Results" MODIFIED="1472851064248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$random_forest_classifier_four_categories_with_background.coverage" NAME="random_forest_classifier_four_categories_with_background Coverage Results" MODIFIED="1473358146883" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$calculate_bound_val.coverage" NAME="calculate_bound_val Coverage Results" MODIFIED="1472584607904" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$SLIC_new_cityscapes_training_server_1.coverage" NAME="SLIC_new_cityscapes_training_server_1 Coverage Results" MODIFIED="1473885568210" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$random_forest_classifier.coverage" NAME="random_forest_classifier Coverage Results" MODIFIED="1473277253701" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier.coverage" NAME="decision_tree_classifier Coverage Results" MODIFIED="1473285674258" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse_calculate_purity.coverage" NAME="decision_tree_classifier_four_categories_traverse_calculate_purity Coverage Results" MODIFIED="1473965280411" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_manual_classifier.coverage" NAME="decision_tree_manual_classifier Coverage Results" MODIFIED="1473291238320" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse_pixel_level_mutiple_set_trimmed_rules.coverage" NAME="decision_tree_classifier_four_categories_traverse_pixel_level_mutiple_set_trimmed_rules Coverage Results" MODIFIED="1473896883032" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/SLIC_cityscapes$decision_tree_classifier_four_categories_traverse_init.coverage" NAME="decision_tree_classifier_four_categories_traverse_init Coverage Results" MODIFIED="1473885412280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
@@ -63,7 +65,21 @@
     <favorites_list name="SLIC_cityscapes" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="decision_tree_classifier_four_categories_traverse_calculate_purity.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_calculate_purity.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-564">
+              <caret line="163" column="4" selection-start-line="163" selection-start-column="4" selection-end-line="163" selection-end-column="4" />
+              <folding>
+                <element signature="e#9430#10183#0" expanded="false" />
+                <element signature="e#10374#15560#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -96,7 +112,6 @@
         <option value="$PROJECT_DIR$/random_forest_classifier_four_categories_with_background.py" />
         <option value="$PROJECT_DIR$/feature_extraction.py" />
         <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level_hard_case.py" />
-        <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py" />
         <option value="$PROJECT_DIR$/random_forest_classifier.py" />
         <option value="$PROJECT_DIR$/copy_file.py" />
         <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py" />
@@ -108,6 +123,10 @@
         <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel.py" />
         <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark_2.py" />
         <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark_3.py" />
+        <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py" />
+        <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level_mutiple_set_trimmed_rules.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_calculate_purity.py" />
       </list>
     </option>
   </component>
@@ -182,7 +201,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.decision_tree_classifier_four_categories_traverse_parallel">
+  <component name="RunManager" selected="Python.decision_tree_classifier_four_categories_traverse_calculate_purity">
     <configuration default="false" name="SLIC_new_cityscapes_training_server_1" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -220,42 +239,6 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="decision_tree_classifier_four_categories_traverse_init" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="SLIC_cityscapes" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_init.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="decision_tree_classifier_four_categories_traverse" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="SLIC_cityscapes" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
     <configuration default="false" name="decision_tree_classifier_four_categories_traverse_parallel" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -270,6 +253,42 @@
       <module name="SLIC_cityscapes" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="decision_tree_classifier_four_categories_traverse_pixel_level_mutiple_set_trimmed_rules" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SLIC_cityscapes" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level_mutiple_set_trimmed_rules.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="decision_tree_classifier_four_categories_traverse_calculate_purity" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="SLIC_cityscapes" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_calculate_purity.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
@@ -462,17 +481,17 @@
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.SLIC_new_cityscapes_training_server_1" />
       <item index="1" class="java.lang.String" itemvalue="Python.SLIC_merge_superpixels_parallel" />
-      <item index="2" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_init" />
-      <item index="3" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse" />
-      <item index="4" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_parallel" />
+      <item index="2" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_parallel" />
+      <item index="3" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_pixel_level_mutiple_set_trimmed_rules" />
+      <item index="4" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_calculate_purity" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_parallel" />
-        <item index="1" class="java.lang.String" itemvalue="Python.SLIC_merge_superpixels_parallel" />
-        <item index="2" class="java.lang.String" itemvalue="Python.SLIC_new_cityscapes_training_server_1" />
-        <item index="3" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_init" />
-        <item index="4" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse" />
+        <item index="0" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_calculate_purity" />
+        <item index="1" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_pixel_level_mutiple_set_trimmed_rules" />
+        <item index="2" class="java.lang.String" itemvalue="Python.decision_tree_classifier_four_categories_traverse_parallel" />
+        <item index="3" class="java.lang.String" itemvalue="Python.SLIC_merge_superpixels_parallel" />
+        <item index="4" class="java.lang.String" itemvalue="Python.SLIC_new_cityscapes_training_server_1" />
       </list>
     </recent_temporary>
   </component>
@@ -512,12 +531,12 @@
       <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2753623" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32951945" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27848604" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27450198" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32988048" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38520214" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21052632" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -562,12 +581,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py</url>
-          <line>231</line>
+          <line>244</line>
           <option name="timeStamp" value="180" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py</url>
-          <line>256</line>
+          <line>269</line>
           <option name="timeStamp" value="181" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
@@ -605,6 +624,11 @@
           <line>159</line>
           <option name="timeStamp" value="208" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level_mutiple_set_trimmed_rules.py</url>
+          <line>277</line>
+          <option name="timeStamp" value="213" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
@@ -616,19 +640,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="213" />
+      <option name="time" value="230" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle/pydev_monkey_qt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SLIC_merge_superpixels.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="309">
@@ -873,14 +889,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level_hard_case.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="424">
-          <caret line="202" column="36" selection-start-line="202" selection-start-column="36" selection-end-line="202" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/SLIC.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-435">
@@ -912,33 +920,6 @@
         <state relative-caret-position="406">
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="18" selection-end-column="101" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2636">
-          <caret line="244" column="16" selection-start-line="244" selection-start-column="16" selection-end-line="244" selection-end-column="16" />
-          <folding>
-            <element signature="e#2281#2628#0" expanded="false" />
-            <element signature="e#2685#3041#0" expanded="false" />
-            <element signature="e#3084#3567#0" expanded="false" />
-            <element signature="e#3642#5239#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="273" column="94" selection-start-line="273" selection-start-column="30" selection-end-line="273" selection-end-column="94" />
-          <folding>
-            <element signature="e#2221#2568#0" expanded="false" />
-            <element signature="e#2625#2981#0" expanded="false" />
-            <element signature="e#3024#3507#0" expanded="false" />
-            <element signature="e#3582#5179#0" expanded="false" />
-            <element signature="e#5263#6016#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1008,31 +989,98 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark_3.py">
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level_mutiple_set_trimmed_rules.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="193">
-          <caret line="308" column="12" selection-start-line="308" selection-start-column="12" selection-end-line="308" selection-end-column="12" />
+        <state relative-caret-position="3451">
+          <caret line="141" column="41" selection-start-line="141" selection-start-column="41" selection-end-line="141" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_temp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2784">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#0#10#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark_2.py">
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level_hard_case.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5723">
-          <caret line="100" column="49" selection-start-line="100" selection-start-column="33" selection-end-line="100" selection-end-column="49" />
+        <state relative-caret-position="3121">
+          <caret line="202" column="36" selection-start-line="202" selection-start-column="36" selection-end-line="202" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-914">
+          <caret line="273" column="94" selection-start-line="273" selection-start-column="30" selection-end-line="273" selection-end-column="94" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#2221#2568#0" expanded="false" />
+            <element signature="e#2625#2981#0" expanded="false" />
+            <element signature="e#3024#3507#0" expanded="false" />
+            <element signature="e#3582#5179#0" expanded="false" />
+            <element signature="e#5263#6016#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_pixel_level.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2538">
+          <caret line="92" column="20" selection-start-line="92" selection-start-column="4" selection-end-line="92" selection-end-column="20" />
+          <folding>
+            <element signature="e#2281#2628#0" expanded="false" />
+            <element signature="e#2685#3041#0" expanded="false" />
+            <element signature="e#3084#3567#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1961">
-          <caret line="274" column="32" selection-start-line="274" selection-start-column="32" selection-end-line="274" selection-end-column="32" />
+        <state relative-caret-position="5175">
+          <caret line="235" column="37" selection-start-line="235" selection-start-column="37" selection-end-line="235" selection-end-column="37" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark_2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="29">
+          <caret line="100" column="49" selection-start-line="100" selection-start-column="33" selection-end-line="100" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_parallel_spark_3.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5036">
+          <caret line="280" column="40" selection-start-line="280" selection-start-column="40" selection-end-line="280" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/decision_tree_classifier_four_categories_traverse_calculate_purity.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-564">
+          <caret line="163" column="4" selection-start-line="163" selection-start-column="4" selection-end-line="163" selection-end-column="4" />
+          <folding>
+            <element signature="e#9430#10183#0" expanded="false" />
+            <element signature="e#10374#15560#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

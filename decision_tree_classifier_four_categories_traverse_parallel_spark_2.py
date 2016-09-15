@@ -233,7 +233,7 @@ def spark_processing(rule_index):
 
     traverse_list_length=4 # you have three layers for ensemble
     traverse_category_list=[6,7,8,9,255] # you only want to explore several categories (255 means all others)
-    random_list=range(0,150)
+    random_list=range(0,233)
 
     # enumerate all rules
     all_possible_rule_list=[]
@@ -275,7 +275,7 @@ def spark_processing(rule_index):
 
 traverse_list_length=4 # you have three layers for ensemble
 traverse_category_list=[6,7,8,9,255] # you only want to explore several categories (255 means all others)
-random_list=range(0,150)
+random_list=range(0,233)
 
 # enumerate all rules
 all_possible_rule_list=[]
