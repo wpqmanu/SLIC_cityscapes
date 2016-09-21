@@ -343,31 +343,20 @@ def calculate_purity(stats):
 if __name__ == '__main__':
     dataset = 'val'
 
-    is_calculate_purity = 0
+    is_calculate_purity = 1
     is_load_purity_result=1
 
     original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/' + dataset + '_for_traverse/'
     original_image_files = glob.glob(os.path.join(original_image_folder, "*.png"))
     original_image_files.sort()
 
+
+
+
     gt_folder = '/mnt/scratch/panqu/Dataset/CityScapes/gtFine/' + dataset + '_for_traverse/'
     gt_files = glob.glob(os.path.join(gt_folder, "*gtFine_labelTrainIds.png"))
     gt_files.sort()
 
-    superpixel_result_folder = '/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_' + dataset + '_subset/data/'
-    superpixel_data = glob.glob(os.path.join(superpixel_result_folder, '*.dat'))
-    superpixel_data.sort()
-
-    # prediction for validation set
-    # folder={}
-    # # base
-    # folder[1]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/',dataset, dataset+'-epoch-35-CRF', 'score')
-    # # truck, wall
-    # folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'-epoch-39-CRF-050', 'score')
-    # # bus, train
-    # folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
-
-    # use 150 validation subfolder
     folder = {}
     # base:
     folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,
@@ -387,10 +376,38 @@ if __name__ == '__main__':
         folder_files[key] = glob.glob(os.path.join(value, '*.png'))
         folder_files[key].sort()
 
+
+
+    gt_folder_for_train = '/mnt/scratch/panqu/Dataset/CityScapes/gtFine/' + dataset + '_for_traverse_for_train/'
+    gt_files_for_train = glob.glob(os.path.join(gt_folder_for_train, "*gtFine_labelTrainIds.png"))
+    gt_files_for_train.sort()
+    # folder fot car/bus/truck/train
+    folder_for_train = {}
+    # base:
+    folder_for_train[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,
+                             dataset + '-epoch-35-CRF_for_traverse_for_train')
+    # scale 05
+    folder_for_train[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,
+                             dataset + '-epoch-39-CRF-050_for_traverse_for_train')
+    # wild atrous
+    folder_for_train[3] = os.path.join(
+        '/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf_for_train')
+    # deconv
+    folder_for_train[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf_for_train')
+
+    folder_files_for_train={}
+    for key,value in folder_for_train.iteritems():
+        folder_files_for_train[key]=glob.glob(os.path.join(value,'*.png'))
+        folder_files_for_train[key].sort()
+
+
+
+
+
+
     print "start to predict..."
 
     traverse_list_length = 4  # you have three layers for ensemble
-    random_list = range(0, 233)
 
     if is_calculate_purity:
         traverse_category_list_2345 = [2, 3, 4, 5, 255]  # you only want to explore several categories (255 means all others)
@@ -400,7 +417,7 @@ if __name__ == '__main__':
         get_stats_6789(traverse_category_list_6789,folder_files,gt_files)
 
         traverse_category_list_13141516 = [13, 14, 15, 16, 255]  # you only want to explore several categories (255 means all others)
-        get_stats_13141516(traverse_category_list_13141516,folder_files,gt_files)
+        get_stats_13141516(traverse_category_list_13141516,folder_files_for_train,gt_files_for_train)
 
     if is_load_purity_result:
         purity_2345 = cPickle.load(open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_2345.dat'), "rb"))

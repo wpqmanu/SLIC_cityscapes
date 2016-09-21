@@ -119,12 +119,6 @@ def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,origi
                 # current_layer_consistency_rate = float(current_layer_label_count[0][1]) / len(current_layer_current_superpixel_label)
                 categorical_label.append(current_layer_label_count[0][0])
 
-            # apply the hard-coded primming rule to avoid bug such as (1,2,3,4) not treated as (255,2,3,4)
-            if categorical_label[1]==6 or categorical_label[1]==7 or categorical_label[1]==8 or categorical_label[1]==9:
-                categorical_label[1]=255
-            if categorical_label[2]==6 or categorical_label[2]==7:
-                categorical_label[2]=255
-
             superpixel_index_set.append(index_superpixel)
             superpixel_categorical_label.append(categorical_label)
 
@@ -136,6 +130,12 @@ def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,origi
             for current_categorical_label_index, current_categorical_label in enumerate(current_categorical_labels):
                 if current_categorical_label not in traverse_category_list[:-1]:
                     current_categorical_labels[current_categorical_label_index]=traverse_category_list[-1]
+
+            # apply the hard-coded primming rule to avoid bug such as (1,2,3,4) not treated as (255,2,3,4)
+            if current_categorical_labels[1]==6 or current_categorical_labels[1]==7 or current_categorical_labels[1]==8 or current_categorical_labels[1]==9:
+                current_categorical_labels[1]=255
+            if current_categorical_labels[2]==6 or current_categorical_labels[2]==7:
+                current_categorical_labels[2]=255
 
             # if current superpixel meets the rule
             if current_categorical_labels==current_rule[0]:
@@ -152,7 +152,7 @@ def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,origi
         final_map[final_map>int(num_superpixels)]=255
 
         # save score
-        # final_map_saved=copy.deepcopy(final_map)
+        final_map_saved=copy.deepcopy(final_map)
         score=convert_trainid_to_label(final_map)
         cv2.imwrite(os.path.join(result_location,'score',file_name),score)
 

@@ -124,7 +124,7 @@ if __name__ == '__main__':
     dataset='val'
 
     # superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_'+dataset+'/'
-    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_'+dataset+'_subset/'
+    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_'+dataset+'_subset_frankfurt/'
     # original_files_folder='/home/panquwang/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'/'
     # gt_folder='/home/panquwang/Dataset/CityScapes/gtFine/'+dataset+'/'
 
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     # gt_files.sort()
 
     # time=datetime.now().strftime('%Y_%m_%d_%H:%M:%S')
-    place_to_save = '/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'_subset/'
+    place_to_save = '/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'_subset_frankfurt/'
     if not os.path.exists(place_to_save):
         os.makedirs(place_to_save)
         os.makedirs(os.path.join(place_to_save, 'data'))
@@ -149,7 +149,7 @@ if __name__ == '__main__':
 
 
     num_cores = multiprocessing.cpu_count()
-    range_i=range(0,60)
+    range_i=range(0,70)
 
     Parallel(n_jobs=num_cores)(delayed(parallel_processing)(i,superpixel_data,superpixel_images,place_to_save) for i in range_i)
 

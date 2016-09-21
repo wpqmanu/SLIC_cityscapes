@@ -11,8 +11,7 @@ import cv2
 # sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
 # import labels
 # from labels     import trainId2label,id2label
-from joblib import Parallel, delayed
-import multiprocessing
+from pyspark import SparkContext, SparkConf
 
 def get_palette():
     sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
@@ -77,22 +76,11 @@ def get_quality(superpixel_label,current_all_layer_values, index_superpixel):
     # otherwise pass the quality test
     return True,predict_label_consistency_rate,predict_label_count
 
-def parallel_processing(rule_index, all_possible_rule_list, random_list,superpixel_data,gt_files,folder_files,original_image_files,is_test_lower_bound,is_use_neighbor,traverse_category_list):
+def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,original_image_files,result_location,is_test_lower_bound,is_use_neighbor,traverse_category_list):
     sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/SLIC_cityscapes/' ) ) )
-
-    current_rule=all_possible_rule_list[rule_index]
-    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse_category_set_2345/', dataset,
-                                   str(current_rule[0][0])+'_'+str(current_rule[0][1])+'_'+
-                                   str(current_rule[0][2])+'_'+str(current_rule[0][3])+'_'+str(current_rule[1]))
-    if not os.path.exists(result_location):
-        os.makedirs(result_location)
-        os.makedirs(os.path.join(result_location, 'score'))
-        os.makedirs(os.path.join(result_location, 'visualization'))
 
     img_width=2048
     img_height=1024
-
-
 
     # iterate through all images
     # for index in range(len(superpixel_data)):
@@ -131,16 +119,6 @@ def parallel_processing(rule_index, all_possible_rule_list, random_list,superpix
                 # current_layer_consistency_rate = float(current_layer_label_count[0][1]) / len(current_layer_current_superpixel_label)
                 categorical_label.append(current_layer_label_count[0][0])
 
-            # apply the hard-coded primming rule to avoid bug such as (1,2,3,4) not treated as (255,2,3,4)
-            if categorical_label[0]==3:
-                categorical_label[0]=255
-            if categorical_label[1]==5 or categorical_label[1]==2:
-                categorical_label[1]=255
-            if categorical_label[2]==5:
-                categorical_label[2]=255
-            if categorical_label[3]==3:
-                categorical_label[3]=255
-
             superpixel_index_set.append(index_superpixel)
             superpixel_categorical_label.append(categorical_label)
 
@@ -152,6 +130,12 @@ def parallel_processing(rule_index, all_possible_rule_list, random_list,superpix
             for current_categorical_label_index, current_categorical_label in enumerate(current_categorical_labels):
                 if current_categorical_label not in traverse_category_list[:-1]:
                     current_categorical_labels[current_categorical_label_index]=traverse_category_list[-1]
+
+            # apply the hard-coded primming rule to avoid bug such as (1,2,3,4) not treated as (255,2,3,4)
+            if current_categorical_labels[1]==6 or current_categorical_labels[1]==7 or current_categorical_labels[1]==8 or current_categorical_labels[1]==9:
+                current_categorical_labels[1]=255
+            if current_categorical_labels[2]==6 or current_categorical_labels[2]==7:
+                current_categorical_labels[2]=255
 
             # if current superpixel meets the rule
             if current_categorical_labels==current_rule[0]:
@@ -168,7 +152,7 @@ def parallel_processing(rule_index, all_possible_rule_list, random_list,superpix
         final_map[final_map>int(num_superpixels)]=255
 
         # save score
-        # final_map_saved=copy.deepcopy(final_map)
+        final_map_saved=copy.deepcopy(final_map)
         score=convert_trainid_to_label(final_map)
         cv2.imwrite(os.path.join(result_location,'score',file_name),score)
 
@@ -188,8 +172,7 @@ def parallel_processing(rule_index, all_possible_rule_list, random_list,superpix
         # concat_img.paste(result_img.convert('RGB'), (img_width * 2, 0))
         # concat_img.save(os.path.join(result_location, 'visualization', file_name))
 
-
-if __name__ == '__main__':
+def spark_processing(rule_index):
     sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/SLIC_cityscapes/' ) ) )
     from feature_extraction import get_feature_single_superpixel
     sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
@@ -204,15 +187,15 @@ if __name__ == '__main__':
     is_calculate_purity=0
 
 
-    original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'_for_traverse/'
+    original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'_for_traverse_frankfurt/'
     original_image_files=glob.glob(os.path.join(original_image_folder,"*.png"))
     original_image_files.sort()
 
-    gt_folder = '/mnt/scratch/panqu/Dataset/CityScapes/gtFine/'+dataset+'_for_traverse/'
+    gt_folder = '/mnt/scratch/panqu/Dataset/CityScapes/gtFine/'+dataset+'_for_traverse_frankfurt/'
     gt_files=glob.glob(os.path.join(gt_folder,"*gtFine_color.png"))
     gt_files.sort()
 
-    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'_subset/data/'
+    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'_subset_frankfurt/data/'
     superpixel_data=glob.glob(os.path.join(superpixel_result_folder,'*.dat'))
     superpixel_data.sort()
 
@@ -226,20 +209,19 @@ if __name__ == '__main__':
     # # bus, train
     # folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
 
-    # use 150 validation subfolder
     folder = {}
     # base:
     folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,
-                             dataset + '-epoch-35-CRF_for_traverse', 'score')
+                             dataset + '-epoch-35-CRF_for_traverse_frankfurt')
     # scale 05
     folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,
-                             dataset + '-epoch-39-CRF-050_for_traverse', 'score')
+                             dataset + '-epoch-39-CRF-050_for_traverse_frankfurt')
     # wild atrous
     folder[3] = os.path.join(
-        '/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf', 'score')
+        '/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf_frankfurt')
     # deconv
-    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf',
-                             'score')
+    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf_frankfurt')
+
 
     folder_files={}
     for key,value in folder.iteritems():
@@ -249,38 +231,62 @@ if __name__ == '__main__':
     print "start to predict..."
 
     traverse_list_length=4 # you have three layers for ensemble
-    traverse_category_list=[2,3,4,5,255] # you only want to explore several categories (255 means all others)
-    random_list=range(0,233)
+    traverse_category_list=[6,7,8,9,255] # you only want to explore several categories (255 means all others)
+    random_list=range(0,267)
 
     # enumerate all rules
     all_possible_rule_list=[]
-    for first_item_in_list in traverse_category_list:
-        for second_item_in_list in traverse_category_list:
-            for third_item_in_list in traverse_category_list:
-                for fourth_item_in_list in traverse_category_list:
-                    current_category_list=[first_item_in_list,second_item_in_list,third_item_in_list,fourth_item_in_list]
-                    if len(set(current_category_list))==1:
-                        continue
-                    for possible_category in np.unique(np.asarray(current_category_list)):
-                        all_possible_rule_list.append((current_category_list,possible_category))
-
-    # trim the rule list
-    to_be_deleted_list=[]
-    for index,possible_rule in enumerate(all_possible_rule_list):
-        # pole (label 5) and wall (label 3) and building (label 2)
-        if possible_rule[0][1]==5 or possible_rule[0][2]==5 or possible_rule[0][0]==3 or possible_rule[0][3]==3 or possible_rule[0][1]==2:
-            to_be_deleted_list.append(index)
-
-    for value in to_be_deleted_list[::-1]:
-        del all_possible_rule_list[value]
-
-    len_rules=len(all_possible_rule_list) #565 rules in total
+    all_possible_rule_list.append(([255, 255, 9, 9], 9))
+    all_possible_rule_list.append(([9, 255, 8, 8], 8))
+    all_possible_rule_list.append(([7, 255, 255, 255], 255))
+    all_possible_rule_list.append(([9, 255, 255, 255], 255))
+    all_possible_rule_list.append(([8, 255, 255, 255], 255))
+    all_possible_rule_list.append(([6, 255, 8, 255], 255))
+    all_possible_rule_list.append(([7, 255, 8, 6], 6))
+    all_possible_rule_list.append(([8, 255, 9, 9], 9))
+    all_possible_rule_list.append(([8, 255, 255, 6], 6))
+    all_possible_rule_list.append(([9, 255, 8, 255], 8))
+    all_possible_rule_list.append(([255, 255, 8, 6], 6))
+    all_possible_rule_list.append(([6, 255, 255, 7], 255))
+    all_possible_rule_list.append(([7, 255, 9, 7], 255))
+    all_possible_rule_list.append(([6, 255, 255, 7], 255))
+    all_possible_rule_list.append(([7, 255, 9, 7], 255))
+    all_possible_rule_list.append(([8, 255, 255, 7], 255))
+    all_possible_rule_list.append(([9, 255, 8, 7], 255))
+    all_possible_rule_list.append(([8, 255, 9, 7], 7))
 
 
-    num_cores = multiprocessing.cpu_count()
-    range_i=range(0,70)
-    Parallel(n_jobs=num_cores)(delayed(parallel_processing)(i,all_possible_rule_list,random_list,superpixel_data,gt_files,folder_files,original_image_files,is_test_lower_bound,is_use_neighbor,traverse_category_list) for i in range_i)
+    current_rule=all_possible_rule_list[rule_index]
+    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse_category_set_6789_after_trimming/', dataset,
+                                   str(current_rule[0][0])+'_'+str(current_rule[0][1])+'_'+
+                                   str(current_rule[0][2])+'_'+str(current_rule[0][3])+'_'+str(current_rule[1]))
+    if not os.path.exists(result_location):
+        os.makedirs(result_location)
+        os.makedirs(os.path.join(result_location, 'score'))
+        os.makedirs(os.path.join(result_location, 'visualization'))
 
+    predict(random_list,superpixel_data,gt_files,folder_files,current_rule,original_image_files,result_location,is_test_lower_bound,is_use_neighbor,traverse_category_list)
+
+    return 1
+
+
+
+num_cores=30
+conf = SparkConf()
+conf.setAppName("segmentation_rule_traverse").setMaster("spark://192.168.1.132:7077")
+conf.set("spark.scheduler.mode", "FAIR")
+conf.set("spark.cores.max", num_cores)
+sc = SparkContext(conf=conf)
+
+
+
+range_i = range(0, 18)
+RDDList = sc.parallelize(range_i, num_cores)
+print '------------------------------------start spark-----------------------------------'
+
+mapper = RDDList.map(spark_processing).reduce(lambda a, b : a+b)
+print "total files processed {}".format(mapper)
+print '-------------------------------------done-----------------------------------------'
 
 
 
