@@ -178,7 +178,7 @@ def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,origi
 
 def spark_processing(rule_index):
     sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/SLIC_cityscapes/' ) ) )
-    from feature_extraction import get_feature_single_superpixel
+    # from feature_extraction import get_feature_single_superpixel
     sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
     import labels
     from labels     import trainId2label,id2label
@@ -233,27 +233,29 @@ def spark_processing(rule_index):
 
     print "start to predict..."
 
-    traverse_list_length=4 # you have three layers for ensemble
-    traverse_category_list=[13,14,15,16,255] # you only want to explore several categories (255 means all others)
-    random_list=range(0,176)
+    traverse_list_length = 4  # you have three layers for ensemble
+    traverse_category_list = [13, 14, 15, 16, 255]  # you only want to explore several categories (255 means all others)
+    random_list = range(0, 176)
 
     # enumerate all rules
-    all_possible_rule_list=[]
+    all_possible_rule_list = []
     for first_item_in_list in traverse_category_list:
         for second_item_in_list in traverse_category_list:
             for third_item_in_list in traverse_category_list:
                 for fourth_item_in_list in traverse_category_list:
-                    current_category_list=[first_item_in_list,second_item_in_list,third_item_in_list,fourth_item_in_list]
-                    if len(set(current_category_list))==1:
+                    current_category_list = [first_item_in_list, second_item_in_list, third_item_in_list,
+                                             fourth_item_in_list]
+                    if len(set(current_category_list)) == 1:
                         continue
                     for possible_category in np.unique(np.asarray(current_category_list)):
-                        all_possible_rule_list.append((current_category_list,possible_category))
+                        all_possible_rule_list.append((current_category_list, possible_category))
 
     # trim the rule list
-    to_be_deleted_list=[]
-    for index,possible_rule in enumerate(all_possible_rule_list):
+    to_be_deleted_list = []
+    for index, possible_rule in enumerate(all_possible_rule_list):
         # car (13) and truck (14) and bus (15) and train (16)
-        if possible_rule[0][0]==14 or possible_rule[0][0]==15 or possible_rule[0][0]==16 or possible_rule[0][1]==13 or possible_rule[0][2]==13 or possible_rule[0][3]==13:
+        if possible_rule[0][0] == 14 or possible_rule[0][0] == 15 or possible_rule[0][0] == 16 or possible_rule[0][
+            1] == 13 or possible_rule[0][2] == 13 or possible_rule[0][3] == 13 or possible_rule[0][3] == 14:
             to_be_deleted_list.append(index)
 
     for value in to_be_deleted_list[::-1]:
