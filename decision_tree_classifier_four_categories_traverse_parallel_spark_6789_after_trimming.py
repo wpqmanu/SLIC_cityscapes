@@ -174,7 +174,7 @@ def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,origi
 
 def spark_processing(rule_index):
     sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/SLIC_cityscapes/' ) ) )
-    from feature_extraction import get_feature_single_superpixel
+    # from feature_extraction import get_feature_single_superpixel
     sys.path.append(os.path.normpath(os.path.join('/mnt/scratch/panqu/Dataset/CityScapes/cityscapesScripts/scripts/', 'helpers' ) ) )
     import labels
     from labels     import trainId2label,id2label
@@ -237,24 +237,23 @@ def spark_processing(rule_index):
     # enumerate all rules
     all_possible_rule_list=[]
     all_possible_rule_list.append(([255, 255, 9, 9], 9))
-    all_possible_rule_list.append(([9, 255, 8, 8], 8))
-    all_possible_rule_list.append(([7, 255, 255, 255], 255))
-    all_possible_rule_list.append(([9, 255, 255, 255], 255))
-    all_possible_rule_list.append(([8, 255, 255, 255], 255))
+    all_possible_rule_list.append(([255, 255, 8, 6], 6))
     all_possible_rule_list.append(([6, 255, 8, 255], 255))
+    all_possible_rule_list.append(([6, 255, 255, 7], 255))
+    all_possible_rule_list.append(([7, 255, 9, 7], 255))
+    all_possible_rule_list.append(([7, 255, 255, 255], 255))
     all_possible_rule_list.append(([7, 255, 8, 6], 6))
     all_possible_rule_list.append(([8, 255, 9, 9], 9))
     all_possible_rule_list.append(([8, 255, 255, 6], 6))
-    all_possible_rule_list.append(([9, 255, 8, 255], 8))
-    all_possible_rule_list.append(([255, 255, 8, 6], 6))
-    all_possible_rule_list.append(([6, 255, 255, 7], 255))
-    all_possible_rule_list.append(([7, 255, 9, 7], 255))
-    all_possible_rule_list.append(([6, 255, 255, 7], 255))
-    all_possible_rule_list.append(([7, 255, 9, 7], 255))
+    all_possible_rule_list.append(([8, 255, 255, 255], 255))
     all_possible_rule_list.append(([8, 255, 255, 7], 255))
-    all_possible_rule_list.append(([9, 255, 8, 7], 255))
     all_possible_rule_list.append(([8, 255, 9, 7], 7))
 
+
+    all_possible_rule_list.append(([9, 255, 8, 7], 255))
+    all_possible_rule_list.append(([9, 255, 255, 255], 255))
+    all_possible_rule_list.append(([9, 255, 8, 255], 8))
+    all_possible_rule_list.append(([9, 255, 8, 8], 8))
 
     current_rule=all_possible_rule_list[rule_index]
     result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse_category_set_6789_after_trimming/', dataset,
@@ -273,14 +272,14 @@ def spark_processing(rule_index):
 
 num_cores=30
 conf = SparkConf()
-conf.setAppName("segmentation_rule_traverse").setMaster("spark://192.168.1.132:7077")
+conf.setAppName("segmentation_rule_traverse_6789").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")
 conf.set("spark.cores.max", num_cores)
 sc = SparkContext(conf=conf)
 
 
 
-range_i = range(0, 18)
+range_i = range(0, 16)
 RDDList = sc.parallelize(range_i, num_cores)
 print '------------------------------------start spark-----------------------------------'
 

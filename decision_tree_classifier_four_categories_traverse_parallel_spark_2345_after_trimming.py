@@ -132,13 +132,13 @@ def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,origi
                     current_categorical_labels[current_categorical_label_index]=traverse_category_list[-1]
 
             # apply the hard-coded primming rule to avoid bug such as (1,2,3,4) not treated as (255,2,3,4)
-            if current_categorical_labels[0]==14 or current_categorical_labels[0]==15 or current_categorical_labels[0]==16:
+            if current_categorical_labels[0]==3:
                 current_categorical_labels[0]=255
-            if current_categorical_labels[1]==13:
+            if current_categorical_labels[1]==5 or current_categorical_labels[1]==2:
                 current_categorical_labels[1]=255
-            if current_categorical_labels[2]==13:
+            if current_categorical_labels[2]==5:
                 current_categorical_labels[2]=255
-            if current_categorical_labels[3]==13 or current_categorical_labels[3]==14:
+            if current_categorical_labels[3]==3:
                 current_categorical_labels[3]=255
 
             # if current superpixel meets the rule
@@ -191,15 +191,15 @@ def spark_processing(rule_index):
     is_calculate_purity=0
 
 
-    original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'_for_traverse_for_train_test/'
+    original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'_for_traverse_frankfurt/'
     original_image_files=glob.glob(os.path.join(original_image_folder,"*.png"))
     original_image_files.sort()
 
-    gt_folder = '/mnt/scratch/panqu/Dataset/CityScapes/gtFine/'+dataset+'_for_traverse_for_train_test/'
+    gt_folder = '/mnt/scratch/panqu/Dataset/CityScapes/gtFine/'+dataset+'_for_traverse_frankfurt/'
     gt_files=glob.glob(os.path.join(gt_folder,"*gtFine_color.png"))
     gt_files.sort()
 
-    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'_subset_for_train_test/data/'
+    superpixel_result_folder='/mnt/scratch/panqu/SLIC/server_combine_all_merged_results_'+dataset+'_subset_frankfurt/data/'
     superpixel_data=glob.glob(os.path.join(superpixel_result_folder,'*.dat'))
     superpixel_data.sort()
 
@@ -216,15 +216,16 @@ def spark_processing(rule_index):
     folder = {}
     # base:
     folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset,
-                             dataset + '-epoch-35-CRF_for_traverse_for_train_test')
+                             dataset + '-epoch-35-CRF_for_traverse_frankfurt')
     # scale 05
     folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,
-                             dataset + '-epoch-39-CRF-050_for_traverse_for_train_test')
+                             dataset + '-epoch-39-CRF-050_for_traverse_frankfurt')
     # wild atrous
     folder[3] = os.path.join(
-        '/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf_for_train_test')
+        '/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf_frankfurt')
     # deconv
-    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf_for_train_test')
+    folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf_frankfurt')
+
 
     folder_files={}
     for key,value in folder.iteritems():
@@ -234,37 +235,66 @@ def spark_processing(rule_index):
     print "start to predict..."
 
     traverse_list_length=4 # you have three layers for ensemble
-    traverse_category_list=[13,14,15,16,255] # you only want to explore several categories (255 means all others)
-    random_list=range(0,324)
+    traverse_category_list=[2,3,4,5,255] # you only want to explore several categories (255 means all others)
+    random_list=range(0,267)
 
     # enumerate all rules
     all_possible_rule_list=[]
-    all_possible_rule_list.append(([255, 15, 16, 15], 16))
-    all_possible_rule_list.append(([13, 14, 255, 255], 14))
-    all_possible_rule_list.append(([255, 15, 15, 255], 15))
-    all_possible_rule_list.append(([255, 14, 14, 255], 14))
-    all_possible_rule_list.append(([255, 14, 255, 255], 14))
-    all_possible_rule_list.append(([255, 14, 255, 15], 14))
-    all_possible_rule_list.append(([255, 14, 14, 15], 14))
-    all_possible_rule_list.append(([255, 15, 15, 15], 15))
-    all_possible_rule_list.append(([13, 14, 14, 255], 14))
-    all_possible_rule_list.append(([13, 15, 15, 255], 15))
-    all_possible_rule_list.append(([255, 14, 16, 15], 16))
-    all_possible_rule_list.append(([13, 255, 15, 15], 15))
-    all_possible_rule_list.append(([255, 14, 16, 15], 15))
+    all_possible_rule_list.append(([2, 3, 3, 2], 3))
+    all_possible_rule_list.append(([2, 3, 3, 255], 3))
+    all_possible_rule_list.append(([4, 3, 3, 255], 3))
+    all_possible_rule_list.append(([255, 4, 3, 4], 4))
+    all_possible_rule_list.append(([255, 4, 4, 4], 4))
+    all_possible_rule_list.append(([2, 255, 3, 2], 3))
+    all_possible_rule_list.append(([2, 255, 3, 255], 3))
+    all_possible_rule_list.append(([2, 255, 255, 255], 255))
+    all_possible_rule_list.append(([255, 3, 3, 255], 3))
+    all_possible_rule_list.append(([2, 3, 2, 2], 3))
+    all_possible_rule_list.append(([255, 4, 4, 255], 4))
+    all_possible_rule_list.append(([255, 255, 2, 2], 2))
+    all_possible_rule_list.append(([255, 255, 4, 4], 4))
+    all_possible_rule_list.append(([255, 3, 255, 255], 3))
+    all_possible_rule_list.append(([4, 4, 3, 255], 3))
+    all_possible_rule_list.append(([2, 3, 255, 255], 3))
+    all_possible_rule_list.append(([4, 255, 2, 2], 255))
+    all_possible_rule_list.append(([4, 255, 2, 4], 255))
+    all_possible_rule_list.append(([2, 3, 4, 4], 4))
+    all_possible_rule_list.append(([2, 3, 255, 2], 3))
+    all_possible_rule_list.append(([2, 255, 4, 4], 4))
+    all_possible_rule_list.append(([4, 3, 3, 4], 3))
+    all_possible_rule_list.append(([4, 3, 4, 255], 255))
+    all_possible_rule_list.append(([4, 3, 255, 255], 3))
+    all_possible_rule_list.append(([4, 4, 4, 2], 2))
+    all_possible_rule_list.append(([4, 4, 255, 255], 255))
+    all_possible_rule_list.append(([4, 255, 2, 255], 255))
+    all_possible_rule_list.append(([4, 255, 3, 255], 3))
+    all_possible_rule_list.append(([4, 255, 4, 5], 255))
+    all_possible_rule_list.append(([255, 3, 3, 2], 3))
+    all_possible_rule_list.append(([255, 3, 255, 4], 4))
+    all_possible_rule_list.append(([255, 4, 255, 4], 4))
 
-    all_possible_rule_list.append(([255, 14, 15, 15], 15))
-    all_possible_rule_list.append(([255, 14, 16, 16], 16))
-    all_possible_rule_list.append(([13, 16, 255, 15], 15))
-    all_possible_rule_list.append(([13, 14, 255, 15], 14))
-    all_possible_rule_list.append(([13, 16, 15, 255], 255))
-    all_possible_rule_list.append(([255, 15, 15, 16], 15))
-    all_possible_rule_list.append(([13, 14, 15, 15], 15))
-    all_possible_rule_list.append(([255, 14, 15, 255], 14))
-
+    all_possible_rule_list.append(([2, 3, 255, 4], 3))
+    all_possible_rule_list.append(([2, 4, 255, 4], 255))
+    all_possible_rule_list.append(([2, 255, 255, 4], 255))
+    all_possible_rule_list.append(([2, 255, 3, 5], 255))
+    all_possible_rule_list.append(([2, 3, 255, 5], 255))
+    all_possible_rule_list.append(([4, 255, 3, 5], 255))
+    all_possible_rule_list.append(([4, 3, 255, 5], 5))
+    all_possible_rule_list.append(([4, 255, 255, 2], 255))
+    all_possible_rule_list.append(([4, 3, 255, 2], 255))
+    all_possible_rule_list.append(([5, 255, 3, 4], 255))
+    all_possible_rule_list.append(([5, 255, 4, 255], 255))
+    all_possible_rule_list.append(([5, 255, 3, 5], 255))
+    all_possible_rule_list.append(([5, 3, 255, 2], 255))
+    all_possible_rule_list.append(([5, 3, 4, 255], 255))
+    all_possible_rule_list.append(([5, 3, 2, 2], 3))
+    all_possible_rule_list.append(([255, 4, 3, 2], 3))
+    all_possible_rule_list.append(([255, 3, 2, 255], 3))
+    all_possible_rule_list.append(([255, 3, 4, 4], 3))
+    all_possible_rule_list.append(([4, 4, 255, 4], 255))
 
     current_rule=all_possible_rule_list[rule_index]
-    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse_category_set_13141516_after_trimming/', dataset,
+    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse_category_set_2345_after_trimming/', dataset,
                                    str(current_rule[0][0])+'_'+str(current_rule[0][1])+'_'+
                                    str(current_rule[0][2])+'_'+str(current_rule[0][3])+'_'+str(current_rule[1]))
     if not os.path.exists(result_location):
@@ -278,18 +308,16 @@ def spark_processing(rule_index):
 
 
 
-
-
-num_cores=30
+num_cores=60
 conf = SparkConf()
-conf.setAppName("segmentation_rule_traverse_13141516").setMaster("spark://192.168.1.132:7077")
+conf.setAppName("segmentation_rule_traverse_2345").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")
 conf.set("spark.cores.max", num_cores)
 sc = SparkContext(conf=conf)
 
 
 
-range_i = range(0, 21)
+range_i = range(0, 51)
 RDDList = sc.parallelize(range_i, num_cores)
 print '------------------------------------start spark-----------------------------------'
 
