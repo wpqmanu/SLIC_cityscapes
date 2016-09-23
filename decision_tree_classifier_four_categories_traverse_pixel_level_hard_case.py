@@ -338,7 +338,7 @@ def get_single_set_rules(current_set):
 
 if __name__ == '__main__':
     dataset='test'
-    current_set=['2345','6789','13141516']
+    current_set=['13141516','2345','6789']
     dict={'2345':[2,3,4,5,255],'6789':[6,7,8,9,255],'13141516':[13,14,15,16,255]}
 
 
@@ -395,7 +395,7 @@ if __name__ == '__main__':
 
 
     # prediction
-    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse/', dataset,'all_selected_rules_pixel_level_hard_case')
+    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse/', dataset,'all_selected_rules_pixel_level_hard_case'+current_set[0]+current_set[1]+current_set[2])
     if not os.path.exists(result_location):
         os.makedirs(result_location)
         os.makedirs(os.path.join(result_location, 'score'))

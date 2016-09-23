@@ -90,9 +90,9 @@ def convert_trainid_to_label(label):
     label[label == 255] = 0
     return label
 
-def predict(index,random_list,gt_files,folder_files,final_selected_rule_set,original_image_files,result_location,is_test_lower_bound,is_use_neighbor,traverse_category_lists,current_set):
+def predict(index,random_list,gt_files,folder_files,final_selected_rule_set,original_image_files,result_location,traverse_category_lists,current_set):
 # def predict(random_list, gt_files, folder_files, final_selected_rule_set, original_image_files,
-#                 result_location, is_test_lower_bound, is_use_neighbor, traverse_category_lists, current_set):
+#                 result_location, traverse_category_lists, current_set):
 
     # for index in range(0,len(original_image_files)):
         img_width=2048
@@ -161,12 +161,14 @@ def predict(index,random_list,gt_files,folder_files,final_selected_rule_set,orig
                         # if this label belongs to the 4 big object categories
                         if final_selected_rule_set[index_ruleset][1][selected_rule_index] != 255:
                             final_map[index_row][index_col] = final_selected_rule_set[index_ruleset][1][selected_rule_index]
+
                         else:  # if this label belongs to other categories
                             index_255 = final_selected_rule_set[index_ruleset][0][selected_rule_index].index(255)
                             final_map[index_row][index_col] = current_all_layer_values[index_row][index_col][index_255]
 
                         # will not continue to see other set of rules if we meet a rule in one set of rules
                         break
+
                     # if current pixel does not meet the rule
                     else:
                         final_map[index_row][index_col] = current_all_layer_values[index_row][index_col][0]
@@ -302,30 +304,33 @@ def get_single_set_rules(current_set):
 
 
 if __name__ == '__main__':
-    dataset='val'
+
     current_set=['13141516','2345','6789']
     dict={'2345':[2,3,4,5,255],'6789':[6,7,8,9,255],'13141516':[13,14,15,16,255]}
 
-    is_test_lower_bound=0
-    is_use_neighbor=0
-    is_get_subset_category_data=0
-    is_use_list=0
+    use_full_validation_test=1
 
-    # list_location='/mnt/scratch/pengfei/to_panqu/test_bad_sample.txt'
-    # with open(list_location, "r") as list_to_be_read:
-    #     all_lists = list_to_be_read.readlines()
-    # all_lists_lines = [x.strip('\n') for x in all_lists]
-    # for current_line in all_lists_lines:
-    #     current_image_name=current_line.strip('\t')[1].strip('/')[-1]
+    dataset = 'test'
 
     if "13141516" in current_set:
-        original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/' + dataset + '_for_traverse_for_train_test/'
-        original_image_files = glob.glob(os.path.join(original_image_folder, "*.png"))
-        original_image_files.sort()
+        if not use_full_validation_test:
+            # normal validation test set
+            original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/' + dataset + '_for_traverse_for_train_test/'
+            original_image_files = glob.glob(os.path.join(original_image_folder, "*.png"))
+            original_image_files.sort()
 
-        gt_folder = '/mnt/scratch/panqu/Dataset/CityScapes/gtFine/' + dataset + '_for_traverse_for_train_test/'
-        gt_files = glob.glob(os.path.join(gt_folder, "*gtFine_color.png"))
-        gt_files.sort()
+            gt_folder = '/mnt/scratch/panqu/Dataset/CityScapes/gtFine/' + dataset + '_for_traverse_for_train_test/'
+            gt_files = glob.glob(os.path.join(gt_folder, "*gtFine_color.png"))
+            gt_files.sort()
+        else:
+            # full validation set
+            original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/' + dataset + '/'
+            original_image_files = glob.glob(os.path.join(original_image_folder, "*", "*.png"))
+            original_image_files.sort()
+
+            gt_folder = '/mnt/scratch/panqu/Dataset/CityScapes/gtFine/' + dataset + '/'
+            gt_files = glob.glob(os.path.join(gt_folder, "*", "*gtFine_color.png"))
+            gt_files.sort()
     else:
         original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'_for_traverse_frankfurt/'
         original_image_files=glob.glob(os.path.join(original_image_folder,"*.png"))
@@ -345,30 +350,29 @@ if __name__ == '__main__':
     # # bus, train
     # folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
 
-
-    # # four layers full validation set
-    # folder = {}
-    # # base:
-    # folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset, dataset + '-epoch-35-CRF', 'score')
-    # # scale 05
-    # folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset, dataset + '-epoch-39-CRF-050', 'score')
-    # # wild atrous
-    # folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_crf', 'score')
-    # # deconv
-    # folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_crf','score')
-
     if "13141516" in current_set:
-        # # four layers for-train validation test set
-        folder = {}
-        # base:
-        folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset, dataset + '-epoch-35-CRF_for_traverse_for_train_test')
-        # scale 05
-        folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset, dataset + '-epoch-39-CRF-050_for_traverse_for_train_test')
-        # wild atrous
-        folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf_for_train_test')
-        # deconv
-        folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf_for_train_test')
-
+        if not use_full_validation_test:
+            # # four layers for-train validation test set
+            folder = {}
+            # base:
+            folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset, dataset + '-epoch-35-CRF_for_traverse_for_train_test')
+            # scale 05
+            folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset, dataset + '-epoch-39-CRF-050_for_traverse_for_train_test')
+            # wild atrous
+            folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_subset_crf_for_train_test')
+            # deconv
+            folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf_for_train_test')
+        else:
+            # four layers full validation set
+            folder = {}
+            # base:
+            folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset, dataset + '-epoch-35-CRF', 'score')
+            # scale 05
+            folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset, dataset + '-epoch-39-CRF-050', 'score')
+            # wild atrous
+            folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_crf', 'score')
+            # deconv
+            folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_crf','score')
     else:
         # # four layers general validation test set
         folder = {}
@@ -407,7 +411,10 @@ if __name__ == '__main__':
     final_selected_rule_set=get_single_set_rules(current_set)
 
     # prediction
-    result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse/', dataset,'all_selected_rules_pixel_level_'+current_set[0]+current_set[1]+current_set[2])
+    if not use_full_validation_test:
+        result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse/', dataset,'all_selected_rules_pixel_level_'+current_set[0]+current_set[1]+current_set[2])
+    else:
+        result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse/', dataset+'_full','all_selected_rules_pixel_level_'+current_set[0]+current_set[1]+current_set[2])
     if not os.path.exists(result_location):
         os.makedirs(result_location)
         os.makedirs(os.path.join(result_location, 'score'))
@@ -417,7 +424,7 @@ if __name__ == '__main__':
     range_i = range(0, len(original_image_files))
 
     Parallel(n_jobs=num_cores)(
-        delayed(predict)(i, random_list,gt_files,folder_files,final_selected_rule_set,original_image_files,result_location,is_test_lower_bound,is_use_neighbor,traverse_category_list,current_set) for i in
+        delayed(predict)(i, random_list,gt_files,folder_files,final_selected_rule_set,original_image_files,result_location,traverse_category_list,current_set) for i in
         range_i)
 
-    # predict(random_list,gt_files,folder_files,final_selected_rule_set,original_image_files,result_location,is_test_lower_bound,is_use_neighbor,traverse_category_list,current_set)
+    # predict(random_list,gt_files,folder_files,final_selected_rule_set,original_image_files,result_location,traverse_category_list,current_set)
