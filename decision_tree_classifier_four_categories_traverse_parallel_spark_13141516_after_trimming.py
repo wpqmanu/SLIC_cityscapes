@@ -242,7 +242,9 @@ def spark_processing(rule_index):
     all_possible_rule_list.append(([255, 15, 16, 15], 16))
     all_possible_rule_list.append(([13, 14, 255, 255], 14))
     all_possible_rule_list.append(([255, 15, 15, 255], 15))
+    all_possible_rule_list.append(([255, 16, 16, 16], 16))
     all_possible_rule_list.append(([255, 14, 14, 255], 14))
+    all_possible_rule_list.append(([255, 15, 16, 16], 16))
     all_possible_rule_list.append(([255, 14, 255, 255], 14))
     all_possible_rule_list.append(([255, 14, 255, 15], 14))
     all_possible_rule_list.append(([255, 14, 14, 15], 14))
@@ -250,18 +252,27 @@ def spark_processing(rule_index):
     all_possible_rule_list.append(([13, 14, 14, 255], 14))
     all_possible_rule_list.append(([13, 15, 15, 255], 15))
     all_possible_rule_list.append(([255, 14, 16, 15], 16))
+    all_possible_rule_list.append(([255, 255, 16, 16], 16))
+    all_possible_rule_list.append(([255, 255, 15, 15], 15))
+    all_possible_rule_list.append(([255, 255, 16, 15], 16))
+    all_possible_rule_list.append(([255, 255, 255, 16], 16))
+    all_possible_rule_list.append(([255, 15, 255, 15], 15))
     all_possible_rule_list.append(([13, 255, 15, 15], 15))
-    all_possible_rule_list.append(([255, 14, 16, 15], 15))
-
-    all_possible_rule_list.append(([255, 14, 15, 15], 15))
-    all_possible_rule_list.append(([255, 14, 16, 16], 16))
-    all_possible_rule_list.append(([13, 16, 255, 15], 15))
-    all_possible_rule_list.append(([13, 14, 255, 15], 14))
+    all_possible_rule_list.append(([255, 15, 16, 255], 16))
+    all_possible_rule_list.append(([13, 15, 255, 15], 15))
     all_possible_rule_list.append(([13, 16, 15, 255], 255))
     all_possible_rule_list.append(([255, 15, 15, 16], 15))
+    all_possible_rule_list.append(([255, 255, 255, 15], 15))
+    all_possible_rule_list.append(([13, 14, 255, 15], 14))
+    all_possible_rule_list.append(([13, 16, 255, 15], 15))
     all_possible_rule_list.append(([13, 14, 15, 15], 15))
     all_possible_rule_list.append(([255, 14, 15, 255], 14))
-
+    all_possible_rule_list.append(([255, 14, 16, 16], 16))
+    all_possible_rule_list.append(([255, 14, 15, 15], 15))
+    all_possible_rule_list.append(([13, 16, 16, 15], 15))
+    all_possible_rule_list.append(([13, 255, 16, 15], 15))
+    all_possible_rule_list.append(([255, 14, 15, 16], 16))
+    all_possible_rule_list.append(([255, 14, 255, 16], 16))
 
     current_rule=all_possible_rule_list[rule_index]
     result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse_category_set_13141516_after_trimming/', dataset,
@@ -280,7 +291,7 @@ def spark_processing(rule_index):
 
 
 
-num_cores=30
+num_cores=40
 conf = SparkConf()
 conf.setAppName("segmentation_rule_traverse_13141516").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")
@@ -289,7 +300,7 @@ sc = SparkContext(conf=conf)
 
 
 
-range_i = range(0, 21)
+range_i = range(0, 34)
 RDDList = sc.parallelize(range_i, num_cores)
 print '------------------------------------start spark-----------------------------------'
 

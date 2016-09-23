@@ -4,4 +4,7 @@
 
 *.txt
 *.dat
+*.pyc
+
+.idea
 
