@@ -361,7 +361,7 @@ if __name__ == '__main__':
     original_image_files.sort()
 
     gt_folder = '/mnt/scratch/panqu/Dataset/CityScapes/gtFine/'+dataset+'_for_train/'
-    gt_files=glob.glob(os.path.join(gt_folder,"*gtFine_color.png"))
+    gt_files=glob.glob(os.path.join(gt_folder,"*gtFine_labelTrainIds.png"))
     gt_files.sort()
 
     # use 207 validation subfolder
