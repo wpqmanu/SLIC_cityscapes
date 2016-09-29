@@ -308,23 +308,43 @@ def parallel_processing(index,total_files,folder_files,img_height,img_width,img_
 
 
 if __name__ == '__main__':
-    dataset='train'
+    dataset='val'
 
-    folder={}
-    # base
-    folder[1]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/',dataset, dataset+'-epoch-35-CRF', 'score')
-    # truck, wall
-    folder[2]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/',dataset, dataset+'-epoch-39-CRF-050', 'score')
-    # bus, train
-    folder[3]=os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_atrous16_epoch_33/', dataset, dataset+'-epoch-33-CRF', 'score')
+    use_coarse=0
+
+    if not use_coarse:
+        folder = {}
+        # base: resnet 152
+        folder[1] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_resnet_152_'+dataset+'_crf/', 'score')
+        # scale 05
+        folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,dataset + '-epoch-39-CRF-050','score')
+        # wild atrous
+        folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch20_crf_' + dataset,'score')
+        # deconv 1.25
+        folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_scale125_crf_' + dataset,'score')
+
+    else:
+        # full 500 validation set
+        folder = {}
+        # base: resnet 152
+        folder[1] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_resnet_152_'+dataset+'_crf/', 'score')
+        # deconv 1.25
+        folder[2] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_scale125_crf_' + dataset,'score')
+        # scale 0.5
+        folder[3] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset, dataset + '-epoch-39-CRF-050','score')
+        # wild atrous
+        folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch20_crf_' + dataset,'score')
+        # coarse
+        folder[5] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_select_coarse_fine_epoch16_crf_' + dataset, 'score')
+
 
     folder_files={}
     previous_key=0
     for key,value in folder.iteritems():
         folder_files[key]=glob.glob(os.path.join(value,'*.png'))
         folder_files[key].sort()
-        if int(key)>=2 and not len(folder_files[key])==len(folder_files[previous_key]):
-            raise ValueError('file folder lengths are not equal!')
+        # if int(key)>=2 and not len(folder_files[key])==len(folder_files[previous_key]):
+        #     raise ValueError('file folder lengths are not equal!')
         previous_key=key
 
 
@@ -344,7 +364,7 @@ if __name__ == '__main__':
     total_files=len(folder_files[1])
 
     num_cores = multiprocessing.cpu_count()
-    range_i=range(0,400)
+    range_i=range(0,500)
 
     Parallel(n_jobs=num_cores)(delayed(parallel_processing)(i,total_files,folder_files,img_height,img_width,img_channels,result_dir) for i in range_i)
 

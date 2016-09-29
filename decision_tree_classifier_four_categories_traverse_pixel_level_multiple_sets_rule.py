@@ -310,7 +310,7 @@ if __name__ == '__main__':
 
     use_full_validation_test=1
 
-    dataset = 'test'
+    dataset = 'val'
 
     if "13141516" in current_set:
         if not use_full_validation_test:
@@ -363,16 +363,16 @@ if __name__ == '__main__':
             # deconv
             folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_subset_crf_for_train_test')
         else:
-            # four layers full validation set
             folder = {}
             # base:
-            folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset, dataset + '-epoch-35-CRF', 'score')
+            folder[1] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_bigger_patch_epoch_35/', dataset, dataset+'-epoch-35-CRF','score')
             # scale 05
-            folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset, dataset + '-epoch-39-CRF-050', 'score')
+            folder[2] = os.path.join('/mnt/scratch/panqu/to_pengfei/asppp_cell2_epoch_39/', dataset,dataset + '-epoch-39-CRF-050','score')
             # wild atrous
-            folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch16_' + dataset + '_crf', 'score')
+            folder[3] = os.path.join('/mnt/scratch/pengfei/crf_results/yenet_asppp_wild_atrous_epoch20_crf_' + dataset,'score')
             # deconv
-            folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_epoch30_' + dataset + '_crf','score')
+            folder[4] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_deconv_crf_' + dataset,'score')
+
     else:
         # # four layers general validation test set
         folder = {}
@@ -414,7 +414,7 @@ if __name__ == '__main__':
     if not use_full_validation_test:
         result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse/', dataset,'all_selected_rules_pixel_level_'+current_set[0]+current_set[1]+current_set[2])
     else:
-        result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse/', dataset+'_full','all_selected_rules_pixel_level_'+current_set[0]+current_set[1]+current_set[2])
+        result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_layers_rule_traverse/', dataset+'_full_updated','all_selected_rules_pixel_level_'+current_set[0]+current_set[1]+current_set[2])
     if not os.path.exists(result_location):
         os.makedirs(result_location)
         os.makedirs(os.path.join(result_location, 'score'))

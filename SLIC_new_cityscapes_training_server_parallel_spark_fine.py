@@ -307,7 +307,7 @@ def processing(index,total_files,folder_files,img_height,img_width,img_channels,
 def spark_processing(i):
     dataset = 'val'
 
-    use_coarse=1
+    use_coarse=0
 
     if not use_coarse:
         folder = {}
@@ -354,7 +354,7 @@ def spark_processing(i):
     img_channels=len(folder_files)
     num_superpixels = 50000
     step=int(math.floor((img_width*img_height/num_superpixels)**0.5))
-    result_dir=os.path.join('/mnt/scratch/panqu/SLIC/server_'+dataset+'_use_coarse')
+    result_dir=os.path.join('/mnt/scratch/panqu/SLIC/server_'+dataset+'_use_fine')
     if not os.path.exists(result_dir):
         os.makedirs(result_dir)
 
@@ -367,7 +367,7 @@ def spark_processing(i):
 
 num_cores=80
 conf = SparkConf()
-conf.setAppName("semantic_segmentation").setMaster("spark://192.168.1.132:7077")
+conf.setAppName("semantic_segmentation_fine").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")
 conf.set("spark.cores.max", num_cores)
 sc = SparkContext(conf=conf)
