@@ -229,7 +229,64 @@ def spark_processing(rule_index):
 
     # TODO: enumerate all rules
     all_possible_rule_list = []
-    all_possible_rule_list.append(([255, 255, 3, 3, 255], 3))
+    all_possible_rule_list.append(([255,	255,	14,	14,	14	], 14))
+    all_possible_rule_list.append(([255,	255,	14,	255,	255	],14))
+    all_possible_rule_list.append(([255,	255,	15,	15,	15	],15))
+    all_possible_rule_list.append(([16,	255,	15,	15,	15	],15))
+    all_possible_rule_list.append(([15,	255,	14,	14,	15	],14))
+    all_possible_rule_list.append(([15,	255,	14,	255,	15	],14))
+    all_possible_rule_list.append(([255,	255,	255,	16,	16	],16))
+    all_possible_rule_list.append(([255,	255,	255,	15,	15	],15))
+    all_possible_rule_list.append(([255,	255,	255,	255,	15	],15))
+    all_possible_rule_list.append(([15,	255,	15,	16,	16	],16))
+    all_possible_rule_list.append(([255,	255,	14,	14,	255	],14))
+    all_possible_rule_list.append(([255,	255,	14,	16,	255	],16))
+    all_possible_rule_list.append(([15,	255,	14,	255,	255	],14))
+    all_possible_rule_list.append(([16,	255,	255,	16,	15	],15))
+    all_possible_rule_list.append(([16,	255,	255,	255,	255	],255))
+    all_possible_rule_list.append(([255,	255,	255,	255,	16	],16))
+    all_possible_rule_list.append(([255,	255,	255,	15,	16	], 16))
+    all_possible_rule_list.append(([255,	255,	15,	255,	15	],15))
+    all_possible_rule_list.append(([15,	255,	15,	16,	16	],255))
+    all_possible_rule_list.append(([15,	255,	255,	16,	16	],16))
+    all_possible_rule_list.append(([15,	255,	14,	255,	14	],14))
+    all_possible_rule_list.append(([255,	255,	14,	14,	15	],14))
+    all_possible_rule_list.append(([15,	255,	15,	14,	15	],14))
+    all_possible_rule_list.append(([255,	255,	14,	255,	15	],14))
+    all_possible_rule_list.append(([15,	255,	15,	15,	16	],255))
+    all_possible_rule_list.append(([15,	255,	15,	255,	14	],14))
+    all_possible_rule_list.append(([15,	255,	15,	255,	16	],255))
+    all_possible_rule_list.append(([15,	255,	255,	14,	14	],255))
+    all_possible_rule_list.append(([15,	255,	255,	14,	255	],255))
+    all_possible_rule_list.append(([15,	255,	255,	15,	14	],255))
+    all_possible_rule_list.append(([15,	255,	255,	15,	16	],255))
+    all_possible_rule_list.append(([15,	255,	255,	255,	14	],255))
+    all_possible_rule_list.append(([15,	255,	255,	255,	16	], 255))
+    all_possible_rule_list.append(([16,	255,	14,	15,	255	],255))
+    all_possible_rule_list.append(([16,	255,	15,	15,	16	],255))
+    all_possible_rule_list.append(([16,	255,	15,	15,	255	],15))
+    all_possible_rule_list.append(([255,	255,	15,	14,	15	],14))
+    all_possible_rule_list.append(([255,	255,	255,	14,	16	],16))
+    all_possible_rule_list.append(([255,	255,	14,	15,	255	],15))
+    all_possible_rule_list.append(([255,	255,	14,	15,	14	],14))
+    all_possible_rule_list.append(([255,	255,	14,	16,	16	],16))
+    all_possible_rule_list.append(([15,	255,	255,	16,	255	],255))
+    all_possible_rule_list.append(([15,	255,	255,	14,	15	],14))
+    all_possible_rule_list.append(([15,	255,	15,	16,	255	],255))
+    all_possible_rule_list.append(([16,	255,	14,	255,	15	],255))
+    all_possible_rule_list.append(([16,	255,	15,	255,	15	],15))
+    all_possible_rule_list.append(([16,	255,	255,	15,	255	],255))
+    all_possible_rule_list.append(([16,	255,	15,	15,	14	],255))
+    all_possible_rule_list.append(([16,	255,	15,	255,	255	],255))
+    all_possible_rule_list.append(([16,	255,	255,	15,	15	],255))
+    all_possible_rule_list.append(([255,	255,	15,	16,	15	],15))
+    all_possible_rule_list.append(([255,	255,	14,	15,	15	],15))
+    all_possible_rule_list.append(([16,	255,	255,	255,	15	],15))
+    all_possible_rule_list.append(([16,	255,	14,	16,	255	],255))
+    all_possible_rule_list.append(([255,	255,	255,	16,	14	],14))
+    all_possible_rule_list.append(([16,	255,	14,	255,	255	],255))
+    all_possible_rule_list.append(([15,	255,	255,	255,	255	],255))
+    all_possible_rule_list.append(([255,	255,	255,	14,	14	],14))
 
 
     current_rule=all_possible_rule_list[rule_index]
@@ -247,10 +304,9 @@ def spark_processing(rule_index):
     return 1
 
 
-len_rules=1
+len_rules=58
 
-
-num_cores=80
+num_cores=58
 conf = SparkConf()
 conf.setAppName("segmentation_rule_traverse").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")

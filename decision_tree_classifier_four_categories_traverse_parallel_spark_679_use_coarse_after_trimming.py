@@ -229,7 +229,31 @@ def spark_processing(rule_index):
 
     # TODO: enumerate all rules
     all_possible_rule_list = []
-    all_possible_rule_list.append(([255, 255, 3, 3, 255], 3))
+    all_possible_rule_list.append(([255,	9,	255,	9,	9	], 9))
+    all_possible_rule_list.append(([255,	255,	255,	9,	9	],9))
+    all_possible_rule_list.append(([255,	6,	255,	255,	255	],6))
+    all_possible_rule_list.append(([255,	255,	255,	9,	255	],9))
+    all_possible_rule_list.append(([6,	255,	255,	255,	255	],255))
+    all_possible_rule_list.append(([9,	255,	255,	255,	255	],255))
+    all_possible_rule_list.append(([255,	7,	255,	255,	255	],7))
+    all_possible_rule_list.append(([7,	7,	255,	9,	255,	],255))
+    all_possible_rule_list.append(([7,	7,	255,	255,	9	],255))
+    all_possible_rule_list.append(([7,	9,	255,	9,	9	],255))
+    all_possible_rule_list.append(([7,	9,	255,	9,	255	],255))
+    all_possible_rule_list.append(([7,	255,	255,	9,	255	],255))
+    all_possible_rule_list.append(([9,	7,	255,	255,	9	],255))
+    all_possible_rule_list.append(([7,	255,	255,	255,	9	],255))
+    all_possible_rule_list.append(([9,	7,	255,	9,	255	],255))
+    all_possible_rule_list.append(([9,	7,	255,	9,	9	],255))
+    all_possible_rule_list.append(([7,	9,	255,	255,	9	],255))
+    all_possible_rule_list.append(([7,	6,	255,	255,	255	],255))
+    all_possible_rule_list.append(([6,	7,	255,	255,	255	],255))
+    all_possible_rule_list.append(([9,	7,	255,	255,	255	],255))
+    all_possible_rule_list.append(([9,	9,	255,	255,	9	],255))
+    all_possible_rule_list.append(([255,	9,	255,	9,	255	],9))
+    all_possible_rule_list.append(([9,	9,	255,	255,	255	],255))
+    all_possible_rule_list.append(([9,	9,	255,	9,	255	],255))
+
 
 
     current_rule=all_possible_rule_list[rule_index]
@@ -247,10 +271,10 @@ def spark_processing(rule_index):
     return 1
 
 
-len_rules=1
+len_rules=24
 
 
-num_cores=80
+num_cores=24
 conf = SparkConf()
 conf.setAppName("segmentation_rule_traverse_679").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")

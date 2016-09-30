@@ -126,7 +126,7 @@ def predict(index,random_list,gt_files,folder_files,final_selected_rule_set,orig
                 # apply the hard-coded primming rule
                 if value[0] == 3:
                     value[0] = 255
-                if value[1] == 5 or value[1] == 4:
+                if value[1] == 3 or value[1] == 4:
                     value[1] = 255
                 if value[2] == 4 or value[2] == 5:
                     value[2] = 255
@@ -192,11 +192,70 @@ def get_single_set_rules(current_set):
     all_possible_rule_list = []
 
     if current_set=='345':
-        all_possible_rule_list.append(([2, 3, 3, 2], 3))
+        all_possible_rule_list.append(([255, 255, 3, 3, 255], 3))
+        all_possible_rule_list.append(([255, 5, 255, 255, 255], 5))
+        all_possible_rule_list.append(([255, 255, 255, 4, 4], 4))
+        all_possible_rule_list.append(([4, 255, 3, 3, 255], 3))
+        # all_possible_rule_list.append(([4, 255, 255, 255, 255], 255))
+        all_possible_rule_list.append(([255, 255, 255, 3, 255], 3))
+        # all_possible_rule_list.append(([4, 255, 3, 3, 255], 255))
+        all_possible_rule_list.append(([4, 255, 255, 3, 255], 255))
+        # all_possible_rule_list.append(([4, 5, 255, 4, 255], 255))
+        all_possible_rule_list.append(([4, 5, 255, 255, 255], 5))
+        # all_possible_rule_list.append(([4, 5, 255, 4, 255], 5))
+        # all_possible_rule_list.append(([4, 255, 255, 3, 4], 255))
+        all_possible_rule_list.append(([5, 255, 3, 4, 4], 255))
+        all_possible_rule_list.append(([4, 5, 3, 255, 255], 5))
+        # all_possible_rule_list.append(([4, 255, 3, 4, 255], 255))
+        all_possible_rule_list.append(([5, 5, 3, 3, 4], 4))
+        # all_possible_rule_list.append(([255, 255, 3, 4, 4], 4))
+        all_possible_rule_list.append(([255, 255, 255, 3, 4], 3))
+        all_possible_rule_list.append(([5, 255, 255, 255, 4], 255))
+        all_possible_rule_list.append(([4, 5, 255, 4, 4], 255))
+        # all_possible_rule_list.append(([255, 5, 255, 3, 255], 5))
+        all_possible_rule_list.append(([4, 5, 3, 4, 255], 3))
+        all_possible_rule_list.append(([4, 5, 3, 3, 255], 255))
+        all_possible_rule_list.append(([4, 5, 3, 255, 4], 255))
+        all_possible_rule_list.append(([5, 255, 3, 4, 255], 255))
+        all_possible_rule_list.append(([5, 5, 3, 4, 255], 255))
+        all_possible_rule_list.append(([4, 5, 255, 3, 255], 255))
+        all_possible_rule_list.append(([5, 255, 3, 3, 4], 255))
+        all_possible_rule_list.append(([5, 255, 255, 3, 4], 255))
+        all_possible_rule_list.append(([255, 5, 3, 255, 4], 5))
+        all_possible_rule_list.append(([4, 255, 3, 255, 255], 255))
+        all_possible_rule_list.append(([5, 255, 255, 3, 255], 255))
+        all_possible_rule_list.append(([4, 255, 3, 255, 4], 255))
+        all_possible_rule_list.append(([5, 255, 3, 3, 255], 255))
+        all_possible_rule_list.append(([5, 255, 3, 255, 255], 255))
+        all_possible_rule_list.append(([5, 255, 255, 4, 4], 255))
 
 
     elif current_set == '679':
-        all_possible_rule_list.append(([255, 255, 9, 9], 9))
+        all_possible_rule_list = []
+        all_possible_rule_list.append(([255, 9, 255, 9, 9], 9))
+        all_possible_rule_list.append(([255, 255, 255, 9, 9], 9))
+        all_possible_rule_list.append(([255, 6, 255, 255, 255], 6))
+        # all_possible_rule_list.append(([255, 255, 255, 9, 255], 9))
+        all_possible_rule_list.append(([6, 255, 255, 255, 255], 255))
+        all_possible_rule_list.append(([9, 255, 255, 255, 255], 255))
+        all_possible_rule_list.append(([255, 7, 255, 255, 255], 7))
+        # all_possible_rule_list.append(([7, 7, 255, 9, 255, ], 255))
+        all_possible_rule_list.append(([7, 7, 255, 255, 9], 255))
+        all_possible_rule_list.append(([7, 9, 255, 9, 9], 255))
+        all_possible_rule_list.append(([7, 9, 255, 9, 255], 255))
+        all_possible_rule_list.append(([7, 255, 255, 9, 255], 255))
+        all_possible_rule_list.append(([9, 7, 255, 255, 9], 255))
+        # all_possible_rule_list.append(([7, 255, 255, 255, 9], 255))
+        all_possible_rule_list.append(([9, 7, 255, 9, 255], 255))
+        all_possible_rule_list.append(([9, 7, 255, 9, 9], 255))
+        all_possible_rule_list.append(([7, 9, 255, 255, 9], 255))
+        all_possible_rule_list.append(([7, 6, 255, 255, 255], 255))
+        all_possible_rule_list.append(([6, 7, 255, 255, 255], 255))
+        all_possible_rule_list.append(([9, 7, 255, 255, 255], 255))
+        # all_possible_rule_list.append(([9, 9, 255, 255, 9], 255))
+        # all_possible_rule_list.append(([255, 9, 255, 9, 255], 9))
+        all_possible_rule_list.append(([9, 9, 255, 255, 255], 255))
+        # all_possible_rule_list.append(([9, 9, 255, 9, 255], 255))
 
     elif current_set == '141516':
         all_possible_rule_list.append(([255, 15, 16, 15], 16))
@@ -212,7 +271,7 @@ def get_single_set_rules(current_set):
 
 if __name__ == '__main__':
     dataset='val'
-    current_set='141516'
+    current_set='679'
 
     is_test_lower_bound=0
     is_use_neighbor=0

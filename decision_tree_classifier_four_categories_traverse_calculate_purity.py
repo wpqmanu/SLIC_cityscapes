@@ -197,7 +197,7 @@ def get_stats_13141516(traverse_category_list,folder_files,gt_files):
 
     cPickle.dump(C, open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_13141516.dat'), "w+"))
 
-def get_stats_345(traverse_category_list,folder_files,gt_files):
+def get_stats_345_coarse(traverse_category_list,folder_files,gt_files):
     # go through all training files
     C=Counter()
     for index in range(len(gt_files)):
@@ -237,7 +237,7 @@ def get_stats_345(traverse_category_list,folder_files,gt_files):
 
     cPickle.dump(C, open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_345_use_coarse.dat'), "w+"))
 
-def get_stats_679(traverse_category_list,folder_files,gt_files):
+def get_stats_679_coarse(traverse_category_list,folder_files,gt_files):
     # go through all training files
     C=Counter()
     for index in range(len(gt_files)):
@@ -277,7 +277,7 @@ def get_stats_679(traverse_category_list,folder_files,gt_files):
 
     cPickle.dump(C, open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_679_use_coarse.dat'), "w+"))
 
-def get_stats_141516(traverse_category_list,folder_files,gt_files):
+def get_stats_141516_coarse(traverse_category_list,folder_files,gt_files):
     # go through all training files
     C=Counter()
     for index in range(len(gt_files)):
@@ -353,7 +353,9 @@ def calculate_purity_with_coarse(stats):
 if __name__ == '__main__':
     dataset = 'val'
 
-    is_calculate_purity = 0
+    coarse_or_fine='coarse'
+
+    is_calculate_purity = 1
     is_load_purity_result=1
 
     original_image_folder = '/mnt/scratch/panqu/Dataset/CityScapes/leftImg8bit_trainvaltest/leftImg8bit/'+dataset+'_for_train/'
@@ -388,36 +390,26 @@ if __name__ == '__main__':
     traverse_list_length = 5
 
     if is_calculate_purity:
-        traverse_category_list_345 = [3, 4, 5, 255]  # you only want to explore several categories (255 means all others)
-        get_stats_345(traverse_category_list_345,folder_files,gt_files)
+        if coarse_or_fine == 'coarse':
+            traverse_category_list_345 = [3, 4, 5, 255]  # you only want to explore several categories (255 means all others)
+            get_stats_345_coarse(traverse_category_list_345,folder_files,gt_files)
 
-        traverse_category_list_679 = [6, 7, 9, 255]  # you only want to explore several categories (255 means all others)
-        get_stats_679(traverse_category_list_679,folder_files,gt_files)
+            traverse_category_list_679 = [6, 7, 9, 255]  # you only want to explore several categories (255 means all others)
+            get_stats_679_coarse(traverse_category_list_679,folder_files,gt_files)
 
-        traverse_category_list_141516 = [14, 15, 16, 255]  # you only want to explore several categories (255 means all others)
-        get_stats_141516(traverse_category_list_141516,folder_files,gt_files)
+            traverse_category_list_141516 = [14, 15, 16, 255]  # you only want to explore several categories (255 means all others)
+            get_stats_141516_coarse(traverse_category_list_141516,folder_files,gt_files)
 
     if is_load_purity_result:
-        purity_345 = cPickle.load(open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_345_use_coarse.dat'), "rb"))
-        purity_679 = cPickle.load(open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_679_use_coarse.dat'), "rb"))
-        purity_141516 = cPickle.load(open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_141516_use_coarse.dat'), "rb"))
+        if coarse_or_fine == 'coarse':
+            purity_345 = cPickle.load(open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_345_use_coarse.dat'), "rb"))
+            purity_679 = cPickle.load(open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_679_use_coarse.dat'), "rb"))
+            purity_141516 = cPickle.load(open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_141516_use_coarse.dat'), "rb"))
 
-        print "calculating stats..."
-        purity_345_final = calculate_purity_with_coarse(purity_345)
-        purity_679_final = calculate_purity_with_coarse(purity_679)
-        purity_141516_final = calculate_purity_with_coarse(purity_141516)
+            print "calculating stats..."
+            purity_345_final = calculate_purity_with_coarse(purity_345)
+            purity_679_final = calculate_purity_with_coarse(purity_679)
+            purity_141516_final = calculate_purity_with_coarse(purity_141516)
 
-        cPickle.dump((purity_345_final,purity_679_final,purity_141516_final), open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_final_use_coarse.dat'), "w+"))
-
-        # saved_rule_traverse_result='/home/panquwang/adas-segmentation-cityscape/test/rule_traverse_result_file_with_purity.txt'
-    #
-    #
-    # # prediction
-    # result_location = os.path.join('/mnt/scratch/panqu/SLIC/prediction_result/four_cats_rule_traverse/', dataset,'all_selected_rules')
-    # if not os.path.exists(result_location):
-    #     os.makedirs(result_location)
-    #     os.makedirs(os.path.join(result_location, 'score'))
-    #     os.makedirs(os.path.join(result_location, 'visualization'))
-
-
+            cPickle.dump((purity_345_final,purity_679_final,purity_141516_final), open(os.path.join('/home/panquwang/SLIC_cityscapes/', 'purity_final_use_coarse.dat'), "w+"))
 
