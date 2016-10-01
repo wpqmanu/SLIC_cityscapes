@@ -258,7 +258,56 @@ def get_single_set_rules(current_set):
         # all_possible_rule_list.append(([9, 9, 255, 9, 255], 255))
 
     elif current_set == '141516':
-        all_possible_rule_list.append(([255, 15, 16, 15], 16))
+            all_possible_rule_list.append(([255,	255,	14,	14,	14	], 14))
+            all_possible_rule_list.append(([255,	255,	14,	255,	255	],14))
+            all_possible_rule_list.append(([255,	255,	15,	15,	15	],15))
+            all_possible_rule_list.append(([16,	255,	15,	15,	15	],15))
+            all_possible_rule_list.append(([15,	255,	14,	14,	15	],14))
+            all_possible_rule_list.append(([255,	255,	255,	16,	16	],16))
+            all_possible_rule_list.append(([255,	255,	255,	15,	15	],15))
+            all_possible_rule_list.append(([15,	255,	15,	16,	16	],16))
+            all_possible_rule_list.append(([255,	255,	14,	14,	255	],14))
+            all_possible_rule_list.append(([255,	255,	14,	16,	255	],16))
+            all_possible_rule_list.append(([15,	255,	14,	255,	255	],14))
+            all_possible_rule_list.append(([16,	255,	255,	16,	15	],15))
+            all_possible_rule_list.append(([16,	255,	255,	255,	255	],255))
+            all_possible_rule_list.append(([255,	255,	255,	15,	16	], 16))
+            all_possible_rule_list.append(([255,	255,	15,	255,	15	],15))
+            all_possible_rule_list.append(([15,	255,	255,	16,	16	],16))
+            all_possible_rule_list.append(([15,	255,	14,	255,	14	],14))
+           # all_possible_rule_list.append(([255,	255,	14,	14,	15	],14))
+            all_possible_rule_list.append(([255,	255,	14,	14,	15	],15))
+            all_possible_rule_list.append(([255,	255,	14,	255,	15	],14))
+            all_possible_rule_list.append(([15,	255,	15,	15,	16	],255))
+            all_possible_rule_list.append(([15,	255,	15,	255,	16	],255))
+            all_possible_rule_list.append(([15,	255,	255,	14,	14	],255))
+            all_possible_rule_list.append(([15,	255,	255,	14,	255	],255))
+            all_possible_rule_list.append(([15,	255,	255,	15,	14	],255))
+            all_possible_rule_list.append(([15,	255,	255,	15,	16	],255))
+            all_possible_rule_list.append(([15,	255,	255,	255,	14	],255))
+            all_possible_rule_list.append(([15,	255,	255,	255,	16	], 255))
+            all_possible_rule_list.append(([16,	255,	14,	15,	255	],255))
+            all_possible_rule_list.append(([16,	255,	15,	15,	16	],255))
+            all_possible_rule_list.append(([16,	255,	15,	15,	255	],15))
+            all_possible_rule_list.append(([255,	255,	255,	14,	16	],16))
+            all_possible_rule_list.append(([255,	255,	14,	15,	255	],15))
+            all_possible_rule_list.append(([255,	255,	14,	15,	14	],14))
+            all_possible_rule_list.append(([255,	255,	14,	16,	16	],16))
+            all_possible_rule_list.append(([15,	255,	255,	16,	255	],255))
+            all_possible_rule_list.append(([15,	255,	15,	16,	255	],255))
+            all_possible_rule_list.append(([16,	255,	14,	255,	15	],255))
+            all_possible_rule_list.append(([16,	255,	15,	255,	15	],15))
+            all_possible_rule_list.append(([16,	255,	255,	15,	255	],255))
+            all_possible_rule_list.append(([16,	255,	15,	15,	14	],255))
+            all_possible_rule_list.append(([16,	255,	15,	255,	255	],255))
+            all_possible_rule_list.append(([16,	255,	255,	15,	15	],255))
+            all_possible_rule_list.append(([255,	255,	15,	16,	15	],15))
+            all_possible_rule_list.append(([255,	255,	14,	15,	15	],15))
+            all_possible_rule_list.append(([16,	255,	255,	255,	15	],15))
+            all_possible_rule_list.append(([16,	255,	14,	16,	255	],255))
+            all_possible_rule_list.append(([255,	255,	255,	16,	14	],14))
+            all_possible_rule_list.append(([16,	255,	14,	255,	255	],255))
+            all_possible_rule_list.append(([15,	255,	255,	255,	255	],255))
 
 
     final_selected_rule_set = ([], [])
@@ -271,7 +320,7 @@ def get_single_set_rules(current_set):
 
 if __name__ == '__main__':
     dataset='val'
-    current_set='679'
+    current_set='141516'
 
     is_test_lower_bound=0
     is_use_neighbor=0
@@ -288,7 +337,7 @@ if __name__ == '__main__':
     gt_files.sort()
 
 
-    # use 207 validation subfolder
+    # use 293 validation test subfolder
     folder = {}
     # base: resnet 152
     folder[1] = os.path.join('/mnt/scratch/pengfei/crf_results/deeplab_resnet_152_'+dataset+'_crf_test/')
@@ -318,13 +367,6 @@ if __name__ == '__main__':
         traverse_category_list=[6,7,9,255] # you only want to explore four categories (255 means all others)
     elif current_set == '141516':
         traverse_category_list=[14,15,16,255] # you only want to explore four categories (255 means all others)
-
-    # traverse_list_length=3 # you have three layers for ensemble
-    # traverse_category_list=[3,14,15,16,255] # you only want to explore four categories (255 means all others)
-    # # This is used in prediction.
-    # performance_threshold=0.75368
-    # saved_rule_traverse_result='/home/panquwang/adas-segmentation-cityscape/test/rule_traverse_result_file_with_purity.txt'
-    # final_selected_rule_set=get_final_rule(saved_rule_traverse_result,performance_threshold)
 
 
     final_selected_rule_set=get_single_set_rules(current_set)

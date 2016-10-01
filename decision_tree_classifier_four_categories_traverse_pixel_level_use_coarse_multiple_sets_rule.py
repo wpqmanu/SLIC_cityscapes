@@ -100,11 +100,11 @@ def predict(index,random_list,gt_files,folder_files,final_selected_rule_set,orig
                         if not (value[index_single_value] in traverse_category_list[:-1]):
                             value[index_single_value]=traverse_category_list[-1]
 
-                    if current_set == "345":
+                    if current_set[index_ruleset]=="345":
                         # apply the hard-coded primming rule
                         if value[0] == 3:
                             value[0] = 255
-                        if value[1] == 5 or value[1] == 4:
+                        if value[1] == 3 or value[1] == 4:
                             value[1] = 255
                         if value[2] == 4 or value[2] == 5:
                             value[2] = 255
@@ -113,7 +113,7 @@ def predict(index,random_list,gt_files,folder_files,final_selected_rule_set,orig
                         if value[4] == 3 or value[4] == 5:
                             value[4] = 255
 
-                    elif current_set == "679":
+                    elif current_set[index_ruleset] == "679":
                         if value[2] == 6 or value[2] == 7 or value[2] == 9:
                             value[2] = 255
                         if value[3] == 6 or value[3] == 7:
@@ -121,7 +121,7 @@ def predict(index,random_list,gt_files,folder_files,final_selected_rule_set,orig
                         if value[4] == 6 or value[4] == 7:
                             value[4] = 255
 
-                    elif current_set == "141516":
+                    elif current_set[index_ruleset] == "141516":
                         # apply the hard-coded primming rule to avoid bug such as (1,2,3,4) not treated as (255,2,3,4)
                         if value[0] == 14:
                             value[0] = 255
@@ -242,7 +242,56 @@ def get_single_set_rules(current_set):
 
 
         elif item == '141516':
-            all_possible_rule_list.append(([255, 15, 16, 15], 16))
+            all_possible_rule_list.append(([255,	255,	14,	14,	14	], 14))
+            all_possible_rule_list.append(([255,	255,	14,	255,	255	],14))
+            all_possible_rule_list.append(([255,	255,	15,	15,	15	],15))
+            all_possible_rule_list.append(([16,	255,	15,	15,	15	],15))
+            all_possible_rule_list.append(([15,	255,	14,	14,	15	],14))
+            all_possible_rule_list.append(([255,	255,	255,	16,	16	],16))
+            all_possible_rule_list.append(([255,	255,	255,	15,	15	],15))
+            all_possible_rule_list.append(([15,	255,	15,	16,	16	],16))
+            all_possible_rule_list.append(([255,	255,	14,	14,	255	],14))
+            all_possible_rule_list.append(([255,	255,	14,	16,	255	],16))
+            all_possible_rule_list.append(([15,	255,	14,	255,	255	],14))
+            all_possible_rule_list.append(([16,	255,	255,	16,	15	],15))
+            all_possible_rule_list.append(([16,	255,	255,	255,	255	],255))
+            all_possible_rule_list.append(([255,	255,	255,	15,	16	], 16))
+            all_possible_rule_list.append(([255,	255,	15,	255,	15	],15))
+            all_possible_rule_list.append(([15,	255,	255,	16,	16	],16))
+            all_possible_rule_list.append(([15,	255,	14,	255,	14	],14))
+           # all_possible_rule_list.append(([255,	255,	14,	14,	15	],14))
+            all_possible_rule_list.append(([255,	255,	14,	14,	15	],15))
+            all_possible_rule_list.append(([255,	255,	14,	255,	15	],14))
+            all_possible_rule_list.append(([15,	255,	15,	15,	16	],255))
+            all_possible_rule_list.append(([15,	255,	15,	255,	16	],255))
+            all_possible_rule_list.append(([15,	255,	255,	14,	14	],255))
+            all_possible_rule_list.append(([15,	255,	255,	14,	255	],255))
+            all_possible_rule_list.append(([15,	255,	255,	15,	14	],255))
+            all_possible_rule_list.append(([15,	255,	255,	15,	16	],255))
+            all_possible_rule_list.append(([15,	255,	255,	255,	14	],255))
+            all_possible_rule_list.append(([15,	255,	255,	255,	16	], 255))
+            all_possible_rule_list.append(([16,	255,	14,	15,	255	],255))
+            all_possible_rule_list.append(([16,	255,	15,	15,	16	],255))
+            all_possible_rule_list.append(([16,	255,	15,	15,	255	],15))
+            all_possible_rule_list.append(([255,	255,	255,	14,	16	],16))
+            all_possible_rule_list.append(([255,	255,	14,	15,	255	],15))
+            all_possible_rule_list.append(([255,	255,	14,	15,	14	],14))
+            all_possible_rule_list.append(([255,	255,	14,	16,	16	],16))
+            all_possible_rule_list.append(([15,	255,	255,	16,	255	],255))
+            all_possible_rule_list.append(([15,	255,	15,	16,	255	],255))
+            all_possible_rule_list.append(([16,	255,	14,	255,	15	],255))
+            all_possible_rule_list.append(([16,	255,	15,	255,	15	],15))
+            all_possible_rule_list.append(([16,	255,	255,	15,	255	],255))
+            all_possible_rule_list.append(([16,	255,	15,	15,	14	],255))
+            all_possible_rule_list.append(([16,	255,	15,	255,	255	],255))
+            all_possible_rule_list.append(([16,	255,	255,	15,	15	],255))
+            all_possible_rule_list.append(([255,	255,	15,	16,	15	],15))
+            all_possible_rule_list.append(([255,	255,	14,	15,	15	],15))
+            all_possible_rule_list.append(([16,	255,	255,	255,	15	],15))
+            all_possible_rule_list.append(([16,	255,	14,	16,	255	],255))
+            all_possible_rule_list.append(([255,	255,	255,	16,	14	],14))
+            all_possible_rule_list.append(([16,	255,	14,	255,	255	],255))
+            all_possible_rule_list.append(([15,	255,	255,	255,	255	],255))
 
 
         final_selected_rule_set.append(([], []))
@@ -255,12 +304,12 @@ def get_single_set_rules(current_set):
 
 if __name__ == '__main__':
 
-    current_set=['141516','345','679']
-    dict={'345':[3,4,5,255],'679':[6,7,9,255],'141516':[13,14,16,255]}
+    current_set=['345','141516','679']
+    dict={'345':[3,4,5,255],'679':[6,7,9,255],'141516':[14,15,16,255]}
 
-    use_full_validation_test=0
+    use_full_validation_test=1
 
-    dataset = 'val'
+    dataset = 'test'
 
     if not use_full_validation_test:
         # normal validation test set
@@ -344,6 +393,7 @@ if __name__ == '__main__':
 
     num_cores = multiprocessing.cpu_count()
     range_i = range(0, len(original_image_files))
+    # range_i=range(35,45)
 
     Parallel(n_jobs=num_cores)(
         delayed(predict)(i, random_list,gt_files,folder_files,final_selected_rule_set,original_image_files,result_location,traverse_category_list,current_set) for i in
