@@ -233,7 +233,6 @@ def spark_processing(rule_index):
     all_possible_rule_list.append(([15,	255,	14,	14	], 14))
     all_possible_rule_list.append(([255,	255,	16,	16	], 16))
     all_possible_rule_list.append(([255,	255,	14,	16	], 16))
-    all_possible_rule_list.append(([15,	255,	15,	16	], 255))
     all_possible_rule_list.append(([15,	255,	255,	16	], 16))
     all_possible_rule_list.append(([15,	255,	15,	14	], 14))
     all_possible_rule_list.append(([16,	255,	16,	15	], 255))
@@ -244,6 +243,9 @@ def spark_processing(rule_index):
     all_possible_rule_list.append(([16,	255,	14,	255	], 255))
     all_possible_rule_list.append(([16,	255,	15,	255	], 255))
     all_possible_rule_list.append(([255,	255,	14,	15	], 14))
+
+    all_possible_rule_list.append(([255,	255,	15,	16	], 16))
+    all_possible_rule_list.append(([15,	255,	15,	16	], 16))
 
 
 

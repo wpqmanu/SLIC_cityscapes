@@ -125,8 +125,6 @@ def predict(random_list,superpixel_data,gt_files,folder_files,current_rule,origi
                     current_categorical_labels[current_categorical_label_index]=traverse_category_list[-1]
 
             # apply the hard-coded primming rule to avoid bug such as (1,2,3,4) not treated as (255,2,3,4)
-            if current_categorical_labels[0]==3:
-                current_categorical_labels[0]=255
             if current_categorical_labels[1]==3 or current_categorical_labels[1]==4:
                 current_categorical_labels[1]=255
             if current_categorical_labels[2]==4 or current_categorical_labels[2]==5:
@@ -221,54 +219,29 @@ def spark_processing(rule_index):
 
     # enumerate all rules
     all_possible_rule_list=[]
-    all_possible_rule_list.append(([255, 255, 3, 3], 3))
-    all_possible_rule_list.append(([255,5,	255,	255], 5))
-    all_possible_rule_list.append(([255,	255,	255,	4], 4))
-    all_possible_rule_list.append(([4,	255,	3,	3	],3))
-    all_possible_rule_list.append(([4,	255,	255,	255	],255))
-    all_possible_rule_list.append(([255,	255,	255,	3	],3))
-    all_possible_rule_list.append(([4,255,	3,	3	],255))
-    all_possible_rule_list.append(([4,	255,	255,	3	],255))
-    all_possible_rule_list.append(([4,	5,	255,	4	],255))
-    all_possible_rule_list.append(([4,	5,	255,	255	],5))
-    all_possible_rule_list.append(([4,	5,	255,	4	],5))
-    all_possible_rule_list.append(([4,	255,	255,	3],255))
-    all_possible_rule_list.append(([5,	255,	3,	4],255))
-    all_possible_rule_list.append(([4,	5,	3,	255	],5))
-    all_possible_rule_list.append(([4,	255,	3,	4	],255))
-
-    all_possible_rule_list.append(([5,	5,	3,	3],5))
-    all_possible_rule_list.append(([5,	5,	3,	3],3))
-
-    all_possible_rule_list.append(([255,	255,	3,	4],4))
-    all_possible_rule_list.append(([255,	255,255,	3],3))
-    all_possible_rule_list.append(([5,	255,	255,	255],255))
-    all_possible_rule_list.append(([4,	5,	255,	4],255))
-    all_possible_rule_list.append(([255,	5,	255,	3],5))
-    all_possible_rule_list.append(([4,	5,	3,	4],3))
-
-    all_possible_rule_list.append(([4,	5,	3,	3],4))
-    all_possible_rule_list.append(([4,	5,	3,	3],5))
-    all_possible_rule_list.append(([4,	5,	3,	3],3))
-
-    all_possible_rule_list.append(([4,	5,	3,	255],255))
-    all_possible_rule_list.append(([5,	255,	3,	4],255))
-
-    all_possible_rule_list.append(([5,	5,	3,	4],5))
-    all_possible_rule_list.append(([5,	5,	3,	4],3))
-    all_possible_rule_list.append(([5,	5,	3,	4],4))
+    all_possible_rule_list.append(([4,	255,	255,	255	], 255))
+    all_possible_rule_list.append(([5,	255,	3,	3	], 255))
+    all_possible_rule_list.append(([5,	255,	3,	4	], 255))
+    all_possible_rule_list.append(([5,	255,	3,	255	], 255))
+    all_possible_rule_list.append(([5,	255,	255,	3	], 255))
+    all_possible_rule_list.append(([5,	255,	255,	4	], 255))
+    all_possible_rule_list.append(([255,	5,	255,	3	], 5))
+    all_possible_rule_list.append(([255,	5,	255,	255	], 5))
+    all_possible_rule_list.append(([255,	255,	3,	3	], 3))
+    all_possible_rule_list.append(([255,	255,	3,	4	], 4))
+    all_possible_rule_list.append(([255,	255,	255,	3	], 3))
+    all_possible_rule_list.append(([255,	255,	255,	4	], 4))
+    all_possible_rule_list.append(([4,	5,	3,	4	], 3))
+    all_possible_rule_list.append(([4,	5,	3,	255	], 5))
+    all_possible_rule_list.append(([4,	5,	255,	3	], 255))
+    all_possible_rule_list.append(([4,	5,	255,	4	], 255))
+    all_possible_rule_list.append(([4,	5,	255,	255	], 5))
+    all_possible_rule_list.append(([4,	255,	3,	3	], 255))
+    all_possible_rule_list.append(([4,	255,	3,	4	], 255))
+    all_possible_rule_list.append(([4,	255,	3,	255	], 255))
+    all_possible_rule_list.append(([4,	255,	255,	3	], 255))
 
 
-    all_possible_rule_list.append(([4,	5,	255,	3],255))
-    all_possible_rule_list.append(([5,	255,	3,	3],255))
-    all_possible_rule_list.append(([5,	255,	255,	3],255))
-    all_possible_rule_list.append(([255,	5,	3,	255],5))
-    all_possible_rule_list.append(([4,	255,	3,	255],255))
-    all_possible_rule_list.append(([5,	255,	255,	3],255))
-    all_possible_rule_list.append(([4,	255,	3,	255],255))
-    all_possible_rule_list.append(([5,	255,	3,	3],255))
-    all_possible_rule_list.append(([5,	255,	3,	255],255))
-    all_possible_rule_list.append(([5,	255,	255,	4],255))
 
 
 
@@ -288,10 +261,10 @@ def spark_processing(rule_index):
     return 1
 
 
-len_rules=41
+len_rules=21
 
 
-num_cores=41
+num_cores=21
 conf = SparkConf()
 conf.setAppName("segmentation_rule_traverse_345").setMaster("spark://192.168.1.132:7077")
 conf.set("spark.scheduler.mode", "FAIR")
